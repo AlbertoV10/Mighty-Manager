@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/manager_login_title"
+        android:text="Manager Login"
+        android:textAlignment="center"
+        android:textSize="24dp"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentTop="true"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/manager_login_username"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/manager_login_title"
+        android:inputType="text"
+        android:hint="Username"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/manager_login_password"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/manager_login_username"
+        android:inputType="textPassword"
+        android:hint="Password"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/manager_login_button"
+        android:layout_marginTop="10dp"
+        android:text="Login"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/manager_login_password"
+        android:layout_alignParentLeft="true"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/manager_login_cancel_button"
+        android:layout_marginTop="10dp"
+        android:text="Cancel"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/manager_login_button"
+        android:layout_alignParentLeft="true"
+        />
+
+</RelativeLayout>
