@@ -20,7 +20,7 @@
         app:layout_constraintVertical_bias="0.18" />
 
     <Button
-        android:id="@+id/manager_button"
+        android:id="@+id/login_manager_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="147dp"
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
-        android:id="@+id/employee_button"
+        android:id="@+id/login_employee_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="144dp"
@@ -51,6 +51,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/manager_button" />
+        app:layout_constraintTop_toBottomOf="@+id/login_manager_button" />
 
 </android.support.constraint.ConstraintLayout>
