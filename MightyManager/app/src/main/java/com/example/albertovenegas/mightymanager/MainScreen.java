@@ -1,28 +1,45 @@
 package com.example.albertovenegas.mightymanager;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainScreen extends AppCompatActivity {
-    String assignmentsTest[] = new String [] {"Assignment 1", "Assignment 2", "Assignment 3", "Assignment 4"};
+    //String assignmentsTest[] = new String [] {"Assignment 1", "Assignment 2", "Assignment 3", "Assignment 4"};
+    ArrayList<String> assignmentsTest;
     private ListView mainList;
     private TextView title;
     private Boolean managerType;
     private Boolean employeeType;
+    private Button newAssignmentButton;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+
+        //fill array list for testing
+        assignmentsTest = new ArrayList<>();
+        assignmentsTest.add("Assignment 1");
+        assignmentsTest.add("Assignment 2");
+        assignmentsTest.add("Assignment 3");
+        assignmentsTest.add("Assignment 4");
 
         managerType = getIntent().getExtras().getBoolean("managerUserType");
         employeeType = getIntent().getExtras().getBoolean("employeeUserType");
@@ -37,18 +54,26 @@ public class MainScreen extends AppCompatActivity {
         }
 
         mainList = (ListView) findViewById(R.id.mainscreen_list);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, assignmentsTest);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, assignmentsTest);
         mainList.setAdapter(adapter);
         mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainScreen.this, assignmentsTest[position], Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainScreen.this, assignmentsTest.get(position), Toast.LENGTH_SHORT).show();
             }
         });
 
+        newAssignmentButton = (Button) findViewById(R.id.mainscreen_new_assignment_button);
+        newAssignmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog();
+            }
+        });
 
     }
 
+    //creates the menu on the action bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -56,6 +81,7 @@ public class MainScreen extends AppCompatActivity {
         return true;
     }
 
+    //gives functionality when clicking items in the menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -69,5 +95,34 @@ public class MainScreen extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    public void openDialog()
+    {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainScreen.this);
+        View dialogView = getLayoutInflater().inflate(R.layout.new_assignment_dialog, null);
+        final EditText newAssignmentName = (EditText) dialogView.findViewById(R.id.new_assignment_dialog_assign_title);
+        Button createButton = (Button) dialogView.findViewById(R.id.new_assignment_dialog_add_button);
+        dialogBuilder.setView(dialogView);
+        final AlertDialog dialog = dialogBuilder.create();
+
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainScreen.this, "Button in dialog works", Toast.LENGTH_SHORT).show();
+                if(!newAssignmentName.getText().toString().isEmpty()) {
+                    String newName = newAssignmentName.getText().toString();
+                    assignmentsTest.add(newName);
+                    adapter.notifyDataSetChanged();
+                    dialog.dismiss();
+
+                }
+                else {
+                    Toast.makeText(MainScreen.this, "Field is empty", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        dialog.show();
     }
 }
