@@ -2,6 +2,7 @@ package com.example.albertovenegas.mightymanager;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ListActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
@@ -27,6 +28,7 @@ public class MainScreen extends AppCompatActivity {
     private Boolean managerType;
     private Boolean employeeType;
     private Button newAssignmentButton;
+    private Button deleteAssignmentButton;
     private ArrayAdapter<String> adapter;
 
     @Override
@@ -39,8 +41,9 @@ public class MainScreen extends AppCompatActivity {
         assignmentsTest.add("Assignment 1");
         assignmentsTest.add("Assignment 2");
         assignmentsTest.add("Assignment 3");
-        assignmentsTest.add("Assignment 4");
+        assignmentsTest.add("Assignment \n4");
 
+        //get user access type from signin
         managerType = getIntent().getExtras().getBoolean("managerUserType");
         employeeType = getIntent().getExtras().getBoolean("employeeUserType");
         title = (TextView) findViewById(R.id.mainscreen_title);
@@ -53,6 +56,7 @@ public class MainScreen extends AppCompatActivity {
             title.setText("Employee: Assignments");
         }
 
+        //initialize the list and adapter
         mainList = (ListView) findViewById(R.id.mainscreen_list);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, assignmentsTest);
         mainList.setAdapter(adapter);
@@ -63,11 +67,30 @@ public class MainScreen extends AppCompatActivity {
             }
         });
 
+        //initialize and onclick listeners for buttons
         newAssignmentButton = (Button) findViewById(R.id.mainscreen_new_assignment_button);
         newAssignmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openDialog();
+            }
+        });
+
+        deleteAssignmentButton = (Button) findViewById(R.id.mainscreen_delete_assignment_button);
+        deleteAssignmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SparseBooleanArray checkedItemPositions = mainList.getCheckedItemPositions();
+                int numberOfItems = mainList.getCount();
+                for(int i = numberOfItems - 1; i >= 0; i--)
+                {
+                    if(checkedItemPositions.get(i))
+                    {
+                        adapter.remove(assignmentsTest.get(i));
+                    }
+                }
+                checkedItemPositions.clear();
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -97,6 +120,7 @@ public class MainScreen extends AppCompatActivity {
 
     }
 
+    //opens the dialog box to add new assignment
     public void openDialog()
     {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainScreen.this);
