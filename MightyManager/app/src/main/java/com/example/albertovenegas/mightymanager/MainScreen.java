@@ -114,6 +114,15 @@ public class MainScreen extends AppCompatActivity {
             case R.id.menu_item2:
                 Toast.makeText(this, "Item 2", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.menu_item3:
+                Toast.makeText(this, "Item 3", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu_item4:
+                Toast.makeText(this, "Item 4", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu_item5:
+                Toast.makeText(this, "Item 5", Toast.LENGTH_SHORT).show();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
