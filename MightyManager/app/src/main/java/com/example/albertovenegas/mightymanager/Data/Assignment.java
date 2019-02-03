@@ -11,14 +11,23 @@ public class Assignment {
     //private Employee assignedEmployee;
     private String assignedEmployee;
     //private Status status;
-    private int status;
+    private int statusIcon;
+    private int editIcon;
 
-    public int getStatus() {
-        return status;
+    public int getEditIcon() {
+        return editIcon;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setEditIcon(int editIcon) {
+        this.editIcon = editIcon;
+    }
+
+    public int getStatusIcon() {
+        return statusIcon;
+    }
+
+    public void setStatusIcon(int status) {
+        this.statusIcon = status;
     }
 
     public String getTitle() {

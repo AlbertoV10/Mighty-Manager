@@ -65,7 +65,7 @@ public class MainScreen extends AppCompatActivity {
         //instantiate recycler view
         mainList = (RecyclerView) findViewById(R.id.mainscreen_list);
         mainList.setLayoutManager(new LinearLayoutManager(this));
-        //adapter = new MainListAdapter(MockDataGathering.getAssignmentData(), this);
+        adapter = new MainListAdapter(MockDataGathering.getAssignmentData(), this);
         mainList.setAdapter(adapter);
 
 //        //initialize the list and adapter
