@@ -1,8 +1,6 @@
-package com.example.albertovenegas.mightymanager;
+package com.example.albertovenegas.mightymanager.UserInterface;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ListActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
@@ -17,6 +15,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.albertovenegas.mightymanager.R;
 
 import java.util.ArrayList;
 
@@ -56,16 +56,18 @@ public class MainScreen extends AppCompatActivity {
             title.setText("Employee: Assignments");
         }
 
-        //initialize the list and adapter
-        mainList = (ListView) findViewById(R.id.mainscreen_list);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, assignmentsTest);
-        mainList.setAdapter(adapter);
-        mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainScreen.this, assignmentsTest.get(position), Toast.LENGTH_SHORT).show();
-            }
-        });
+        //instantiate recycler view
+
+//        //initialize the list and adapter
+//        mainList = (ListView) findViewById(R.id.mainscreen_list);
+//        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, assignmentsTest);
+//        mainList.setAdapter(adapter);
+//        mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(MainScreen.this, assignmentsTest.get(position), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         //initialize and onclick listeners for buttons
         newAssignmentButton = (Button) findViewById(R.id.mainscreen_new_assignment_button);
@@ -76,23 +78,23 @@ public class MainScreen extends AppCompatActivity {
             }
         });
 
-        deleteAssignmentButton = (Button) findViewById(R.id.mainscreen_delete_assignment_button);
-        deleteAssignmentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SparseBooleanArray checkedItemPositions = mainList.getCheckedItemPositions();
-                int numberOfItems = mainList.getCount();
-                for(int i = numberOfItems - 1; i >= 0; i--)
-                {
-                    if(checkedItemPositions.get(i))
-                    {
-                        adapter.remove(assignmentsTest.get(i));
-                    }
-                }
-                checkedItemPositions.clear();
-                adapter.notifyDataSetChanged();
-            }
-        });
+//        deleteAssignmentButton = (Button) findViewById(R.id.mainscreen_delete_assignment_button);
+//        deleteAssignmentButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                SparseBooleanArray checkedItemPositions = mainList.getCheckedItemPositions();
+//                int numberOfItems = mainList.getCount();
+//                for(int i = numberOfItems - 1; i >= 0; i--)
+//                {
+//                    if(checkedItemPositions.get(i))
+//                    {
+//                        adapter.remove(assignmentsTest.get(i));
+//                    }
+//                }
+//                checkedItemPositions.clear();
+//                adapter.notifyDataSetChanged();
+//            }
+//        });
 
     }
 

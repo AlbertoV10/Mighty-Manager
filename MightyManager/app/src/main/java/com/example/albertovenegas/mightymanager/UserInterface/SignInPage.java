@@ -1,4 +1,4 @@
-package com.example.albertovenegas.mightymanager;
+package com.example.albertovenegas.mightymanager.UserInterface;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.albertovenegas.mightymanager.R;
 
 public class SignInPage extends AppCompatActivity {
     private TextView signinTitle;
