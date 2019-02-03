@@ -3,6 +3,8 @@ package com.example.albertovenegas.mightymanager.UserInterface;
 import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +18,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.albertovenegas.mightymanager.Adapter.MainListAdapter;
+import com.example.albertovenegas.mightymanager.Data.MockDataGathering;
 import com.example.albertovenegas.mightymanager.R;
 
 import java.util.ArrayList;
@@ -23,13 +27,15 @@ import java.util.ArrayList;
 public class MainScreen extends AppCompatActivity {
     //String assignmentsTest[] = new String [] {"Assignment 1", "Assignment 2", "Assignment 3", "Assignment 4"};
     ArrayList<String> assignmentsTest;
-    private ListView mainList;
+    //private ListView mainList;
     private TextView title;
     private Boolean managerType;
     private Boolean employeeType;
     private Button newAssignmentButton;
-    private Button deleteAssignmentButton;
-    private ArrayAdapter<String> adapter;
+    //private Button deleteAssignmentButton;
+    //private ArrayAdapter<String> adapter;
+    private RecyclerView mainList;
+    private MainListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,10 @@ public class MainScreen extends AppCompatActivity {
         }
 
         //instantiate recycler view
+        mainList = (RecyclerView) findViewById(R.id.mainscreen_list);
+        mainList.setLayoutManager(new LinearLayoutManager(this));
+        //adapter = new MainListAdapter(MockDataGathering.getAssignmentData(), this);
+        mainList.setAdapter(adapter);
 
 //        //initialize the list and adapter
 //        mainList = (ListView) findViewById(R.id.mainscreen_list);
@@ -148,7 +158,7 @@ public class MainScreen extends AppCompatActivity {
                 if(!newAssignmentName.getText().toString().isEmpty()) {
                     String newName = newAssignmentName.getText().toString();
                     assignmentsTest.add(newName);
-                    adapter.notifyDataSetChanged();
+                    //adapter.notifyDataSetChanged();
                     dialog.dismiss();
 
                 }
