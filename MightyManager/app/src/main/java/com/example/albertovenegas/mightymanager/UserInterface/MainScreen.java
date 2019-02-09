@@ -19,12 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Adapter.MainListAdapter;
+import com.example.albertovenegas.mightymanager.Data.Assignment;
 import com.example.albertovenegas.mightymanager.Data.MockDataGathering;
 import com.example.albertovenegas.mightymanager.R;
 
 import java.util.ArrayList;
 
-public class MainScreen extends AppCompatActivity {
+public class MainScreen extends AppCompatActivity implements MainListAdapter.itemClickCallback{
     //String assignmentsTest[] = new String [] {"Assignment 1", "Assignment 2", "Assignment 3", "Assignment 4"};
     ArrayList<String> assignmentsTest;
     //private ListView mainList;
@@ -36,6 +37,7 @@ public class MainScreen extends AppCompatActivity {
     //private ArrayAdapter<String> adapter;
     private RecyclerView mainList;
     private MainListAdapter adapter;
+    private ArrayList listData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +45,11 @@ public class MainScreen extends AppCompatActivity {
         setContentView(R.layout.activity_main_screen);
 
         //fill array list for testing
-        assignmentsTest = new ArrayList<>();
-        assignmentsTest.add("Assignment 1");
-        assignmentsTest.add("Assignment 2");
-        assignmentsTest.add("Assignment 3");
-        assignmentsTest.add("Assignment \n4");
+//        assignmentsTest = new ArrayList<>();
+//        assignmentsTest.add("Assignment 1");
+//        assignmentsTest.add("Assignment 2");
+//        assignmentsTest.add("Assignment 3");
+//        assignmentsTest.add("Assignment \n4");
 
         //get user access type from signin
         managerType = getIntent().getExtras().getBoolean("managerUserType");
@@ -62,11 +64,14 @@ public class MainScreen extends AppCompatActivity {
             title.setText("Employee: Assignments");
         }
 
+        listData = (ArrayList) MockDataGathering.getAssignmentData();
+
         //instantiate recycler view
         mainList = (RecyclerView) findViewById(R.id.mainscreen_list);
         mainList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MainListAdapter(MockDataGathering.getAssignmentData(), this);
         mainList.setAdapter(adapter);
+        adapter.setItemClickCallback(this);
 
 //        //initialize the list and adapter
 //        mainList = (ListView) findViewById(R.id.mainscreen_list);
@@ -169,5 +174,20 @@ public class MainScreen extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    @Override
+    public void onItemClick(int p) {
+        Assignment assignment = (Assignment) listData.get(p);
+        Toast.makeText(MainScreen.this, "Will open new page", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEditIconClick(int p) {
+        Assignment assignment = (Assignment) listData.get(p);
+        Toast.makeText(MainScreen.this, "Will edit here", Toast.LENGTH_SHORT).show();
+        assignment.setComplete(true);
+        adapter.setListData(listData);
+        adapter.notifyDataSetChanged();
     }
 }

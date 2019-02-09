@@ -13,6 +13,15 @@ public class Assignment {
     //private Status status;
     private int statusIcon;
     private int editIcon;
+    private boolean complete;
+
+    public boolean isComplete() {
+        return complete;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
+    }
 
     public int getEditIcon() {
         return editIcon;
