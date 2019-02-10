@@ -16,15 +16,6 @@
         android:textAlignment="center"
         />
 
-    <!--<ListView-->
-        <!--android:id="@+id/mainscreen_list"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_below="@id/mainscreen_title"-->
-        <!--android:layout_above="@id/mainscreen_new_assignment_button"-->
-        <!--android:choiceMode="multipleChoice"-->
-        <!--&gt;</ListView>-->
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mainscreen_list"
         android:layout_width="match_parent"
@@ -37,17 +28,9 @@
         android:id="@+id/mainscreen_new_assignment_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Assignment"
+        android:background="@drawable/baseline_add_circle_black_36dp"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@id/mainscreen_list"
         />
-
-    <Button
-        android:id="@+id/mainscreen_delete_assignment_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete Selected"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@id/mainscreen_list"/>
 
 </RelativeLayout>

@@ -26,15 +26,10 @@ import com.example.albertovenegas.mightymanager.R;
 import java.util.ArrayList;
 
 public class MainScreen extends AppCompatActivity implements MainListAdapter.itemClickCallback{
-    //String assignmentsTest[] = new String [] {"Assignment 1", "Assignment 2", "Assignment 3", "Assignment 4"};
-    ArrayList<String> assignmentsTest;
-    //private ListView mainList;
     private TextView title;
     private Boolean managerType;
     private Boolean employeeType;
     private Button newAssignmentButton;
-    //private Button deleteAssignmentButton;
-    //private ArrayAdapter<String> adapter;
     private RecyclerView mainList;
     private MainListAdapter adapter;
     private ArrayList listData;
@@ -43,13 +38,6 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
-
-        //fill array list for testing
-//        assignmentsTest = new ArrayList<>();
-//        assignmentsTest.add("Assignment 1");
-//        assignmentsTest.add("Assignment 2");
-//        assignmentsTest.add("Assignment 3");
-//        assignmentsTest.add("Assignment \n4");
 
         //get user access type from signin
         managerType = getIntent().getExtras().getBoolean("managerUserType");
@@ -73,17 +61,6 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
         mainList.setAdapter(adapter);
         adapter.setItemClickCallback(this);
 
-//        //initialize the list and adapter
-//        mainList = (ListView) findViewById(R.id.mainscreen_list);
-//        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, assignmentsTest);
-//        mainList.setAdapter(adapter);
-//        mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(MainScreen.this, assignmentsTest.get(position), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
         //initialize and onclick listeners for buttons
         newAssignmentButton = (Button) findViewById(R.id.mainscreen_new_assignment_button);
         newAssignmentButton.setOnClickListener(new View.OnClickListener() {
@@ -93,23 +70,6 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
             }
         });
 
-//        deleteAssignmentButton = (Button) findViewById(R.id.mainscreen_delete_assignment_button);
-//        deleteAssignmentButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                SparseBooleanArray checkedItemPositions = mainList.getCheckedItemPositions();
-//                int numberOfItems = mainList.getCount();
-//                for(int i = numberOfItems - 1; i >= 0; i--)
-//                {
-//                    if(checkedItemPositions.get(i))
-//                    {
-//                        adapter.remove(assignmentsTest.get(i));
-//                    }
-//                }
-//                checkedItemPositions.clear();
-//                adapter.notifyDataSetChanged();
-//            }
-//        });
 
     }
 
@@ -152,6 +112,7 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainScreen.this);
         View dialogView = getLayoutInflater().inflate(R.layout.new_assignment_dialog, null);
         final EditText newAssignmentName = (EditText) dialogView.findViewById(R.id.new_assignment_dialog_assign_title);
+        final EditText newAssignmentAddress = (EditText) dialogView.findViewById(R.id.new_assignment_dialog_assign_address);
         Button createButton = (Button) dialogView.findViewById(R.id.new_assignment_dialog_add_button);
         dialogBuilder.setView(dialogView);
         final AlertDialog dialog = dialogBuilder.create();
@@ -160,10 +121,11 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainScreen.this, "Button in dialog works", Toast.LENGTH_SHORT).show();
-                if(!newAssignmentName.getText().toString().isEmpty()) {
-                    String newName = newAssignmentName.getText().toString();
-                    assignmentsTest.add(newName);
-                    //adapter.notifyDataSetChanged();
+                if(!newAssignmentName.getText().toString().isEmpty() && !newAssignmentAddress.getText().toString().isEmpty()) {
+                    Assignment newAssignment = newAssignmentElement(newAssignmentName.getText().toString(), newAssignmentAddress.getText().toString());
+                    listData.add(0,newAssignment);
+                    adapter.setListData(listData);
+                    adapter.notifyDataSetChanged();
                     dialog.dismiss();
 
                 }
@@ -175,6 +137,18 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
 
         dialog.show();
     }
+
+    public Assignment newAssignmentElement(String title, String address){
+        Assignment newAssignment = new Assignment();
+        newAssignment.setTitle(title);
+        newAssignment.setAddress(address);
+        newAssignment.setAssignedEmployee("unassigned");
+        newAssignment.setStatusIcon(R.drawable.ic_assignment_inprogress_24dp);
+        newAssignment.setEditIcon(android.R.drawable.ic_menu_edit);
+        newAssignment.setComplete(false);
+        return newAssignment;
+    }
+
 
     @Override
     public void onItemClick(int p) {

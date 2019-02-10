@@ -1,16 +1,10 @@
 package com.example.albertovenegas.mightymanager.Data;
 
 public class Assignment {
-//    private enum Status {
-//        OPEN,
-//        INPROGRESS,
-//        CLOSED
-//    }
+
     private String title;
     private String address;
-    //private Employee assignedEmployee;
     private String assignedEmployee;
-    //private Status status;
     private int statusIcon;
     private int editIcon;
     private boolean complete;

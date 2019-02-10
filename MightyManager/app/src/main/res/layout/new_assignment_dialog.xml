@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_dark"
     android:orientation="vertical">
 
     <TextView
@@ -18,14 +19,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/new_assignment_dialog_assign_title"
-        android:hint="New Assignment Name"
+        android:hint="Title"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_assignment_dialog_assign_address"
+        android:hint="Address"
         android:layout_marginTop="10dp"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/new_assignment_dialog_add_button"
-        android:text="Create"
+        android:background="@drawable/baseline_add_circle_black_36dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"/>
 </LinearLayout>
