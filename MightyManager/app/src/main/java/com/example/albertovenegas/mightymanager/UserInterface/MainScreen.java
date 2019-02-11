@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +33,8 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
     private Button newAssignmentButton;
     private RecyclerView mainList;
     private MainListAdapter adapter;
-    private ArrayList listData;
+    private ArrayList<Assignment> listData;
+    private String[] employees; //will change when class created
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,8 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
             title.setText("Employee: Assignments");
         }
 
-        listData = (ArrayList) MockDataGathering.getAssignmentData();
+        listData = (ArrayList<Assignment>) MockDataGathering.getAssignmentData();
+        employees = MockDataGathering.getEmployeeNamesForSpinner();
 
         //instantiate recycler view
         mainList = (RecyclerView) findViewById(R.id.mainscreen_list);
@@ -66,7 +69,7 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
         newAssignmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDialog();
+                openDialog(employees);
             }
         });
 
@@ -107,7 +110,7 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
     }
 
     //opens the dialog box to add new assignment
-    public void openDialog()
+    public void openDialog(String[] employees)
     {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainScreen.this);
         View dialogView = getLayoutInflater().inflate(R.layout.new_assignment_dialog, null);
@@ -115,14 +118,21 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
         final EditText newAssignmentAddress = (EditText) dialogView.findViewById(R.id.new_assignment_dialog_assign_address);
         Button createButton = (Button) dialogView.findViewById(R.id.new_assignment_dialog_add_button);
         dialogBuilder.setView(dialogView);
+        //create spinner
+        //temporary array of employees for spinner
+        final Spinner newAssignmentSpinner = (Spinner) dialogView.findViewById(R.id.new_assignment_dialog_employee_spinner);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, employees);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newAssignmentSpinner.setAdapter(spinnerAdapter);
+        //end create spinner
         final AlertDialog dialog = dialogBuilder.create();
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainScreen.this, "Button in dialog works", Toast.LENGTH_SHORT).show();
-                if(!newAssignmentName.getText().toString().isEmpty() && !newAssignmentAddress.getText().toString().isEmpty()) {
-                    Assignment newAssignment = newAssignmentElement(newAssignmentName.getText().toString(), newAssignmentAddress.getText().toString());
+                if(!newAssignmentName.getText().toString().isEmpty() && !newAssignmentAddress.getText().toString().isEmpty() && !newAssignmentSpinner.getSelectedItem().toString().equals("-Select and employee-")) {
+                    Assignment newAssignment = newAssignmentElement(newAssignmentName.getText().toString(), newAssignmentAddress.getText().toString(), newAssignmentSpinner.getSelectedItem().toString());
                     listData.add(0,newAssignment);
                     adapter.setListData(listData);
                     adapter.notifyDataSetChanged();
@@ -130,7 +140,7 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
 
                 }
                 else {
-                    Toast.makeText(MainScreen.this, "Field is empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainScreen.this, "All fields required", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -138,11 +148,16 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
         dialog.show();
     }
 
-    public Assignment newAssignmentElement(String title, String address){
+    public Assignment newAssignmentElement(String title, String address, String employee){
         Assignment newAssignment = new Assignment();
         newAssignment.setTitle(title);
         newAssignment.setAddress(address);
-        newAssignment.setAssignedEmployee("unassigned");
+        if(employee.equals("Leave Unassigned")) {
+            newAssignment.setAssignedEmployee("unassigned");
+        }
+        else {
+            newAssignment.setAssignedEmployee(employee);
+        }
         newAssignment.setStatusIcon(R.drawable.ic_assignment_inprogress_24dp);
         newAssignment.setEditIcon(android.R.drawable.ic_menu_edit);
         newAssignment.setComplete(false);
@@ -164,4 +179,5 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
         adapter.setListData(listData);
         adapter.notifyDataSetChanged();
     }
+
 }

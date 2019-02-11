@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/new_assignment_dialog_assign_title"
+        android:background="@android:color/white"
         android:hint="Title"
         android:layout_marginTop="10dp"/>
 
@@ -26,8 +27,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/new_assignment_dialog_assign_address"
+        android:background="@android:color/white"
         android:hint="Address"
         android:layout_marginTop="10dp"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_assignment_dialog_employee_spinner"
+        android:background="@android:color/white"
+        android:layout_marginTop="10dp">
+
+    </Spinner>
 
     <Button
         android:layout_width="60dp"
