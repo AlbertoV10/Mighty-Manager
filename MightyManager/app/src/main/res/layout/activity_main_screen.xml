@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_dark"
+    tools:context=".UserInterface.MainScreen">
+
+    <TextView
+        android:id="@+id/mainscreen_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Assignments"
+        android:textSize="32sp"
+        android:textAlignment="center"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mainscreen_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mainscreen_title"
+        android:layout_above="@+id/mainscreen_new_assignment_button"
+        ></android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/mainscreen_new_assignment_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/baseline_add_circle_black_36dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@id/mainscreen_list"
+        />
+
+</RelativeLayout>

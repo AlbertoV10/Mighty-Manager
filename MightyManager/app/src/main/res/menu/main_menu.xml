@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_item1"
+        android:title="Assign"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_item2"
+        android:title="Employee List"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_item3"
+        android:title="Inventory"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_item4"
+        android:title="Customers"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_item5"
+        android:title="TimeSheet"
+        app:showAsAction="never">
+        <menu>
+            <item
+                android:id="@+id/menu_item5_subitem1"
+                android:title="Availability"
+                />
+            <item
+                android:id="@+id/menu_item5_subitem2"
+                android:title="TimeClock"
+                />
+        </menu>
+    </item>
+
+
+
+</menu>
