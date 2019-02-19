@@ -1,5 +1,4 @@
-
-package com.example.albertovenegas.mightymanager.Adapter;
+package com.example.albertovenegas.mightymanager.UnusedFiles;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,16 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.albertovenegas.mightymanager.Data.Assignment;
-import com.example.albertovenegas.mightymanager.Database.Task;
 import com.example.albertovenegas.mightymanager.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAdapter.MainScreenListHolder>{
+public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainListHolder>{
 
-    private List<Task> listElementData = new ArrayList<>();
+    private List<Assignment> listElementData;
     private LayoutInflater inflater;
 
     private itemClickCallback itemClickCallback;
@@ -34,26 +31,26 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
         this.itemClickCallback = itemClickCallback;
     }
 
-    public MainScreenListAdapter(Context context) {
+    public MainListAdapter(List<Assignment> listElementData, Context context) {
         this.inflater = LayoutInflater.from(context);
-        //this.listElementData = listElementData;
+        this.listElementData = listElementData;
     }
 
     @NonNull
     @Override
-    public MainScreenListHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public MainListHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view  = inflater.inflate(R.layout.main_list_item, viewGroup, false);
-        return new MainScreenListHolder(view);
+        return new MainListHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MainScreenListHolder mainListHolder, int position) {
-        Task taskItem = listElementData.get(position);
-        mainListHolder.taskTitle.setText(taskItem.getTaskTitle());
-        mainListHolder.assignedEmployee.setText(taskItem.getEmployeeID());
-        mainListHolder.editIcon.setImageResource(android.R.drawable.ic_menu_edit);
+    public void onBindViewHolder(@NonNull MainListHolder mainListHolder, int position) {
+        Assignment assignmentItem = listElementData.get(position);
+        mainListHolder.assignmentTitle.setText(assignmentItem.getTitle());
+        mainListHolder.employeeName.setText(assignmentItem.getAssignedEmployee());
+        mainListHolder.editIcon.setImageResource(assignmentItem.getEditIcon());
         //mainListHolder.statusIcon.setImageResource(assignmentItem.getStatusIcon());
-        if(taskItem.getTaskStatus() == 2)
+        if(assignmentItem.isComplete())
         {
             mainListHolder.statusIcon.setImageResource(R.drawable.ic_assignment_complete_24dp);
         }
@@ -63,7 +60,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
         }
     }
 
-    public void setListData(List<Task> list)
+    public void setListData(ArrayList<Assignment> list)
     {
         this.listElementData.clear();
         this.listElementData.addAll(list);
@@ -74,19 +71,21 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
         return listElementData.size();
     }
 
-    class MainScreenListHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView taskTitle;
-        private TextView assignedEmployee;
+    class MainListHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        private TextView assignmentTitle;
+        private TextView employeeName;
         private ImageView statusIcon;
         private ImageView editIcon;
         private View container;
 
-        public MainScreenListHolder(@NonNull View itemView) {
+
+        public MainListHolder(@NonNull View itemView) {
             super(itemView);
-            taskTitle = itemView.findViewById(R.id.main_list_title_txt);
-            assignedEmployee = itemView.findViewById(R.id.main_list_employee_txt);
-            statusIcon = itemView.findViewById(R.id.main_list_status_icon);
-            editIcon = itemView.findViewById(R.id.main_list_edit_icon);
+
+            assignmentTitle = (TextView) itemView.findViewById(R.id.main_list_title_txt);
+            employeeName = (TextView) itemView.findViewById(R.id.main_list_employee_txt);
+            statusIcon = (ImageView) itemView.findViewById(R.id.main_list_status_icon);
+            editIcon = (ImageView) itemView.findViewById(R.id.main_list_edit_icon);
             editIcon.setOnClickListener(this);
             container = itemView.findViewById(R.id.main_list_root_view);
             container.setOnClickListener(this);

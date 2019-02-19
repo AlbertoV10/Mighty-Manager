@@ -99,6 +99,9 @@ public class MightyManagerRepository {
     }
 
     // methods for EmployeeDAO
+    public Employee findEmployeeByName(String employeeName) {
+        return employeeDAO.findEmployeeByName(employeeName);
+    }
     public void insert(Employee employee) {
         new InsertEmployeeAsyncTask(employeeDAO).execute(employee);
     }

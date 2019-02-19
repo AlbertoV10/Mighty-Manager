@@ -41,6 +41,10 @@ public class MightyManagerViewModel extends AndroidViewModel {
     }
 
     // wrapper methods for Employees
+    public Employee findEmployeeByName(String name) {
+        return mRepository.findEmployeeByName(name);
+    }
+
     public void insert(Employee employee) {
         mRepository.insert(employee);
     }

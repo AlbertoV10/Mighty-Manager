@@ -1,4 +1,4 @@
-package com.example.albertovenegas.mightymanager.Data;
+package com.example.albertovenegas.mightymanager.UnusedFiles;
 
 public class Assignment {
 

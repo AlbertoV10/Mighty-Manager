@@ -1,4 +1,4 @@
-package com.example.albertovenegas.mightymanager.UserInterface;
+package com.example.albertovenegas.mightymanager.UnusedFiles;
 
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
@@ -20,10 +20,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.albertovenegas.mightymanager.Adapter.MainListAdapter;
-import com.example.albertovenegas.mightymanager.Adapter.MainScreenListAdapter;
-import com.example.albertovenegas.mightymanager.Data.Assignment;
-import com.example.albertovenegas.mightymanager.Data.MockDataGathering;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
 import com.example.albertovenegas.mightymanager.R;

@@ -29,7 +29,7 @@ public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.
     @Override
     public ListHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         //View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.simple_item, viewGroup, false);
-        View itemView = inflater.inflate(R.layout.simple_item, viewGroup, false);
+        View itemView = inflater.inflate(R.layout.main_list_item, viewGroup, false);
         return new ListHolder(itemView);
     }
 
@@ -64,10 +64,10 @@ public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.
 
         public ListHolder(View itemView) {
             super(itemView);
-            taskTitle = itemView.findViewById(R.id.simple_item_title_txt);
-            assignedEmployee = itemView.findViewById(R.id.simple_item_employee_txt);
-            statusIcon = itemView.findViewById(R.id.simple_item_status);
-            editIcon = itemView.findViewById(R.id.simple_item_edit);
+            taskTitle = itemView.findViewById(R.id.main_list_title_txt);
+            assignedEmployee = itemView.findViewById(R.id.main_list_employee_txt);
+            statusIcon = itemView.findViewById(R.id.main_list_status_icon);
+            editIcon = itemView.findViewById(R.id.main_list_edit_icon);
         }
     }
 }

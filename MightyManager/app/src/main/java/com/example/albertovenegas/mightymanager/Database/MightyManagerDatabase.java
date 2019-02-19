@@ -8,7 +8,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Task.class, Employee.class}, version = 1)
+@Database(entities = {Task.class, Employee.class}, version = 2)
 public abstract class MightyManagerDatabase extends RoomDatabase {
     public static final String DATABASE_NAME = "Mighty_Manager_Database";
 
@@ -24,7 +24,7 @@ public abstract class MightyManagerDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             MightyManagerDatabase.class, DATABASE_NAME)
                             .fallbackToDestructiveMigration()
-                            .addCallback(roomCallback)
+                            .addCallback(roomCallback).allowMainThreadQueries()
                             .build();                }
             }
         }
@@ -54,8 +54,8 @@ public abstract class MightyManagerDatabase extends RoomDatabase {
             taskDAO.insert(new Task("Test Task 2", "456 Main St.", 5678, 1));
             taskDAO.insert(new Task("Test Task 3", "789 Main St.", 9123, 1));
 
-            employeeDAO.insert(new Employee("Test Employee", false));
-            employeeDAO.insert(new Employee("Test Manager", true));
+            employeeDAO.insert(new Employee("employee", "employeepassword", false));
+            employeeDAO.insert(new Employee("manager","manageradmin", true));
             return null;
         }
     }

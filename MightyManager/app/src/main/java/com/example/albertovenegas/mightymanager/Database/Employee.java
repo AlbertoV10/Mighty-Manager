@@ -17,11 +17,15 @@ public class Employee {
     @ColumnInfo(name = "employee_name")
     private String employeeName;
 
+    @ColumnInfo(name = "employee_password")
+    private String employeePassword;
+
     @ColumnInfo(name = "admin_privilege")
     private boolean admin;
 
-   public Employee(String employeeName, boolean admin) {
+   public Employee(String employeeName, String employeePassword, boolean admin) {
        this.employeeName = employeeName;
+       this.employeePassword = employeePassword;
        this.admin = admin;
    }
 
@@ -31,6 +35,10 @@ public class Employee {
 
     public String getEmployeeName() {
         return this.employeeName;
+    }
+
+    public String getEmployeePassword() {
+       return this.employeePassword;
     }
 
     public boolean isAdmin() {

@@ -18,6 +18,9 @@ public interface EmployeeDAO {
     @Query("SELECT * FROM employee_table WHERE employee_name=:employeeName")
     Employee findEmployeeByName(String employeeName);
 
+    @Query("SELECT * FROM employee_table WHERE employee_password=:employeePassword")
+    Employee findEmployeeByPassword(String employeePassword);
+
     @Insert
     void insert(Employee employee);
 
