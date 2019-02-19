@@ -19,8 +19,8 @@ public class MockDataGathering {
                 newAssignment.setTitle(assignmentTitles[i]);
                 newAssignment.setAssignedEmployee(employeeNames[i]);
                 newAssignment.setAddress(mockAddresses[i]);
-                newAssignment.setStatusIcon(icons[0]);
-                newAssignment.setEditIcon(icons[1]);
+                //newAssignment.setStatusIcon(icons[0]);
+                //newAssignment.setEditIcon(icons[1]);
                 newAssignment.setComplete(false);
                 assignmentData.add(newAssignment);
             }

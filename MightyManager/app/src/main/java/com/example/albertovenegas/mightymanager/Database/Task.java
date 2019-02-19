@@ -6,9 +6,7 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity(tableName = "task_table", foreignKeys = @ForeignKey(entity = Employee.class,
-        parentColumns = "employee_id",
-        childColumns = "assigned_employee"))
+@Entity(tableName = "task_table")
 public class Task {
 
     @NonNull

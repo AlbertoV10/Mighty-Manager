@@ -1,6 +1,5 @@
 package com.example.albertovenegas.mightymanager.Database;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;

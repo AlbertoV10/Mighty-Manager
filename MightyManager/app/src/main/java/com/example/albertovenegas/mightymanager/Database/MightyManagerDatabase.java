@@ -50,7 +50,10 @@ public abstract class MightyManagerDatabase extends RoomDatabase {
         }
         @Override
         protected Void doInBackground(Void... voids) {
-            taskDAO.insert(new Task("Test Task", "123 Main St.", 0000, 1));
+            taskDAO.insert(new Task("Test Task 1", "123 Main St.", 1234, 1));
+            taskDAO.insert(new Task("Test Task 2", "456 Main St.", 5678, 1));
+            taskDAO.insert(new Task("Test Task 3", "789 Main St.", 9123, 1));
+
             employeeDAO.insert(new Employee("Test Employee", false));
             employeeDAO.insert(new Employee("Test Manager", true));
             return null;

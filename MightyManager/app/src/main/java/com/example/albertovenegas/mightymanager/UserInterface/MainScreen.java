@@ -1,6 +1,10 @@
 package com.example.albertovenegas.mightymanager.UserInterface;
 
 import android.app.AlertDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,21 +21,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Adapter.MainListAdapter;
+import com.example.albertovenegas.mightymanager.Adapter.MainScreenListAdapter;
 import com.example.albertovenegas.mightymanager.Data.Assignment;
 import com.example.albertovenegas.mightymanager.Data.MockDataGathering;
+import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
+import com.example.albertovenegas.mightymanager.Database.Task;
 import com.example.albertovenegas.mightymanager.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainScreen extends AppCompatActivity implements MainListAdapter.itemClickCallback{
-    private TextView title;
+    private TextView title; //main screen title
     private Boolean managerType;
     private Boolean employeeType;
-    private Button newAssignmentButton;
+    private FloatingActionButton newAssignmentButton; //button to add new task
     private RecyclerView mainList;
     private MainListAdapter adapter;
+    private MainScreenListAdapter listAdapter;
     private ArrayList<Assignment> listData;
     private String[] employees; //will change when class created
+
+    // database viewmodel
+    private MightyManagerViewModel mightyManagerViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +63,30 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
             title.setText("Employee: Assignments");
         }
 
+        //data for recycler view
         listData = (ArrayList<Assignment>) MockDataGathering.getAssignmentData();
         employees = MockDataGathering.getEmployeeNamesForSpinner();
 
         //instantiate recycler view
         mainList = (RecyclerView) findViewById(R.id.mainscreen_list);
         mainList.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MainListAdapter(MockDataGathering.getAssignmentData(), this);
-        mainList.setAdapter(adapter);
-        adapter.setItemClickCallback(this);
+        listAdapter = new MainScreenListAdapter(this);
+        mainList.setAdapter(listAdapter);
+        //listAdapter.setItemClickCallback(this);
+
+        //get an instance of the view model
+        mightyManagerViewModel = ViewModelProviders.of(this).get(MightyManagerViewModel.class);
+        mightyManagerViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
+            @Override
+            public void onChanged(@Nullable List<Task> tasks) {
+                //update recyclerView here
+                listAdapter.setListData(tasks);
+            }
+        });
+
 
         //initialize and onclick listeners for buttons
-        newAssignmentButton = (Button) findViewById(R.id.mainscreen_new_assignment_button);
+        newAssignmentButton = (FloatingActionButton) findViewById(R.id.mainscreen_new_assignment_button);
         newAssignmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.R;
+import com.example.albertovenegas.mightymanager.TestMainScreen.MainAppScreen;
 
 public class SignInPage extends AppCompatActivity {
     private TextView signinTitle;
@@ -60,10 +61,12 @@ public class SignInPage extends AppCompatActivity {
         if(managerType) {
             if(username.equals("manager") && password.equals("manageradmin")) {
                 Toast.makeText(SignInPage.this, "valid manager", Toast.LENGTH_SHORT).show();
-                Intent mainScreen = new Intent(SignInPage.this, MainScreen.class);
-                mainScreen.putExtra("managerUserType", true); //manager boolean is true
-                mainScreen.putExtra("employeeUserType", false); //employee boolean is false
-                startActivity(mainScreen);
+//                Intent mainScreen = new Intent(SignInPage.this, MainScreen.class);
+//                mainScreen.putExtra("managerUserType", true); //manager boolean is true
+//                mainScreen.putExtra("employeeUserType", false); //employee boolean is false
+//                startActivity(mainScreen);
+                Intent intent = new Intent(SignInPage.this, MainAppScreen.class);
+                startActivity(intent);
             }
             else {
                 Toast.makeText(SignInPage.this, "invalid manager", Toast.LENGTH_SHORT).show();

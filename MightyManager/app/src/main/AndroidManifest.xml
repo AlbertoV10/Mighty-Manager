@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".TestMainScreen.MainAppScreen"></activity>
         <activity android:name=".UserInterface.MainLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".UserInterface.SignInPage" />
-        <activity android:name=".UserInterface.MainScreen"></activity>
+        <activity android:name=".UserInterface.MainScreen" />
     </application>
 
 </manifest>
