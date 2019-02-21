@@ -45,6 +45,10 @@ public class MightyManagerViewModel extends AndroidViewModel {
         return mRepository.findEmployeeByName(name);
     }
 
+    public Employee findEmployeeById(int id) {
+        return mRepository.findEmployeeById(id);
+    }
+
     public void insert(Employee employee) {
         mRepository.insert(employee);
     }

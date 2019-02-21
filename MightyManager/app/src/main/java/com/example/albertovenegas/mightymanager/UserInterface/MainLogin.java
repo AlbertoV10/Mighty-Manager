@@ -23,7 +23,6 @@ public class MainLogin extends AppCompatActivity {
     private Button managerButton;
     private Button employeeButton;
     private MightyManagerViewModel mmvm;
-    private List<Employee> employeesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +31,20 @@ public class MainLogin extends AppCompatActivity {
 
         mmvm = ViewModelProviders.of(this).get(MightyManagerViewModel.class);
         mmvm.deleteAllEmployees();
-        mmvm.insert(new Employee("jon", "123", true));
-        Employee te = mmvm.findEmployeeByName("jon");
-        if(te == null) {
-            Toast.makeText(this, "null", Toast.LENGTH_LONG).show();
+        mmvm.deleteAllTasks();
+        for(int i = 0; i < 10; i++) {
+            mmvm.insert(new Task("Test Task" + i, (123)*i + "main", 123 + (i *123), 1));
         }
-        else {
-            Toast.makeText(this, te.getEmployeeName(), Toast.LENGTH_LONG).show();
-
-        }
+        mmvm.insert(new Employee("manager", "manageradmin", true));
+        mmvm.insert(new Employee("employee", "employeeadmin", false));
+//        Employee te = mmvm.findEmployeeByName("employee");
+//        if(te == null) {
+//            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
+//        }
+//        else {
+//            Toast.makeText(this, te.getEmployeeName(), Toast.LENGTH_SHORT).show();
+//
+//        }
 
         managerButton = (Button) findViewById(R.id.login_manager_button);
         employeeButton = (Button) findViewById(R.id.login_employee_button);
@@ -48,7 +52,6 @@ public class MainLogin extends AppCompatActivity {
         managerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainLogin.this, "Testing manager button", Toast.LENGTH_SHORT).show();
                 Intent signin = new Intent(MainLogin.this, SignInPage.class);
                 signin.putExtra("managerUserType", true); //manager boolean is true
                 signin.putExtra("employeeUserType", false); //employee boolean is false
@@ -59,7 +62,6 @@ public class MainLogin extends AppCompatActivity {
         employeeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainLogin.this, "Testing employee button", Toast.LENGTH_SHORT).show();
                 Intent signin = new Intent(MainLogin.this, SignInPage.class);
                 signin.putExtra("managerUserType", false); //manager boolean is true
                 signin.putExtra("employeeUserType", true); //employee boolean is false

@@ -3,6 +3,10 @@
     <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#862767</color>
-    <color name="main_theme">#2B3AB4</color>
+    <color name="main_theme">#FFFFFF</color>
     <color name="mainscreen_add_button_color">#EE37811B</color>
+    <color name="list_background">#696969</color>
+    <color name="new_task">#FF9696</color>
+    <color name="complete_task">#96FF96</color>
+    <color name="in_progress_task">#FFFF96</color>
 </resources>

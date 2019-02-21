@@ -2,6 +2,7 @@ package com.example.albertovenegas.mightymanager.TestMainScreen;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +18,21 @@ import java.util.List;
 
 public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.ListHolder> {
     private List<Task> tasks = new ArrayList<>();
-
     private LayoutInflater inflater;
+    private itemClickCallback itemClickCallback;
+
+    //interface for click callback
+    public interface itemClickCallback {
+        void onItemClick(int p);
+        void onIconClick(int p);
+    }
+
+    public void setItemClickCallback(final itemClickCallback itemClickCallback) {
+        this.itemClickCallback = itemClickCallback;
+    }
 
     public MainAppListAdapter(Context context) {
         this.inflater = LayoutInflater.from(context);
-        //this.listElementData = listElementData;
     }
 
     @NonNull
@@ -44,6 +54,15 @@ public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.
         } else {
             listHolder.statusIcon.setImageResource(R.drawable.ic_assignment_inprogress_24dp);
         }
+        if (currentTask.getTaskStatus() == 1) {
+            listHolder.container.setBackgroundColor(ContextCompat.getColor(listHolder.itemView.getContext(), R.color.new_task));
+        }
+        else if (currentTask.getTaskStatus() == 2) {
+            listHolder.container.setBackgroundColor(ContextCompat.getColor(listHolder.itemView.getContext(), R.color.in_progress_task));
+        }
+        else if (currentTask.getTaskStatus() == 3) {
+            listHolder.container.setBackgroundColor(ContextCompat.getColor(listHolder.itemView.getContext(), R.color.complete_task));
+        }
     }
 
     @Override
@@ -56,11 +75,16 @@ public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.
         notifyDataSetChanged();
     }
 
-    class ListHolder extends RecyclerView.ViewHolder {
+    public List<Task> getTasks() {
+        return this.tasks;
+    }
+
+    class ListHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
         private TextView taskTitle;
         private TextView assignedEmployee;
         private ImageView statusIcon;
         private ImageView editIcon;
+        private View container;
 
         public ListHolder(View itemView) {
             super(itemView);
@@ -68,6 +92,22 @@ public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.
             assignedEmployee = itemView.findViewById(R.id.main_list_employee_txt);
             statusIcon = itemView.findViewById(R.id.main_list_status_icon);
             editIcon = itemView.findViewById(R.id.main_list_edit_icon);
+            //click listener
+            editIcon.setOnClickListener(this);
+            container = itemView.findViewById(R.id.main_list_root_view);
+            container.setOnClickListener(this);
+
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.main_list_root_view) {
+                itemClickCallback.onItemClick(getAdapterPosition());
+            }
+            else {
+                itemClickCallback.onIconClick(getAdapterPosition());
+            }
         }
     }
 }

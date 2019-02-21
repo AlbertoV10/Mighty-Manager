@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_theme"
-    tools:context=".UnusedFiles.MainScreen">
+    android:background="@android:color/white"
+    tools:context=".TestMainScreen.MainAppScreen">
 
     <TextView
         android:id="@+id/app_mainscreen_title"
@@ -14,6 +14,7 @@
         android:text="Assignments"
         android:textSize="32sp"
         android:textAlignment="center"
+        android:background="@android:color/holo_blue_dark"
         />
 
     <android.support.v7.widget.RecyclerView
@@ -21,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/app_mainscreen_title"
+        android:background="@android:color/white"
         />
 
     <android.support.design.widget.FloatingActionButton

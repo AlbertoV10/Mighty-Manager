@@ -56,4 +56,20 @@ public class Task {
     public void setTaskId(int id) {
         taskId = id;
     }
+
+    public void setTaskTitle(String taskTitle) {
+        this.taskTitle = taskTitle;
+    }
+
+    public void setTaskAddress(String taskAddress) {
+        this.taskAddress = taskAddress;
+    }
+
+    public void setEmployeeID(int employeeID) {
+        this.employeeID = employeeID;
+    }
+
+    public void setTaskStatus(int taskStatus) {
+        this.taskStatus = taskStatus;
+    }
 }

@@ -102,6 +102,11 @@ public class MightyManagerRepository {
     public Employee findEmployeeByName(String employeeName) {
         return employeeDAO.findEmployeeByName(employeeName);
     }
+
+    public Employee findEmployeeById(int employeeId) {
+        return employeeDAO.findEmployeeById(employeeId);
+    }
+
     public void insert(Employee employee) {
         new InsertEmployeeAsyncTask(employeeDAO).execute(employee);
     }
