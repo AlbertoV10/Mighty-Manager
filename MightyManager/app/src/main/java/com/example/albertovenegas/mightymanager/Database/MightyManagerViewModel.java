@@ -68,4 +68,8 @@ public class MightyManagerViewModel extends AndroidViewModel {
     public LiveData<List<Employee>> getAllEmployees() {
         return allEmployees;
     }
+
+    public List<Employee> getEmployeesList() {
+        return mRepository.getEmployeesList();
+    }
 }

@@ -35,4 +35,7 @@ public interface EmployeeDAO {
 
     @Query("SELECT * FROM employee_table ORDER BY employee_name ASC")
     LiveData<List<Employee>> getAllEmployees();
+
+    @Query("SELECT*FROM employee_table ORDER BY employee_name ASC")
+    List<Employee> getEmployeesList();
 }

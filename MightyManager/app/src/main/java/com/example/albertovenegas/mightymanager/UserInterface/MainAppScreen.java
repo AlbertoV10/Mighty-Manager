@@ -1,8 +1,8 @@
-package com.example.albertovenegas.mightymanager.TestMainScreen;
+package com.example.albertovenegas.mightymanager.UserInterface;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.os.CpuUsageInfo;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,11 +17,12 @@ import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
 import com.example.albertovenegas.mightymanager.R;
-import com.example.albertovenegas.mightymanager.UnusedFiles.MainListAdapter;
 
 import java.util.List;
 
 public class MainAppScreen extends AppCompatActivity implements MainAppListAdapter.itemClickCallback{
+    public static final int ADD_TASK_REQUEST = 1;
+
     private MightyManagerViewModel mightyManagerViewModel;
     private FloatingActionButton fab;
     private MainAppListAdapter adapter;
@@ -64,8 +65,10 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Task task = new Task("testfromScreen", "address", 1234, 1);
-                mightyManagerViewModel.insert(task);
+                //Task task = new Task("testfromScreen", "address", 1234, 1);
+                //mightyManagerViewModel.insert(task);
+                Intent intent = new Intent(MainAppScreen.this, AddTaskActivity.class);
+                startActivityForResult(intent, ADD_TASK_REQUEST);
             }
         });
     }
@@ -84,5 +87,21 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
         currentStatus = (currentStatus + 1)%4;
         currentTask.setTaskStatus(currentStatus);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADD_TASK_REQUEST && resultCode == RESULT_OK) {
+            String title = data.getStringExtra(AddTaskActivity.EXTRA_TITLE);
+            String address = data.getStringExtra(AddTaskActivity.EXTRA_ADDRESS);
+            String employee = data.getStringExtra(AddTaskActivity.EXTRA_EMPLOYEE_NAME);
+            if (!employee.equals("Leave Unassigned")) {
+                int employeeID = mightyManagerViewModel.findEmployeeByName(employee).getEmployeeID();
+            }
+            Toast.makeText(this, title +" "+address+""+employee, Toast.LENGTH_LONG).show();
+            //add new task here
+        }
     }
 }

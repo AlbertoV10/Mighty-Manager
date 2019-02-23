@@ -52,14 +52,14 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
         mainListHolder.assignedEmployee.setText(taskItem.getEmployeeID());
         mainListHolder.editIcon.setImageResource(android.R.drawable.ic_menu_edit);
         //mainListHolder.statusIcon.setImageResource(assignmentItem.getStatusIcon());
-        if(taskItem.getTaskStatus() == 2)
-        {
-            mainListHolder.statusIcon.setImageResource(R.drawable.ic_assignment_complete_24dp);
-        }
-        else
-        {
-            mainListHolder.statusIcon.setImageResource(R.drawable.ic_assignment_inprogress_24dp);
-        }
+//        if(taskItem.getTaskStatus() == 2)
+//        {
+//            mainListHolder.statusIcon.setImageResource(R.drawable.ic_assignment_complete_24dp);
+//        }
+//        else
+//        {
+//            mainListHolder.statusIcon.setImageResource(R.drawable.ic_assignment_inprogress_24dp);
+//        }
     }
 
     public void setListData(List<Task> list)
@@ -76,7 +76,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
     class MainScreenListHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView taskTitle;
         private TextView assignedEmployee;
-        private ImageView statusIcon;
+        //private ImageView statusIcon;
         private ImageView editIcon;
         private View container;
 
@@ -84,7 +84,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
             super(itemView);
             taskTitle = itemView.findViewById(R.id.main_list_title_txt);
             assignedEmployee = itemView.findViewById(R.id.main_list_employee_txt);
-            statusIcon = itemView.findViewById(R.id.main_list_status_icon);
+            //statusIcon = itemView.findViewById(R.id.main_list_status_icon);
             editIcon = itemView.findViewById(R.id.main_list_edit_icon);
             editIcon.setOnClickListener(this);
             container = itemView.findViewById(R.id.main_list_root_view);

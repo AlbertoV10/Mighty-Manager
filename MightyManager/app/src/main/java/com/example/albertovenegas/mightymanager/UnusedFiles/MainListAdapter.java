@@ -50,14 +50,14 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainLi
         mainListHolder.employeeName.setText(assignmentItem.getAssignedEmployee());
         mainListHolder.editIcon.setImageResource(assignmentItem.getEditIcon());
         //mainListHolder.statusIcon.setImageResource(assignmentItem.getStatusIcon());
-        if(assignmentItem.isComplete())
-        {
-            mainListHolder.statusIcon.setImageResource(R.drawable.ic_assignment_complete_24dp);
-        }
-        else
-        {
-            mainListHolder.statusIcon.setImageResource(R.drawable.ic_assignment_inprogress_24dp);
-        }
+//        if(assignmentItem.isComplete())
+//        {
+//            mainListHolder.statusIcon.setImageResource(R.drawable.ic_assignment_complete_24dp);
+//        }
+//        else
+//        {
+//            mainListHolder.statusIcon.setImageResource(R.drawable.ic_assignment_inprogress_24dp);
+//        }
     }
 
     public void setListData(ArrayList<Assignment> list)
@@ -74,7 +74,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainLi
     class MainListHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView assignmentTitle;
         private TextView employeeName;
-        private ImageView statusIcon;
+        //private ImageView statusIcon;
         private ImageView editIcon;
         private View container;
 
@@ -84,7 +84,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainLi
 
             assignmentTitle = (TextView) itemView.findViewById(R.id.main_list_title_txt);
             employeeName = (TextView) itemView.findViewById(R.id.main_list_employee_txt);
-            statusIcon = (ImageView) itemView.findViewById(R.id.main_list_status_icon);
+            //statusIcon = (ImageView) itemView.findViewById(R.id.main_list_status_icon);
             editIcon = (ImageView) itemView.findViewById(R.id.main_list_edit_icon);
             editIcon.setOnClickListener(this);
             container = itemView.findViewById(R.id.main_list_root_view);

@@ -1,4 +1,4 @@
-package com.example.albertovenegas.mightymanager.TestMainScreen;
+package com.example.albertovenegas.mightymanager.UserInterface;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -49,11 +49,11 @@ public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.
         listHolder.taskTitle.setText(currentTask.getTaskTitle());
         listHolder.assignedEmployee.setText(String.valueOf(currentTask.getEmployeeID()));
         listHolder.editIcon.setImageResource(android.R.drawable.ic_menu_edit);
-        if (currentTask.getTaskStatus() == 2) {
-            listHolder.statusIcon.setImageResource(R.drawable.ic_assignment_complete_24dp);
-        } else {
-            listHolder.statusIcon.setImageResource(R.drawable.ic_assignment_inprogress_24dp);
-        }
+//        if (currentTask.getTaskStatus() == 2) {
+//            listHolder.statusIcon.setImageResource(R.drawable.ic_assignment_complete_24dp);
+//        } else {
+//            listHolder.statusIcon.setImageResource(R.drawable.ic_assignment_inprogress_24dp);
+//        }
         if (currentTask.getTaskStatus() == 1) {
             listHolder.container.setBackgroundColor(ContextCompat.getColor(listHolder.itemView.getContext(), R.color.new_task));
         }
@@ -82,7 +82,7 @@ public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.
     class ListHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
         private TextView taskTitle;
         private TextView assignedEmployee;
-        private ImageView statusIcon;
+        //private ImageView statusIcon;
         private ImageView editIcon;
         private View container;
 
@@ -90,7 +90,7 @@ public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.
             super(itemView);
             taskTitle = itemView.findViewById(R.id.main_list_title_txt);
             assignedEmployee = itemView.findViewById(R.id.main_list_employee_txt);
-            statusIcon = itemView.findViewById(R.id.main_list_status_icon);
+            //statusIcon = itemView.findViewById(R.id.main_list_status_icon);
             editIcon = itemView.findViewById(R.id.main_list_edit_icon);
             //click listener
             editIcon.setOnClickListener(this);
