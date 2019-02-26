@@ -22,6 +22,8 @@ import java.util.List;
 
 public class MainAppScreen extends AppCompatActivity implements MainAppListAdapter.itemClickCallback{
     public static final int ADD_TASK_REQUEST = 1;
+    public static final int EDIT_TASK_REQUEST = 2;
+    public static final String OPEN_TASK_ID = "main.app.screen.task.id";
 
     private MightyManagerViewModel mightyManagerViewModel;
     private FloatingActionButton fab;
@@ -75,8 +77,12 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
 
     @Override
     public void onItemClick(int p) {
-        Toast.makeText(MainAppScreen.this, "Will open activity here", Toast.LENGTH_SHORT).show();
-
+        Toast.makeText(MainAppScreen.this, "Will open activity here for task:" + p, Toast.LENGTH_SHORT).show();
+        //open selected task here
+        Intent openTask = new Intent(MainAppScreen.this, OpenTaskActivity.class);
+        int taskID = adapter.getTaskAt(p).getTaskId();
+        openTask.putExtra(OPEN_TASK_ID, taskID);
+        startActivity(openTask);
     }
 
     @Override

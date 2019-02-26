@@ -79,6 +79,10 @@ public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.
         return this.tasks;
     }
 
+    public Task getTaskAt(int p) {
+        return tasks.get(p);
+    }
+
     class ListHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
         private TextView taskTitle;
         private TextView assignedEmployee;
