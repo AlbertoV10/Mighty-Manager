@@ -79,10 +79,10 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
     public void onItemClick(int p) {
         Toast.makeText(MainAppScreen.this, "Will open activity here for task:" + p, Toast.LENGTH_SHORT).show();
         //open selected task here
-        Intent openTask = new Intent(MainAppScreen.this, OpenTaskActivity.class);
-        int taskID = adapter.getTaskAt(p).getTaskId();
-        openTask.putExtra(OPEN_TASK_ID, taskID);
-        startActivity(openTask);
+//        Intent openTask = new Intent(MainAppScreen.this, OpenTaskActivity.class);
+//        int taskID = adapter.getTaskAt(p).getTaskId();
+//        openTask.putExtra(OPEN_TASK_ID, taskID);
+//        startActivity(openTask);
     }
 
     @Override

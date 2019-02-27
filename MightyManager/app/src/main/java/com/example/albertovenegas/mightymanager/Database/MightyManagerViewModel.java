@@ -20,6 +20,10 @@ public class MightyManagerViewModel extends AndroidViewModel {
     }
 
     // wrapper methods for Tasks
+    public Task findTaskById(int taskId) {
+        return mRepository.findTaskById(taskId);
+    }
+
     public void insert(Task task) {
         mRepository.insert(task);
     }

@@ -14,7 +14,6 @@
         android:text="Task Title"
         android:textSize="30sp"
         android:gravity="center"
-        android:inputType="none"
         />
 
     <TextView
@@ -54,7 +53,6 @@
         android:id="@+id/open_task_address"
         android:layout_below="@id/open_task_desc_address"
         android:text="Address"
-        android:inputType="none"
         />
 
     <TextView
@@ -80,7 +78,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/open_task_save_btn"
         android:layout_below="@+id/open_task_status_spinner"
-        android:src="@drawable/ic_edit_black_24dp"
+        android:src="@drawable/ic_edit"
         android:backgroundTint="@color/colorPrimaryDark"
         android:padding="15dp"
         android:layout_marginLeft="50dp"
@@ -93,7 +91,7 @@
         android:layout_below="@+id/open_task_status_spinner"
         android:layout_alignRight="@id/open_task_address"
         android:padding="15dp"
-        android:src="@drawable/ic_clear_black_48dp"
+        android:src="@drawable/ic_clear"
         android:backgroundTint="@color/new_task"
         android:layout_marginRight="50dp"/>
 

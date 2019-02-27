@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/app_mainscreen_new_assignment_button"
-        android:src="@drawable/ic_add_black_24dp"
+        android:src="@drawable/ic_add"
         android:backgroundTint="@color/mainscreen_add_button_color"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@id/app_mainscreen_list"

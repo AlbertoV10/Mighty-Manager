@@ -23,6 +23,10 @@ public class MightyManagerRepository {
     }
 
     // methods for TaskDAO
+    public Task findTaskById(int taskId) {
+        return taskDAO.findTaskById(taskId);
+    }
+
     public void insert(Task task) {
         new InsertTaskAsyncTask(taskDAO).execute(task);
     }
