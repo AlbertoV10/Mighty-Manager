@@ -23,7 +23,7 @@ import java.util.List;
 public class MainAppScreen extends AppCompatActivity implements MainAppListAdapter.itemClickCallback{
     public static final int ADD_TASK_REQUEST = 1;
     public static final int EDIT_TASK_REQUEST = 2;
-    public static final String OPEN_TASK_ID = "main.app.screen.task.id";
+    public static final String OPEN_TASK_EXTRA_KEY = "main.app.screen.task.id";
 
     private MightyManagerViewModel mightyManagerViewModel;
     private FloatingActionButton fab;
@@ -55,6 +55,7 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
         adapter = new MainAppListAdapter(this);
         recyclerView.setAdapter(adapter);
         adapter.setItemClickCallback(this);
+        adapter.setEmployees(mightyManagerViewModel.getEmployeesList());
 
         mightyManagerViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
             @Override
@@ -79,10 +80,10 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
     public void onItemClick(int p) {
         Toast.makeText(MainAppScreen.this, "Will open activity here for task:" + p, Toast.LENGTH_SHORT).show();
         //open selected task here
-//        Intent openTask = new Intent(MainAppScreen.this, OpenTaskActivity.class);
-//        int taskID = adapter.getTaskAt(p).getTaskId();
-//        openTask.putExtra(OPEN_TASK_ID, taskID);
-//        startActivity(openTask);
+        Intent openTask = new Intent(MainAppScreen.this, OpenTaskActivity.class);
+        int taskID = adapter.getTaskAt(p).getTaskId();
+        openTask.putExtra(OPEN_TASK_EXTRA_KEY, taskID);
+        startActivityForResult(openTask, EDIT_TASK_REQUEST);
     }
 
     @Override
@@ -103,11 +104,29 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
             String title = data.getStringExtra(AddTaskActivity.EXTRA_TITLE);
             String address = data.getStringExtra(AddTaskActivity.EXTRA_ADDRESS);
             String employee = data.getStringExtra(AddTaskActivity.EXTRA_EMPLOYEE_NAME);
+            int employeeIdNum;
             if (!employee.equals("Leave Unassigned")) {
-                int employeeID = mightyManagerViewModel.findEmployeeByName(employee).getEmployeeID();
+                employeeIdNum = mightyManagerViewModel.findEmployeeByName(employee).getEmployeeID();
+            }
+            else
+            {
+                employeeIdNum = -999;
             }
             Toast.makeText(this, title +" "+address+""+employee, Toast.LENGTH_LONG).show();
-            //add new task here
+            mightyManagerViewModel.insert(new Task(title, address, employeeIdNum, 1));
+            adapter.notifyDataSetChanged();
+        }
+        else if (requestCode == EDIT_TASK_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                //data was changed
+                adapter.notifyDataSetChanged();
+                Toast.makeText(this, "data was changed in edit mode", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                //data unchanged
+                Toast.makeText(this, "data was NOT changed in edit mode", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

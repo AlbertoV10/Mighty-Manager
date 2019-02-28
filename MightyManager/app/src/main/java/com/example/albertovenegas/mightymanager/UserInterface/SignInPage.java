@@ -47,15 +47,6 @@ public class SignInPage extends AppCompatActivity {
             signinTitle.setText("Employee Login");
         }
 
-//        Employee te = mmvm.findEmployeeByName("employee");
-//        if(te == null) {
-//            Toast.makeText(this, "null", Toast.LENGTH_LONG).show();
-//        }
-//        else {
-//            Toast.makeText(this, te.getEmployeeName(), Toast.LENGTH_LONG).show();
-//
-//        }
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,10 +72,6 @@ public class SignInPage extends AppCompatActivity {
             if (managerType) {
                 if (username.equals(user.getEmployeeName()) && password.equals("manageradmin")) {
                     Toast.makeText(SignInPage.this, "valid manager", Toast.LENGTH_SHORT).show();
-//                Intent mainScreen = new Intent(SignInPage.this, MainScreen.class);
-//                mainScreen.putExtra("managerUserType", true); //manager boolean is true
-//                mainScreen.putExtra("employeeUserType", false); //employee boolean is false
-//                startActivity(mainScreen);
                     Intent intent = new Intent(SignInPage.this, MainAppScreen.class);
                     intent.putExtra("user", user.getEmployeeID());
                     startActivity(intent);
@@ -95,10 +82,6 @@ public class SignInPage extends AppCompatActivity {
             } else if (employeeType) {
                 if (username.equals(user.getEmployeeName()) && password.equals("employeeadmin")) {
                     Toast.makeText(SignInPage.this, "valid employee", Toast.LENGTH_SHORT).show();
-//                Intent mainScreen = new Intent(SignInPage.this, MainScreen.class);
-//                mainScreen.putExtra("managerUserType", false); //manager boolean is true
-//                mainScreen.putExtra("employeeUserType", true); //employee boolean is false
-//                startActivity(mainScreen);
                     Intent intent = new Intent(SignInPage.this, MainAppScreen.class);
                     intent.putExtra("user", user.getEmployeeID());
                     startActivity(intent);

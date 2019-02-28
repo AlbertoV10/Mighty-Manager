@@ -30,13 +30,31 @@ public class MainLogin extends AppCompatActivity {
         setContentView(R.layout.activity_main_login);
 
         mmvm = ViewModelProviders.of(this).get(MightyManagerViewModel.class);
-        mmvm.deleteAllEmployees();
+//        mmvm.deleteAllEmployees();
         mmvm.deleteAllTasks();
-        for(int i = 0; i < 10; i++) {
-            mmvm.insert(new Task("Test Task" + i, (123)*i + "main", 123 + (i *123), 1));
+//        mmvm.insert(new Employee("manager", "manageradmin", true));
+//        mmvm.insert(new Employee("employee", "employeeadmin", false));
+        Employee manager = mmvm.findEmployeeByName("manager");
+        Employee employee = mmvm.findEmployeeByName("employee");
+        if (manager == null)
+        {
+            Toast.makeText(this, "manager null", Toast.LENGTH_SHORT).show();
         }
-        mmvm.insert(new Employee("manager", "manageradmin", true));
-        mmvm.insert(new Employee("employee", "employeeadmin", false));
+        if (employee == null) {
+            Toast.makeText(this, "employee null", Toast.LENGTH_SHORT).show();
+        }
+//        try {
+//            Thread.sleep(500);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        for(int i = 0; i < 10; i++) {
+            if (i%2 == 0)
+            mmvm.insert(new Task("Test Task" + i, (123)*i + " main", manager.getEmployeeID(), 1));
+            else
+                mmvm.insert(new Task("Test Task" + i, (123)*i + " main", employee.getEmployeeID(), 1));
+
+        }
 //        Employee te = mmvm.findEmployeeByName("employee");
 //        if(te == null) {
 //            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();

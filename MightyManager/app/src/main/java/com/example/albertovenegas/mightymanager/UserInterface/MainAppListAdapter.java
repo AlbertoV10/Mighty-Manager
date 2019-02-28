@@ -1,5 +1,6 @@
 package com.example.albertovenegas.mightymanager.UserInterface;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.albertovenegas.mightymanager.Database.Employee;
+import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
 import com.example.albertovenegas.mightymanager.R;
 
@@ -18,8 +21,10 @@ import java.util.List;
 
 public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.ListHolder> {
     private List<Task> tasks = new ArrayList<>();
+    private List<Employee> employees = new ArrayList<>();
     private LayoutInflater inflater;
     private itemClickCallback itemClickCallback;
+
 
     //interface for click callback
     public interface itemClickCallback {
@@ -47,7 +52,9 @@ public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.
     public void onBindViewHolder(@NonNull ListHolder listHolder, int i) {
         Task currentTask = tasks.get(i);
         listHolder.taskTitle.setText(currentTask.getTaskTitle());
-        listHolder.assignedEmployee.setText(String.valueOf(currentTask.getEmployeeID()));
+        String name = findEmployeeNameWithId(currentTask.getEmployeeID());
+        listHolder.assignedEmployee.setText(name);
+        //listHolder.assignedEmployee.setText(String.valueOf(currentTask.getEmployeeID()));
         listHolder.editIcon.setImageResource(android.R.drawable.ic_menu_edit);
 //        if (currentTask.getTaskStatus() == 2) {
 //            listHolder.statusIcon.setImageResource(R.drawable.ic_assignment_complete_24dp);
@@ -73,6 +80,10 @@ public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
         notifyDataSetChanged();
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 
     public List<Task> getTasks() {
@@ -113,5 +124,16 @@ public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.
                 itemClickCallback.onIconClick(getAdapterPosition());
             }
         }
+    }
+
+    private String findEmployeeNameWithId(int id) {
+        String name = "";
+        for(int i = 0; i < employees.size(); i++) {
+            if (employees.get(i).getEmployeeID() == id)
+            {
+                name = employees.get(i).getEmployeeName();
+            }
+        }
+        return name;
     }
 }
