@@ -2,8 +2,12 @@ package com.example.albertovenegas.mightymanager.UserInterface;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -36,6 +40,9 @@ public class AddTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_task);
         mmvm = ViewModelProviders.of(this).get(MightyManagerViewModel.class);
 
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
+
 
         newTaskTitle = findViewById(R.id.add_task_title);
         newTaskAddress = findViewById(R.id.add_task_address);
@@ -61,6 +68,13 @@ public class AddTaskActivity extends AppCompatActivity {
                 saveTask();
             }
         });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelScreen();
+            }
+        });
     }
 
     private void saveTask() {
@@ -76,6 +90,34 @@ public class AddTaskActivity extends AppCompatActivity {
             intent.putExtra(EXTRA_EMPLOYEE_NAME, employee);
             setResult(RESULT_OK, intent);
             finish();
+        }
+    }
+
+    private void cancelScreen() {
+        Intent intent = new Intent();
+        setResult(RESULT_CANCELED, intent);
+        finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.add_task_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.save_task:
+                saveTask();
+                return true;
+            case android.R.id.home:
+                cancelScreen();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
         }
     }
 }

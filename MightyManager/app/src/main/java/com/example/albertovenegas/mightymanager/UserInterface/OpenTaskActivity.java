@@ -135,8 +135,8 @@ public class OpenTaskActivity extends AppCompatActivity {
                         closeActivity(RESULT_CANCELED);
                     }
                 } else {
-                    editSaveBtn.setImageResource(R.drawable.ic_save);
-                    editSaveBtn.setTag(R.drawable.ic_save);
+                    editSaveBtn.setImageResource(R.drawable.ic_save_black);
+                    editSaveBtn.setTag(R.drawable.ic_save_black);
                     //enable editing in fields
                     otTitle.setEnabled(true);
                     otAddress.setEnabled(true);

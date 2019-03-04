@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/add_task_save_button"
         android:layout_below="@+id/add_task_employee_spinner"
-        android:src="@drawable/ic_save"
+        android:src="@drawable/ic_save_black"
         android:backgroundTint="@color/colorPrimaryDark"
         android:padding="15dp"
         android:layout_marginLeft="50dp"
