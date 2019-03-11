@@ -17,6 +17,12 @@ public interface TaskDAO {
     @Query("SELECT * FROM task_table WHERE task_title=:taskTitle")
     Task findTaskByTitle(String taskTitle);
 
+    @Query("SELECT * FROM task_table WHERE assigned_employee=:employeeID")
+    List<Task> findTaskByEmployee(int employeeID);
+
+    @Query("SELECT * FROM task_table WHERE task_customer=:customerID")
+    List<Task> findTaskByCustomer(int customerID);
+
     @Insert
     void insert(Task task);
 
@@ -31,4 +37,7 @@ public interface TaskDAO {
 
     @Query("SELECT * FROM task_table ORDER BY task_title ASC")
     LiveData<List<Task>> getAllTasks();
+
+    @Query("SELECT * FROM task_table ORDER BY task_id ASC")
+    List<Task> getTasksList();
 }

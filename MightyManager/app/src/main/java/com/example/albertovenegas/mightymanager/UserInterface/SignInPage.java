@@ -56,7 +56,7 @@ public class SignInPage extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user = mmvm.findEmployeeByName(username.getText().toString());
+                user = mmvm.findEmployeeByUsername(username.getText().toString());
                 validateCredentials(username.getText().toString(), password.getText().toString());
             }
         });
@@ -76,7 +76,7 @@ public class SignInPage extends AppCompatActivity {
         }
         else {
             if (managerType) {
-                if (username.equals(user.getEmployeeName()) && password.equals("manageradmin")) {
+                if (username.equals(user.getEmployeeUsername()) && password.equals("manageradmin")) {
                     Toast.makeText(SignInPage.this, "valid manager", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SignInPage.this, MainAppScreen.class);
                     intent.putExtra("user", user.getEmployeeID());
@@ -86,7 +86,7 @@ public class SignInPage extends AppCompatActivity {
                 }
 
             } else if (employeeType) {
-                if (username.equals(user.getEmployeeName()) && password.equals("employeeadmin")) {
+                if (username.equals(user.getEmployeeUsername()) && password.equals("employeeadmin")) {
                     Toast.makeText(SignInPage.this, "valid employee", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SignInPage.this, MainAppScreen.class);
                     intent.putExtra("user", user.getEmployeeID());

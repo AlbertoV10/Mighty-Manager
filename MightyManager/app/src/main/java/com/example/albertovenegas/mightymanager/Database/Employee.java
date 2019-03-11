@@ -14,6 +14,12 @@ public class Employee {
     @ColumnInfo(name = "employee_id")
     private int employeeID;
 
+    @ColumnInfo(name = "employee_fname")
+    private String employeeFirstName;
+
+    @ColumnInfo(name = "employee_lname")
+    private String employeeLastName;
+
     @ColumnInfo(name = "employee_name")
     private String employeeName;
 
@@ -23,10 +29,20 @@ public class Employee {
     @ColumnInfo(name = "admin_privilege")
     private boolean admin;
 
-   public Employee(String employeeName, String employeePassword, boolean admin) {
-       this.employeeName = employeeName;
+    @ColumnInfo(name = "employee_username")
+    private String employeeUsername;
+
+    @ColumnInfo(name = "employee_phone")
+    private String employeePhone;
+
+   public Employee(String employeeFirstName, String employeeLastName, String employeePassword, boolean admin, String employeeUsername, String employeePhone) {
+       this.employeeFirstName = employeeFirstName;
+       this.employeeLastName = employeeLastName;
+       this.employeeName = employeeFirstName.concat(" " + employeeLastName);
        this.employeePassword = employeePassword;
        this.admin = admin;
+       this.employeeUsername = employeeUsername;
+       this.employeePhone = employeePhone;
    }
 
     public int getEmployeeID() {
@@ -45,8 +61,52 @@ public class Employee {
         return this.admin;
     }
 
+    public String getEmployeeUsername(){
+       return this.employeeUsername;
+    }
+
+    public String getEmployeePhone() {
+       return this.employeePhone;
+    }
+
+    public String getEmployeeFirstName() {
+        return employeeFirstName;
+    }
+
+    public String getEmployeeLastName() {
+        return employeeLastName;
+    }
+
     //should not be used
     public void setEmployeeID(int id) {
        employeeID = id;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public void setEmployeePassword(String employeePassword) {
+        this.employeePassword = employeePassword;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
+    public void setEmployeeUsername(String employeeUsername) {
+        this.employeeUsername = employeeUsername;
+    }
+
+    public void setEmployeePhone(String employeePhone) {
+        this.employeePhone = employeePhone;
+    }
+
+    public void setEmployeeFirstName(String employeeFirstName) {
+        this.employeeFirstName = employeeFirstName;
+    }
+
+    public void setEmployeeLastName(String employeeLastName) {
+        this.employeeLastName = employeeLastName;
     }
 }

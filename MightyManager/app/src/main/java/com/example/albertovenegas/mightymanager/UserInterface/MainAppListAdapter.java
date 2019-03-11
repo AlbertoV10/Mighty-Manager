@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
@@ -127,11 +128,13 @@ public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.
     }
 
     private String findEmployeeNameWithId(int id) {
-        String name = "";
+        String name = "employee never found";
         for(int i = 0; i < employees.size(); i++) {
+            System.out.println("Searching for id: " + id);
             if (employees.get(i).getEmployeeID() == id)
             {
-                name = employees.get(i).getEmployeeName();
+                System.out.println("Found match");
+                name = employees.get(i).getEmployeeUsername();
             }
         }
         return name;

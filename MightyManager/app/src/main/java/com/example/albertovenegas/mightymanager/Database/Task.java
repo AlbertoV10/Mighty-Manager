@@ -26,11 +26,19 @@ public class Task {
     @ColumnInfo(name = "status")
     private int taskStatus;
 
-    public Task(String taskTitle, String taskAddress, int employeeID, int taskStatus) {
+    @ColumnInfo(name = "task_customer")
+    private int customerID;
+
+    @ColumnInfo(name = "task_description")
+    private String taskDescription;
+
+    public Task(String taskTitle, String taskAddress, int employeeID, int taskStatus, int customerID, String taskDescription) {
         this.taskTitle = taskTitle;
         this.taskAddress = taskAddress;
         this.employeeID = employeeID;
         this.taskStatus = taskStatus;
+        this.customerID = customerID;
+        this.taskDescription = taskDescription;
     }
 
     public int getTaskId() {
@@ -53,6 +61,14 @@ public class Task {
         return this.taskStatus;
     }
 
+    public int getCustomerID() {
+        return customerID;
+    }
+
+    public String getTaskDescription() {
+        return taskDescription;
+    }
+
     public void setTaskId(int id) {
         taskId = id;
     }
@@ -71,5 +87,13 @@ public class Task {
 
     public void setTaskStatus(int taskStatus) {
         this.taskStatus = taskStatus;
+    }
+
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
+    }
+
+    public void setTaskDescription(String taskDescription) {
+        this.taskDescription = taskDescription;
     }
 }

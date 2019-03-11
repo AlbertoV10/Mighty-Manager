@@ -54,7 +54,7 @@ public class AddTaskActivity extends AppCompatActivity {
         employees = mmvm.getEmployeesList();
         ArrayList<String> employeeNames = new ArrayList<>();
         for(int i = 0; i < employees.size(); i++) {
-            employeeNames.add(employees.get(i).getEmployeeName());
+            employeeNames.add(employees.get(i).getEmployeeUsername());
         }
         employeeNames.add(0,"Leave Unassigned");
         employeeNames.add(0,"-Employees-");

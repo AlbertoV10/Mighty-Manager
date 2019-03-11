@@ -21,6 +21,9 @@ public interface EmployeeDAO {
     @Query("SELECT * FROM employee_table WHERE employee_password=:employeePassword")
     Employee findEmployeeByPassword(String employeePassword);
 
+    @Query("SELECT * FROM employee_table WHERE employee_username=:employeeUsername")
+    Employee findEmployeeByUsername(String employeeUsername);
+
     @Insert
     void insert(Employee employee);
 
@@ -36,6 +39,6 @@ public interface EmployeeDAO {
     @Query("SELECT * FROM employee_table ORDER BY employee_name ASC")
     LiveData<List<Employee>> getAllEmployees();
 
-    @Query("SELECT*FROM employee_table ORDER BY employee_name ASC")
+    @Query("SELECT * FROM employee_table ORDER BY employee_name ASC")
     List<Employee> getEmployeesList();
 }

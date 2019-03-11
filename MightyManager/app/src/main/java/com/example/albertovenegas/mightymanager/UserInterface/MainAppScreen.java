@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.albertovenegas.mightymanager.Database.Customer;
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
@@ -114,14 +115,15 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
             String employee = data.getStringExtra(AddTaskActivity.EXTRA_EMPLOYEE_NAME);
             int employeeIdNum;
             if (!employee.equals("Leave Unassigned")) {
-                employeeIdNum = mightyManagerViewModel.findEmployeeByName(employee).getEmployeeID();
+                employeeIdNum = mightyManagerViewModel.findEmployeeByUsername(employee).getEmployeeID();
             }
             else
             {
                 employeeIdNum = -999;
             }
             Toast.makeText(this, title +" "+address+""+employee, Toast.LENGTH_LONG).show();
-            mightyManagerViewModel.insert(new Task(title, address, employeeIdNum, 1));
+            //Customer customer = mightyManagerViewModel.findCustomerByName("Test Customer");
+            mightyManagerViewModel.insert(new Task(title, address, employeeIdNum, 1, -888, "New Task"));
             adapter.notifyDataSetChanged();
         }
         else if (requestCode == EDIT_TASK_REQUEST) {
