@@ -25,42 +25,81 @@
         android:hint="Task Title"
         android:padding="15dp"
         />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_task_employee_spinner"
+        android:layout_below="@+id/add_task_title"
+        android:padding="15dp"/>
+
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/add_task_address"
         android:inputType="textPostalAddress"
         android:hint="Task Address"
-        android:layout_below="@+id/add_task_title"
+        android:layout_below="@+id/add_task_employee_spinner"
         android:padding="15dp"
         />
-    <Spinner
+
+    <AutoCompleteTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/add_task_employee_spinner"
+        android:id="@+id/add_task_customer_autofill"
+        android:hint="Customer Name"
         android:layout_below="@+id/add_task_address"
         android:padding="15dp"/>
 
-    <ImageButton
-        android:layout_width="wrap_content"
+    <EditText
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/add_task_save_button"
-        android:layout_below="@+id/add_task_employee_spinner"
-        android:src="@drawable/ic_save_black"
-        android:backgroundTint="@color/colorPrimaryDark"
+        android:id="@+id/add_task_customer_phone"
+        android:hint="Customer Phone"
+        android:inputType="phone"
+        android:layout_below="@id/add_task_customer_autofill"
         android:padding="15dp"
-        android:layout_marginLeft="50dp"
         />
 
-    <ImageButton
-        android:layout_width="wrap_content"
+    <EditText
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/add_task_cancel_button"
-        android:layout_below="@+id/add_task_employee_spinner"
-        android:layout_alignRight="@id/add_task_employee_spinner"
-        android:padding="15dp"
-        android:src="@drawable/ic_clear"
-        android:backgroundTint="@color/new_task"
-        android:layout_marginRight="50dp"/>
+        android:id="@+id/add_task_customer_email"
+        android:hint="Customer Email"
+        android:inputType="textEmailAddress"
+        android:layout_below="@id/add_task_customer_phone"
+        android:padding="15dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/add_task_details"
+        android:hint="Notes"
+        android:gravity="start"
+        android:layout_below="@id/add_task_customer_email"
+        android:padding="15dp"/>
+
+    <!--<ImageButton-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/add_task_save_button"-->
+        <!--android:layout_below="@+id/add_task_employee_spinner"-->
+        <!--android:src="@drawable/ic_save_black"-->
+        <!--android:backgroundTint="@color/colorPrimaryDark"-->
+        <!--android:padding="15dp"-->
+        <!--android:layout_marginLeft="50dp"-->
+        <!--/>-->
+
+    <!--<ImageButton-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/add_task_cancel_button"-->
+        <!--android:layout_below="@+id/add_task_employee_spinner"-->
+        <!--android:layout_alignRight="@id/add_task_employee_spinner"-->
+        <!--android:padding="15dp"-->
+        <!--android:src="@drawable/ic_clear"-->
+        <!--android:backgroundTint="@color/new_task"-->
+        <!--android:layout_marginRight="50dp"/>-->
 
 </RelativeLayout>

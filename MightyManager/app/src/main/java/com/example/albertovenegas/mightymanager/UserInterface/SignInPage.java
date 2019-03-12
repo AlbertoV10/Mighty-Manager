@@ -30,11 +30,9 @@ public class SignInPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //make full screen
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //---------------
         setContentView(R.layout.activity_sign_in_page);
+        //hide action bar
+        getSupportActionBar().hide();
 
         signinTitle = (TextView) findViewById(R.id.signin_page_title);
         username = (EditText) findViewById(R.id.signin_page_username);

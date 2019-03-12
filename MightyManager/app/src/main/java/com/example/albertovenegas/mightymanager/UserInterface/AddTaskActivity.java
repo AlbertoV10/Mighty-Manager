@@ -10,11 +10,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.albertovenegas.mightymanager.Database.Customer;
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.R;
@@ -30,8 +32,12 @@ public class AddTaskActivity extends AppCompatActivity {
     private EditText newTaskTitle;
     private EditText newTaskAddress;
     private Spinner employeeSpinner;
-    private ImageButton saveButton;
-    private ImageButton cancelButton;
+    private AutoCompleteTextView customerName;
+    private EditText customerPhone;
+    private EditText customerEmail;
+    private EditText taskDetails;
+    //private ImageButton saveButton;
+    //private ImageButton cancelButton;
     private MightyManagerViewModel mmvm;
 
     @Override
@@ -47,8 +53,12 @@ public class AddTaskActivity extends AppCompatActivity {
         newTaskTitle = findViewById(R.id.add_task_title);
         newTaskAddress = findViewById(R.id.add_task_address);
         employeeSpinner = findViewById(R.id.add_task_employee_spinner);
-        saveButton = findViewById(R.id.add_task_save_button);
-        cancelButton = findViewById(R.id.add_task_cancel_button);
+        customerName = findViewById(R.id.add_task_customer_autofill);
+        customerPhone = findViewById(R.id.add_task_customer_phone);
+        customerEmail = findViewById(R.id.add_task_customer_email);
+        taskDetails = findViewById(R.id.add_task_details);
+        //saveButton = findViewById(R.id.add_task_save_button);
+        //cancelButton = findViewById(R.id.add_task_cancel_button);
 
         List<Employee> employees = new ArrayList<>();
         employees = mmvm.getEmployeesList();
@@ -62,19 +72,27 @@ public class AddTaskActivity extends AppCompatActivity {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         employeeSpinner.setAdapter(spinnerAdapter);
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveTask();
-            }
-        });
+        List<Customer> customers = new ArrayList<>();
+        customers = mmvm.getCustomerList();
+        ArrayList<String> customerNames = new ArrayList<>();
+        for (int i = 0; i < customers.size(); i++)
+        {
+            customerNames.add(customers.get(i).getCustomerName());
+        }
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cancelScreen();
-            }
-        });
+//        saveButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                saveTask();
+//            }
+//        });
+//
+//        cancelButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                cancelScreen();
+//            }
+//        });
     }
 
     private void saveTask() {
@@ -94,9 +112,7 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     private void cancelScreen() {
-        Intent intent = new Intent();
-        setResult(RESULT_CANCELED, intent);
-        finish();
+       closeAddActivity(RESULT_CANCELED);
     }
 
     @Override
@@ -119,5 +135,16 @@ public class AddTaskActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void closeAddActivity(int resultCode) {
+        Intent intent = new Intent();
+        if (resultCode == RESULT_CANCELED) {
+            setResult(RESULT_CANCELED, intent);
+        }
+        else  {
+            setResult(RESULT_OK, intent);
+        }
+        finish();
     }
 }

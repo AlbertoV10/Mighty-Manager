@@ -19,9 +19,13 @@ public class Customer {
     @ColumnInfo(name = "customer_phone")
     private String customerPhone;
 
-    public Customer(String customerName, String customerPhone) {
+    @ColumnInfo(name = "customer_email")
+    private String customerEmail;
+
+    public Customer(String customerName, String customerPhone, String customerEmail) {
         this.customerName = customerName;
         this.customerPhone = customerPhone;
+        this.customerEmail = customerEmail;
     }
 
     public int getCustomerID() {
@@ -36,6 +40,10 @@ public class Customer {
         return customerPhone;
     }
 
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
     public void setCustomerID(int customerID) {
         this.customerID = customerID;
     }
@@ -46,5 +54,9 @@ public class Customer {
 
     public void setCustomerPhone(String customerPhone) {
         this.customerPhone = customerPhone;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
     }
 }
