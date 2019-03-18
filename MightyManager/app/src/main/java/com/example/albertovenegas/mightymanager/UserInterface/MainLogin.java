@@ -47,7 +47,7 @@ public class MainLogin extends AppCompatActivity {
         //Employee manager = mmvm.findEmployeeByName("manager admin");
         Employee employee = mmvm.findEmployeeByUsername("eadmin");
         //Employee employee = mmvm.findEmployeeByName("employee admin");
-        Customer customer = mmvm.findCustomerByName("Test Customer");
+        //Customer customer = mmvm.findCustomerByName("Test Customer");
         //Toast.makeText(this, "manager id: " + manager.getEmployeeID() + "\nEmployee id: " + employee.getEmployeeID(), Toast.LENGTH_LONG).show();
         if (manager == null)
         {
@@ -56,26 +56,6 @@ public class MainLogin extends AppCompatActivity {
         if (employee == null) {
             Toast.makeText(this, "employee null", Toast.LENGTH_SHORT).show();
         }
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        for(int i = 0; i < 10; i++) {
-//            if (i%2 == 0)
-//            mmvm.insert(new Task("Test Task" + i, (123)*i + " main", manager.getEmployeeID(), 1, customer.getCustomerID(), "This is a test task for manager"));
-//            else
-//                mmvm.insert(new Task("Test Task" + i, (123)*i + " main", employee.getEmployeeID(), 1, customer.getCustomerID(), "This is a test task for employee"));
-//
-//        }
-//        Employee te = mmvm.findEmployeeByName("employee");
-//        if(te == null) {
-//            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
-//        }
-//        else {
-//            Toast.makeText(this, te.getEmployeeName(), Toast.LENGTH_SHORT).show();
-//
-//        }
 
         managerButton = (Button) findViewById(R.id.login_manager_button);
         employeeButton = (Button) findViewById(R.id.login_employee_button);

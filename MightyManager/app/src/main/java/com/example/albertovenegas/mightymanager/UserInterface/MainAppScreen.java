@@ -105,22 +105,30 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == ADD_TASK_REQUEST && resultCode == RESULT_OK) {
-            String title = data.getStringExtra(AddTaskActivity.EXTRA_TITLE);
-            String address = data.getStringExtra(AddTaskActivity.EXTRA_ADDRESS);
-            String employee = data.getStringExtra(AddTaskActivity.EXTRA_EMPLOYEE_NAME);
-            int employeeIdNum;
-            if (!employee.equals("Leave Unassigned")) {
-                employeeIdNum = mightyManagerViewModel.findEmployeeByUsername(employee).getEmployeeID();
+        if (requestCode == ADD_TASK_REQUEST) {
+//            String title = data.getStringExtra(AddTaskActivity.EXTRA_TITLE);
+//            String address = data.getStringExtra(AddTaskActivity.EXTRA_ADDRESS);
+//            String employee = data.getStringExtra(AddTaskActivity.EXTRA_EMPLOYEE_NAME);
+//            int employeeIdNum;
+//            if (!employee.equals("Leave Unassigned")) {
+//                employeeIdNum = mightyManagerViewModel.findEmployeeByUsername(employee).getEmployeeID();
+//            }
+//            else
+//            {
+//                employeeIdNum = -999;
+//            }
+//            Toast.makeText(this, title +" "+address+""+employee, Toast.LENGTH_LONG).show();
+//            //Customer customer = mightyManagerViewModel.findCustomerByName("Test Customer");
+//            mightyManagerViewModel.insert(new Task(title, address, employeeIdNum, 1, -888, "New Task"));
+            if (resultCode == RESULT_OK) {
+                adapter.notifyDataSetChanged();
+                Toast.makeText(this, "New task was added", Toast.LENGTH_SHORT).show();
             }
             else
             {
-                employeeIdNum = -999;
+                Toast.makeText(this, "No new task added", Toast.LENGTH_SHORT).show();
+
             }
-            Toast.makeText(this, title +" "+address+""+employee, Toast.LENGTH_LONG).show();
-            //Customer customer = mightyManagerViewModel.findCustomerByName("Test Customer");
-            mightyManagerViewModel.insert(new Task(title, address, employeeIdNum, 1, -888, "New Task"));
-            adapter.notifyDataSetChanged();
         }
         else if (requestCode == EDIT_TASK_REQUEST) {
             if (resultCode == RESULT_OK) {

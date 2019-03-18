@@ -44,10 +44,10 @@
         android:padding="15dp"
         />
 
-    <AutoCompleteTextView
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/add_task_customer_autofill"
+        android:id="@+id/add_task_customer_name"
         android:hint="Customer Name"
         android:layout_below="@+id/add_task_address"
         android:padding="15dp"/>
@@ -58,7 +58,7 @@
         android:id="@+id/add_task_customer_phone"
         android:hint="Customer Phone"
         android:inputType="phone"
-        android:layout_below="@id/add_task_customer_autofill"
+        android:layout_below="@id/add_task_customer_name"
         android:padding="15dp"
         />
 

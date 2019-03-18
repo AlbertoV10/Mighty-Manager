@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.albertovenegas.mightymanager.Database.Customer;
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
+import com.example.albertovenegas.mightymanager.Database.Task;
 import com.example.albertovenegas.mightymanager.R;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private EditText newTaskTitle;
     private EditText newTaskAddress;
     private Spinner employeeSpinner;
-    private AutoCompleteTextView customerName;
+    private EditText customerName;
     private EditText customerPhone;
     private EditText customerEmail;
     private EditText taskDetails;
@@ -53,7 +54,7 @@ public class AddTaskActivity extends AppCompatActivity {
         newTaskTitle = findViewById(R.id.add_task_title);
         newTaskAddress = findViewById(R.id.add_task_address);
         employeeSpinner = findViewById(R.id.add_task_employee_spinner);
-        customerName = findViewById(R.id.add_task_customer_autofill);
+        customerName = findViewById(R.id.add_task_customer_name);
         customerPhone = findViewById(R.id.add_task_customer_phone);
         customerEmail = findViewById(R.id.add_task_customer_email);
         taskDetails = findViewById(R.id.add_task_details);
@@ -96,18 +97,44 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     private void saveTask() {
-        String title = newTaskTitle.getText().toString();
-        String address = newTaskAddress.getText().toString();
-        String employee = employeeSpinner.getSelectedItem().toString();
+        int employeeId;
+        String title = newTaskTitle.getText().toString().trim();
+        String address = newTaskAddress.getText().toString().trim();
+        String employee = employeeSpinner.getSelectedItem().toString().trim();
+        String cName = customerName.getText().toString().trim();
+        String cPhone = customerPhone.getText().toString().trim();
+        String cEmail = customerEmail.getText().toString().trim();
+        String notes = taskDetails.getText().toString();
+
         if (title.isEmpty() || address.isEmpty() || employee.equals("-Employees-")) {
-            Toast.makeText(this, "Please fill in all fields and select employee", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please fill in title, address, and select employee", Toast.LENGTH_LONG).show();
         } else {
-            Intent intent = new Intent();
-            intent.putExtra(EXTRA_TITLE, title);
-            intent.putExtra(EXTRA_ADDRESS, address);
-            intent.putExtra(EXTRA_EMPLOYEE_NAME, employee);
-            setResult(RESULT_OK, intent);
-            finish();
+//            Intent intent = new Intent();
+////            intent.putExtra(EXTRA_TITLE, title);
+////            intent.putExtra(EXTRA_ADDRESS, address);
+////            intent.putExtra(EXTRA_EMPLOYEE_NAME, employee);
+////            setResult(RESULT_OK, intent);
+            if (employee.equals("Leave Unassigned"))
+            {
+                employeeId = -999;
+            }
+            else {
+                employeeId = findEmployeeId(employee);
+            }
+            if (cName.isEmpty()) {
+                cName = "";
+            }
+            if (cPhone.isEmpty()) {
+                cPhone = "";
+            }
+            if (cEmail.isEmpty()) {
+                cEmail = "";
+            }
+            if (notes.isEmpty()) {
+                notes = "";
+            }
+            mmvm.insert(new Task(title, address, employeeId, 1, -888, notes));
+            closeAddActivity(RESULT_OK);
         }
     }
 
@@ -146,5 +173,10 @@ public class AddTaskActivity extends AppCompatActivity {
             setResult(RESULT_OK, intent);
         }
         finish();
+    }
+
+    private int findEmployeeId(String eUsername) {
+        Employee employee = mmvm.findEmployeeByUsername(eUsername);
+        return employee.getEmployeeID();
     }
 }
