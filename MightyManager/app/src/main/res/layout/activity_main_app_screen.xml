@@ -17,11 +17,25 @@
         android:background="@android:color/holo_blue_dark"
         />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/app_mainscreen_filter_desc"
+        android:text="Filter: "
+        android:layout_below="@id/app_mainscreen_title"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/app_mainscreen_filter_spinner"
+        android:layout_below="@id/app_mainscreen_title"
+        android:layout_toRightOf="@id/app_mainscreen_filter_desc"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/app_mainscreen_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/app_mainscreen_title"
+        android:layout_below="@id/app_mainscreen_filter_desc"
         android:background="@android:color/white"
         />
 

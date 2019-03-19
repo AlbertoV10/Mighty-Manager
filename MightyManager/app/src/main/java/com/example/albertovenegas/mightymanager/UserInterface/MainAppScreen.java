@@ -13,23 +13,26 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.albertovenegas.mightymanager.Database.Customer;
+import com.example.albertovenegas.mightymanager.Adapter.MainAppListAdapter;
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
 import com.example.albertovenegas.mightymanager.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainAppScreen extends AppCompatActivity implements MainAppListAdapter.itemClickCallback{
     public static final int ADD_TASK_REQUEST = 1;
     public static final int EDIT_TASK_REQUEST = 2;
     public static final String OPEN_TASK_EXTRA_KEY = "main.app.screen.task.id";
+    private String[] filterChoices = {"All", "New", "In Progress", "Closed"};
 
     private MightyManagerViewModel mightyManagerViewModel;
     private FloatingActionButton fab;
@@ -37,11 +40,14 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
     private TextView mainTitle;
     private int employeeId; //change this to use employee id since no duplication possible
     Employee currentUser;
+    private Spinner filterSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_app_screen);
+
+        getSupportActionBar().setTitle("");
 
         mightyManagerViewModel = ViewModelProviders.of(this).get(MightyManagerViewModel.class);
 
@@ -56,6 +62,13 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
             mainTitle.setText("Employee Assignments");
         }
 
+        //intialize task filter
+        filterSpinner = findViewById(R.id.app_mainscreen_filter_spinner);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, filterChoices);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterSpinner.setAdapter(spinnerAdapter);
+
+        //set up recycler view
         RecyclerView recyclerView = findViewById(R.id.app_mainscreen_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MainAppListAdapter(this);
@@ -63,13 +76,33 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
         adapter.setItemClickCallback(this);
         adapter.setEmployees(mightyManagerViewModel.getEmployeesList());
 
-        mightyManagerViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
+        if(currentUser.isAdmin()) {
+            mightyManagerViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
+                @Override
+                public void onChanged(@Nullable List<Task> tasks) {
+                    adapter.setTasks(tasks);
+                }
+            });
+        }
+        else {
+            adapter.setTasks(mightyManagerViewModel.findTaskByEmployee(currentUser.getEmployeeID()));
+        }
+
+        //filter the tasks by filter value
+        filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onChanged(@Nullable List<Task> tasks) {
-                adapter.setTasks(tasks);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(MainAppScreen.this, "spinner selection: " + adapterView.getSelectedItem().toString() + "pos: " + i, Toast.LENGTH_SHORT).show();
+                adapter.setTasks(filterTasks(i));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
+        //floating add task button
         fab = findViewById(R.id.app_mainscreen_new_assignment_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,20 +140,6 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ADD_TASK_REQUEST) {
-//            String title = data.getStringExtra(AddTaskActivity.EXTRA_TITLE);
-//            String address = data.getStringExtra(AddTaskActivity.EXTRA_ADDRESS);
-//            String employee = data.getStringExtra(AddTaskActivity.EXTRA_EMPLOYEE_NAME);
-//            int employeeIdNum;
-//            if (!employee.equals("Leave Unassigned")) {
-//                employeeIdNum = mightyManagerViewModel.findEmployeeByUsername(employee).getEmployeeID();
-//            }
-//            else
-//            {
-//                employeeIdNum = -999;
-//            }
-//            Toast.makeText(this, title +" "+address+""+employee, Toast.LENGTH_LONG).show();
-//            //Customer customer = mightyManagerViewModel.findCustomerByName("Test Customer");
-//            mightyManagerViewModel.insert(new Task(title, address, employeeIdNum, 1, -888, "New Task"));
             if (resultCode == RESULT_OK) {
                 adapter.notifyDataSetChanged();
                 Toast.makeText(this, "New task was added", Toast.LENGTH_SHORT).show();
@@ -183,5 +202,22 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
     private void openEmployeeList() {
         Intent employeeListIntent = new Intent(MainAppScreen.this, EmployeeList.class);
         startActivity(employeeListIntent);
+    }
+
+    private List<Task> filterTasks(int type) {
+        List<Task> tasks = mightyManagerViewModel.getTaskList();
+        List<Task> tasksFiltered = new ArrayList<>();
+        if (type == 0) {
+            tasksFiltered.addAll(tasks);
+        }
+        else {
+            for (int i = 0; i < tasks.size(); i++) {
+                // filter new tasks
+                if (tasks.get(i).getTaskStatus() == type) {
+                    tasksFiltered.add(tasks.get(i));
+                }
+            }
+        }
+        return tasksFiltered;
     }
 }

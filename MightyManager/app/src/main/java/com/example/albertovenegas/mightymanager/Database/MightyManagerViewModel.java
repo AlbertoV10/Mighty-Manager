@@ -54,6 +54,10 @@ public class MightyManagerViewModel extends AndroidViewModel {
         return allTasks;
     }
 
+    public List<Task> getTaskList() {
+        return mRepository.getTaskList();
+    }
+
     // wrapper methods for Employees
     public Employee findEmployeeByName(String name) {
         return mRepository.findEmployeeByName(name);

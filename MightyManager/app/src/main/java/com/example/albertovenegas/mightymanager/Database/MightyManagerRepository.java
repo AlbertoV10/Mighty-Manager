@@ -67,6 +67,10 @@ public class MightyManagerRepository {
         return allTasks;
     }
 
+    public List<Task> getTaskList() {
+        return taskList;
+    }
+
     //Async classes for TaskDAO
     private static class InsertTaskAsyncTask extends AsyncTask<Task, Void, Void> {
         private TaskDAO taskDAO;
