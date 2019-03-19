@@ -35,7 +35,7 @@ public class OpenTaskActivity extends AppCompatActivity {
     private EditText taskNotes;
     //private ImageButton editSaveBtn;
     //private ImageButton cancelBtn;
-    private String[] statusSelection = {"Open", "In Progress", "Closed"};
+    private ArrayList<String> statusSelection = new ArrayList<>();
     private boolean editable = false;
     private Task task;
     //variables for current data
@@ -117,6 +117,13 @@ public class OpenTaskActivity extends AppCompatActivity {
         otEmployeeSpinner.setEnabled(false);
 
         //set status spinner
+        statusSelection.add("New");
+        statusSelection.add("In Progress");
+        statusSelection.add("Closed");
+        int currentStatusNumber = task.getTaskStatus();
+        String currentStatusText = statusSelection.get(currentStatusNumber);
+        statusSelection.remove(currentStatus);
+        statusSelection.add(0, currentStatusText);
         ArrayAdapter<String> statusSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusSelection);
         statusSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         otStatusSpinner.setAdapter(statusSpinnerAdapter);

@@ -41,6 +41,7 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
     private int employeeId; //change this to use employee id since no duplication possible
     Employee currentUser;
     private Spinner filterSpinner;
+    private List<Task> taskList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,17 +77,39 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
         adapter.setItemClickCallback(this);
         adapter.setEmployees(mightyManagerViewModel.getEmployeesList());
 
-        if(currentUser.isAdmin()) {
-            mightyManagerViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
-                @Override
-                public void onChanged(@Nullable List<Task> tasks) {
-                    adapter.setTasks(tasks);
+//        if(currentUser.isAdmin()) {
+//            mightyManagerViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
+//                @Override
+//                public void onChanged(@Nullable List<Task> tasks) {
+//                    adapter.setTasks(tasks);
+//                    taskList.clear();
+//                    taskList.addAll(tasks);
+//                }
+//            });
+//        }
+//        else {
+//            taskList = mightyManagerViewModel.findTaskByEmployee(currentUser.getEmployeeID());
+//            adapter.setTasks(taskList);
+//        }
+
+        mightyManagerViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
+            @Override
+            public void onChanged(@Nullable List<Task> tasks) {
+                //adapter.setTasks(tasks);
+                if (tasks != null) {
+                    taskList.clear();
+                    taskList.addAll(tasks);
                 }
-            });
-        }
-        else {
-            adapter.setTasks(mightyManagerViewModel.findTaskByEmployee(currentUser.getEmployeeID()));
-        }
+                if (!currentUser.isAdmin()) {
+                    taskList = mightyManagerViewModel.findTaskByEmployee(currentUser.getEmployeeID());
+                    adapter.setTasks(taskList);
+                }
+                else {
+                    adapter.setTasks(taskList);
+                }
+
+            }
+        });
 
         //filter the tasks by filter value
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -128,11 +151,11 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
     @Override
     public void onIconClick(int p) {
         Toast.makeText(MainAppScreen.this, "Will edit here", Toast.LENGTH_SHORT).show();
-        Task currentTask = adapter.getTasks().get(p);
-        int currentStatus = currentTask.getTaskStatus();
-        currentStatus = (currentStatus + 1)%4;
-        currentTask.setTaskStatus(currentStatus);
-        adapter.notifyDataSetChanged();
+//        Task currentTask = adapter.getTasks().get(p);
+//        int currentStatus = currentTask.getTaskStatus();
+//        currentStatus = (currentStatus + 1)%4;
+//        currentTask.setTaskStatus(currentStatus);
+//        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -142,6 +165,7 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
         if (requestCode == ADD_TASK_REQUEST) {
             if (resultCode == RESULT_OK) {
                 adapter.notifyDataSetChanged();
+                filterSpinner.setSelection(0);
                 Toast.makeText(this, "New task was added", Toast.LENGTH_SHORT).show();
             }
             else
@@ -154,6 +178,7 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
             if (resultCode == RESULT_OK) {
                 //data was changed
                 adapter.notifyDataSetChanged();
+                filterSpinner.setSelection(0);
                 Toast.makeText(this, "data was changed in edit mode", Toast.LENGTH_SHORT).show();
             }
             else
@@ -205,16 +230,16 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
     }
 
     private List<Task> filterTasks(int type) {
-        List<Task> tasks = mightyManagerViewModel.getTaskList();
+        //List<Task> tasks = mightyManagerViewModel.getTaskList();
         List<Task> tasksFiltered = new ArrayList<>();
         if (type == 0) {
-            tasksFiltered.addAll(tasks);
+            return taskList;
         }
         else {
-            for (int i = 0; i < tasks.size(); i++) {
+            for (int i = 0; i < taskList.size(); i++) {
                 // filter new tasks
-                if (tasks.get(i).getTaskStatus() == type) {
-                    tasksFiltered.add(tasks.get(i));
+                if (taskList.get(i).getTaskStatus() == type) {
+                    tasksFiltered.add(taskList.get(i));
                 }
             }
         }
