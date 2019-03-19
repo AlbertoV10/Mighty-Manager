@@ -75,12 +75,7 @@ public class CreateEmployee extends AppCompatActivity {
             String password = ePassword.getText().toString();
             String phone = ePhone.getText().toString().trim();
             String email = eEmail.getText().toString().trim();
-            boolean admin;
-            if (adminCheck.isChecked()) {
-                admin = true;
-            } else {
-                admin = false;
-            }
+            boolean admin = adminCheck.isChecked();
 
             String username = generateUsername(fName, lName);
 

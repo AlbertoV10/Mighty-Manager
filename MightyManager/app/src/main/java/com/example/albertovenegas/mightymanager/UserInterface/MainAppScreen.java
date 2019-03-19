@@ -162,6 +162,7 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
                 createEmployee();
                 return true;
             case R.id.menu_employees_list:
+                openEmployeeList();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -177,5 +178,10 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
     private void signOut() {
         Intent signOutIntent = new Intent(MainAppScreen.this, MainLogin.class);
         startActivity(signOutIntent);
+    }
+
+    private void openEmployeeList() {
+        Intent employeeListIntent = new Intent(MainAppScreen.this, EmployeeList.class);
+        startActivity(employeeListIntent);
     }
 }
