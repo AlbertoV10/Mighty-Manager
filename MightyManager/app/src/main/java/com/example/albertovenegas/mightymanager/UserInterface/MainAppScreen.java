@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -149,5 +150,32 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_sign_out:
+                signOut();
+                return true;
+            case R.id.menu_create_employee:
+                createEmployee();
+                return true;
+            case R.id.menu_employees_list:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    private void createEmployee() {
+        Intent newEmployeeIntent = new Intent(MainAppScreen.this, CreateEmployee.class);
+        startActivity(newEmployeeIntent);
+    }
+
+    private void signOut() {
+        Intent signOutIntent = new Intent(MainAppScreen.this, MainLogin.class);
+        startActivity(signOutIntent);
     }
 }

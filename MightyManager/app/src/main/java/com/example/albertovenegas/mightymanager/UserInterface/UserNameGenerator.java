@@ -1,5 +1,7 @@
 package com.example.albertovenegas.mightymanager.UserInterface;
 
+import android.arch.lifecycle.ViewModelProviders;
+
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 
@@ -7,9 +9,9 @@ public class UserNameGenerator {
     private String username;
     private MightyManagerViewModel mmvm;
 
-    public UserNameGenerator(Employee employee)
+    public UserNameGenerator(String firstName, String lastName)
     {
-        this.username = generatedUsername(employee.getEmployeeFirstName().toLowerCase(), employee.getEmployeeLastName().toLowerCase());
+        this.username = generatedUsername(firstName, lastName);
 
     }
 

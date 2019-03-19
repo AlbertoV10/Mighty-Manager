@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 
 import java.util.concurrent.Executors;
 
-@Database(entities = {Task.class, Employee.class, Customer.class}, version = 6)
+@Database(entities = {Task.class, Employee.class, Customer.class}, version = 7)
 public abstract class MightyManagerDatabase extends RoomDatabase {
     public static final String DATABASE_NAME = "Mighty_Manager_Database";
 
@@ -60,8 +60,8 @@ public abstract class MightyManagerDatabase extends RoomDatabase {
 //            taskDAO.insert(new Task("Test Task 1", "123 Main St.", 1234, 1));
 //            taskDAO.insert(new Task("Test Task 2", "456 Main St.", 5678, 1));
 //            taskDAO.insert(new Task("Test Task 3", "789 Main St.", 9123, 1));
-            employeeDAO.insert(new Employee("manager", "admin", "manageradmin", true, "madmin", "(800)555-1234"));
-            employeeDAO.insert(new Employee("employee", "admin", "employeeadmin", false, "eadmin", "(800)555-5678"));
+            employeeDAO.insert(new Employee("manager", "admin", "manageradmin", true, "madmin", "(800)555-1234", "manager@mm.com"));
+            employeeDAO.insert(new Employee("employee", "admin", "employeeadmin", false, "eadmin", "(800)555-5678", "employee@mm.com"));
             //taskDAO.insert(new Task("Test Task" + 1, 123 + " main", -999, 1, customer.getCustomerID(), "This is a test task for manager"));
             System.out.println("Created employees");
 //

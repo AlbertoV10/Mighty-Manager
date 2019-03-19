@@ -35,7 +35,10 @@ public class Employee {
     @ColumnInfo(name = "employee_phone")
     private String employeePhone;
 
-   public Employee(String employeeFirstName, String employeeLastName, String employeePassword, boolean admin, String employeeUsername, String employeePhone) {
+    @ColumnInfo(name = "employee_email")
+    private String employeeEmail;
+
+   public Employee(String employeeFirstName, String employeeLastName, String employeePassword, boolean admin, String employeeUsername, String employeePhone, String employeeEmail) {
        this.employeeFirstName = employeeFirstName;
        this.employeeLastName = employeeLastName;
        this.employeeName = employeeFirstName.concat(" " + employeeLastName);
@@ -43,6 +46,7 @@ public class Employee {
        this.admin = admin;
        this.employeeUsername = employeeUsername;
        this.employeePhone = employeePhone;
+       this.employeeEmail = employeeEmail;
    }
 
     public int getEmployeeID() {
@@ -77,6 +81,10 @@ public class Employee {
         return employeeLastName;
     }
 
+    public String getEmployeeEmail() {
+        return employeeEmail;
+    }
+
     //should not be used
     public void setEmployeeID(int id) {
        employeeID = id;
@@ -108,5 +116,9 @@ public class Employee {
 
     public void setEmployeeLastName(String employeeLastName) {
         this.employeeLastName = employeeLastName;
+    }
+
+    public void setEmployeeEmail(String employeeEmail) {
+        this.employeeEmail = employeeEmail;
     }
 }

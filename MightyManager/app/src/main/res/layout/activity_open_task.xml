@@ -15,6 +15,7 @@
         android:textSize="30sp"
         android:gravity="center"
         />
+
 <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -152,6 +153,7 @@
         android:id="@+id/open_task_task_notes"
         android:layout_below="@id/open_task_desc_task_notes"
         android:gravity="start"/>
+
     </LinearLayout>
 </ScrollView>
     <!--<ImageButton-->

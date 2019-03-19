@@ -102,29 +102,29 @@ public class MainScreen extends AppCompatActivity implements MainListAdapter.ite
     }
 
     //gives functionality when clicking items in the menu
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menu_item1:
-                Toast.makeText(this, "Item 1", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu_item2:
-                Toast.makeText(this, "Item 2", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu_item3:
-                Toast.makeText(this, "Item 3", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu_item4:
-                Toast.makeText(this, "Item 4", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu_item5:
-                Toast.makeText(this, "Item 5", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()){
+//            case R.id.menu_item1:
+//                Toast.makeText(this, "Item 1", Toast.LENGTH_SHORT).show();
+//                return true;
+//            case R.id.menu_item2:
+//                Toast.makeText(this, "Item 2", Toast.LENGTH_SHORT).show();
+//                return true;
+//            case R.id.menu_item3:
+//                Toast.makeText(this, "Item 3", Toast.LENGTH_SHORT).show();
+//                return true;
+//            case R.id.menu_item4:
+//                Toast.makeText(this, "Item 4", Toast.LENGTH_SHORT).show();
+//                return true;
+//            case R.id.menu_item5:
+//                Toast.makeText(this, "Item 5", Toast.LENGTH_SHORT).show();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//
+//    }
 
     //opens the dialog box to add new assignment
     public void openDialog(String[] employees)

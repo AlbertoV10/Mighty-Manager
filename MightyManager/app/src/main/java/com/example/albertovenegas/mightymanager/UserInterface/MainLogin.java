@@ -39,8 +39,8 @@ public class MainLogin extends AppCompatActivity {
         //mmvm.deleteAllCustomers();
         //mmvm.deleteAllTasks();
         //mmvm.insert(new Customer("Test Customer", "(123)555-3553"));
-        //mmvm.insert(new Employee("manager", "admin", "manageradmin", true, "madmin", "(800)555-1234"));
-        //mmvm.insert(new Employee("employee", "admin", "employeeadmin", false, "eadmin", "(800)555-5678"));
+        //mmvm.insert(new Employee("manager", "admin", "manageradmin", true, "madmin", "(800)555-1234", "manager@mm.com"));
+        //mmvm.insert(new Employee("employee", "admin", "employeeadmin", false, "eadmin", "(800)555-5678", "employee@mm.com"));
         Employee manager = mmvm.findEmployeeByUsername("madmin");
         List<Employee> employees = mmvm.getEmployeesList();
         Toast.makeText(this, "number of employees: " + employees.size(), Toast.LENGTH_SHORT).show();
