@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserInterface.CreateCustomer">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_customer_screen_name"
+        android:background="@android:color/holo_blue_dark"
+        android:text="Create Customer"
+        android:textSize="32sp"
+        android:gravity="center"
+        android:padding="10dp"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_customer_name"
+        android:layout_below="@+id/create_customer_screen_name"
+        android:hint="Customer Name"
+        android:padding="15dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_customer_phone"
+        android:layout_below="@id/create_customer_name"
+        android:hint="Customer Phone"
+        android:inputType="phone"
+        android:padding="15dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_customer_email"
+        android:layout_below="@id/create_customer_phone"
+        android:hint="Customer Email"
+        android:inputType="textEmailAddress"
+        android:padding="15dp"/>
+
+</RelativeLayout>

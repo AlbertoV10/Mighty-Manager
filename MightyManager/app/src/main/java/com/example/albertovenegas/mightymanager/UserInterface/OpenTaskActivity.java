@@ -121,7 +121,7 @@ public class OpenTaskActivity extends AppCompatActivity {
         statusSelection.add("In Progress");
         statusSelection.add("Closed");
         int currentStatusNumber = task.getTaskStatus();
-        String currentStatusText = statusSelection.get(currentStatusNumber);
+        String currentStatusText = statusSelection.get(currentStatusNumber - 1);
         statusSelection.remove(currentStatus);
         statusSelection.add(0, currentStatusText);
         ArrayAdapter<String> statusSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusSelection);
@@ -260,11 +260,21 @@ public class OpenTaskActivity extends AppCompatActivity {
                else if (status.equals("Closed")) {
                    task.setTaskStatus(3);
                }
-               task.setTaskTitle(otTitle.getText().toString().trim());
+               if (!otTitle.getText().toString().isEmpty()) {
+                   task.setTaskTitle(otTitle.getText().toString().trim());
+               }
+               else {
+                   task.setTaskTitle("Default Title");
+               }
                task.setTaskAddress(otAddress.getText().toString().trim());
-               String employeeName = otEmployeeSpinner.getSelectedItem().toString();
-               Employee employee = mmvm.findEmployeeByUsername(employeeName);
-               task.setEmployeeID(employee.getEmployeeID());
+               if (!otEmployeeSpinner.getSelectedItem().toString().equals("Leave Unassigned")) {
+                   String employeeName = otEmployeeSpinner.getSelectedItem().toString();
+                   Employee employee = mmvm.findEmployeeByUsername(employeeName);
+                   task.setEmployeeID(employee.getEmployeeID());
+               }
+               else {
+                   task.setEmployeeID(-999);
+               }
                task.setCustomerID(-888);
                task.setTaskDescription(taskNotes.getText().toString());
                mmvm.update(task);

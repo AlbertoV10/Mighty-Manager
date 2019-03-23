@@ -50,7 +50,14 @@ public class MainAppListAdapter extends RecyclerView.Adapter<MainAppListAdapter.
     public void onBindViewHolder(@NonNull ListHolder listHolder, int i) {
         Task currentTask = tasks.get(i);
         listHolder.taskTitle.setText(currentTask.getTaskTitle());
-        String name = findEmployeeNameWithId(currentTask.getEmployeeID());
+        String name;
+        if (currentTask.getEmployeeID() == -999) {
+            name = "Unassigned";
+        }
+        else {
+            name = findEmployeeNameWithId(currentTask.getEmployeeID());
+
+        }
         listHolder.assignedEmployee.setText(name);
         //listHolder.assignedEmployee.setText(String.valueOf(currentTask.getEmployeeID()));
         listHolder.editIcon.setImageResource(android.R.drawable.ic_menu_edit);
