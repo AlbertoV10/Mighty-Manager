@@ -300,7 +300,6 @@ public class OpenTaskActivity extends AppCompatActivity {
             Toast.makeText(OpenTaskActivity.this, "Data unchanged canceling", Toast.LENGTH_LONG).show();
         }
         closeActivity(RESULT_CANCELED);
-        closeActivity(RESULT_CANCELED);
     }
 
     private void closeActivity(int resultCode) {

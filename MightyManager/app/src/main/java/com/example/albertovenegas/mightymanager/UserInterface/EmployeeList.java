@@ -2,6 +2,7 @@ package com.example.albertovenegas.mightymanager.UserInterface;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,10 @@ import com.example.albertovenegas.mightymanager.R;
 import java.util.List;
 
 public class EmployeeList extends AppCompatActivity {
+    public static final String EMPLOYEE_DESCRIPTION_EXTRA_KEY = "employee.list.screen.employee.id";
+    public static final int EMPLOYEE_DESCRIPTION_TASK = 1;
     private MightyManagerViewModel mmvm;
+    private EmployeeListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +38,17 @@ public class EmployeeList extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.employee_screen_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        final EmployeeListAdapter adapter = new EmployeeListAdapter();
+        adapter = new EmployeeListAdapter();
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new EmployeeListAdapter.OnItemClickListener() {
             @Override
             public void onItemCLick(Employee employee) {
                 Toast.makeText(EmployeeList.this, "Edit employee: " + employee.getEmployeeUsername(), Toast.LENGTH_SHORT).show();
+                int employeeId = employee.getEmployeeID();
+                Intent intent = new Intent(EmployeeList.this, EmployeeDetails.class);
+                intent.putExtra(EMPLOYEE_DESCRIPTION_EXTRA_KEY, employeeId);
+                startActivityForResult(intent, EMPLOYEE_DESCRIPTION_TASK);
             }
         });
 
@@ -68,4 +76,20 @@ public class EmployeeList extends AppCompatActivity {
     private void cancelScreen() {
         finish();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EMPLOYEE_DESCRIPTION_TASK) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(this, "Employee Edited", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(this, "Employee Unchanged", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+    }
+
 }
