@@ -14,8 +14,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Adapter.MainAppListAdapter;
+import com.example.albertovenegas.mightymanager.Adapter.MainTaskListAdapter;
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
@@ -25,6 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDetails extends AppCompatActivity {
+    public static final String OPEN_TASK_EXTRA_KEY = "employee.details.task.id";
+    public static final int EDIT_TASK_REQUEST = 3;
+
     private EditText eFirstName;
     private EditText eLastName;
     private EditText ePassword;
@@ -33,7 +38,7 @@ public class EmployeeDetails extends AppCompatActivity {
     private CheckBox adminCheck;
     private MightyManagerViewModel mmvm;
     private Employee currentEmployee;
-    private MainAppListAdapter eAdapter;
+    private MainTaskListAdapter eAdapter;
     private List<Task> taskList = new ArrayList<>();
     private Menu menu;
     private Boolean editable = false;
@@ -96,9 +101,21 @@ public class EmployeeDetails extends AppCompatActivity {
 
         RecyclerView eRecyclerView = findViewById(R.id.employee_details_recyclerview);
         eRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        eAdapter = new MainAppListAdapter(this);
+        eAdapter = new MainTaskListAdapter();
         eAdapter.setEmployees(mmvm.getEmployeesList());
         eRecyclerView.setAdapter(eAdapter);
+
+        eAdapter.setOnItemClickListener(new MainTaskListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Task task) {
+                Toast.makeText(EmployeeDetails.this, "Edit Task: " + task.getTaskTitle(), Toast.LENGTH_SHORT).show();
+                Intent openTask = new Intent(EmployeeDetails.this, OpenTaskActivity.class);
+                int taskID = task.getTaskId();
+                openTask.putExtra(OPEN_TASK_EXTRA_KEY, taskID);
+                startActivityForResult(openTask, EDIT_TASK_REQUEST);
+                //startActivity(openTask);
+            }
+        });
 
         mmvm.getAllTasks().observe(this, new Observer<List<Task>>() {
             @Override
@@ -178,5 +195,24 @@ public class EmployeeDetails extends AppCompatActivity {
             setResult(RESULT_OK, intent);
         }
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == EDIT_TASK_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                //data was changed
+                eAdapter.notifyDataSetChanged();
+                //filterSpinner.setSelection(0);
+                Toast.makeText(this, "data was changed in edit mode", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                //data unchanged
+                Toast.makeText(this, "data was NOT changed in edit mode", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

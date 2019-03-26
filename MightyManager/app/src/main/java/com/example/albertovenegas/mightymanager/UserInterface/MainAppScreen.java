@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Adapter.MainAppListAdapter;
+import com.example.albertovenegas.mightymanager.Adapter.MainTaskListAdapter;
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
@@ -28,15 +29,17 @@ import com.example.albertovenegas.mightymanager.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainAppScreen extends AppCompatActivity implements MainAppListAdapter.itemClickCallback{
+public class MainAppScreen extends AppCompatActivity {
     public static final int ADD_TASK_REQUEST = 1;
     public static final int EDIT_TASK_REQUEST = 2;
     public static final String OPEN_TASK_EXTRA_KEY = "main.app.screen.task.id";
+    public static final String OPEN_TASK_INCOMING_ACTIVY = "MainAppScreen";
     private String[] filterChoices = {"All", "New", "In Progress", "Closed"};
 
     private MightyManagerViewModel mightyManagerViewModel;
     private FloatingActionButton fab;
-    private MainAppListAdapter adapter;
+    //private MainAppListAdapter adapter;
+    private MainTaskListAdapter adapter;
     private TextView mainTitle;
     private int employeeId; //change this to use employee id since no duplication possible
     Employee currentUser;
@@ -72,11 +75,22 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
         //set up recycler view
         RecyclerView recyclerView = findViewById(R.id.app_mainscreen_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MainAppListAdapter(this);
+        //adapter = new MainAppListAdapter(this);
+        adapter = new MainTaskListAdapter();
         recyclerView.setAdapter(adapter);
-        adapter.setItemClickCallback(this);
+        //adapter.setItemClickCallback(this);
         adapter.setEmployees(mightyManagerViewModel.getEmployeesList());
 
+        adapter.setOnItemClickListener(new MainTaskListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Task task) {
+                Toast.makeText(MainAppScreen.this, "Edit Task: " + task.getTaskTitle(), Toast.LENGTH_SHORT).show();
+                Intent openTask = new Intent(MainAppScreen.this, OpenTaskActivity.class);
+                int taskID = task.getTaskId();
+                openTask.putExtra(OPEN_TASK_EXTRA_KEY, taskID);
+                startActivityForResult(openTask, EDIT_TASK_REQUEST);
+            }
+        });
 //        if(currentUser.isAdmin()) {
 //            mightyManagerViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
 //                @Override
@@ -111,11 +125,14 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
             }
         });
 
+        Toast.makeText(this, "Total tasks on phone: " + taskList.size(), Toast.LENGTH_SHORT).show();
+
+
         //filter the tasks by filter value
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(MainAppScreen.this, "spinner selection: " + adapterView.getSelectedItem().toString() + "pos: " + i, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainAppScreen.this, "spinner selection: " + adapterView.getSelectedItem().toString() + "pos: " + i, Toast.LENGTH_SHORT).show();
                 adapter.setTasks(filterTasks(i));
             }
 
@@ -138,25 +155,25 @@ public class MainAppScreen extends AppCompatActivity implements MainAppListAdapt
         });
     }
 
-    @Override
-    public void onItemClick(int p) {
-        Toast.makeText(MainAppScreen.this, "Will open activity here for task:" + p, Toast.LENGTH_SHORT).show();
-        //open selected task here
-        Intent openTask = new Intent(MainAppScreen.this, OpenTaskActivity.class);
-        int taskID = adapter.getTaskAt(p).getTaskId();
-        openTask.putExtra(OPEN_TASK_EXTRA_KEY, taskID);
-        startActivityForResult(openTask, EDIT_TASK_REQUEST);
-    }
-
-    @Override
-    public void onIconClick(int p) {
-        Toast.makeText(MainAppScreen.this, "Will edit here", Toast.LENGTH_SHORT).show();
-//        Task currentTask = adapter.getTasks().get(p);
-//        int currentStatus = currentTask.getTaskStatus();
-//        currentStatus = (currentStatus + 1)%4;
-//        currentTask.setTaskStatus(currentStatus);
-//        adapter.notifyDataSetChanged();
-    }
+//    @Override
+//    public void onItemClick(int p) {
+//        Toast.makeText(MainAppScreen.this, "Will open activity here for task:" + p, Toast.LENGTH_SHORT).show();
+//        //open selected task here
+//        Intent openTask = new Intent(MainAppScreen.this, OpenTaskActivity.class);
+//        int taskID = adapter.getTaskAt(p).getTaskId();
+//        openTask.putExtra(OPEN_TASK_EXTRA_KEY, taskID);
+//        startActivityForResult(openTask, EDIT_TASK_REQUEST);
+//    }
+//
+//    @Override
+//    public void onIconClick(int p) {
+//        Toast.makeText(MainAppScreen.this, "Will edit here", Toast.LENGTH_SHORT).show();
+////        Task currentTask = adapter.getTasks().get(p);
+////        int currentStatus = currentTask.getTaskStatus();
+////        currentStatus = (currentStatus + 1)%4;
+////        currentTask.setTaskStatus(currentStatus);
+////        adapter.notifyDataSetChanged();
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
