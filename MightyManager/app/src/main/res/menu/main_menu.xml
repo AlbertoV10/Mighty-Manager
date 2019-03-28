@@ -30,7 +30,20 @@
     <item
         android:id="@+id/menu_item_customers"
         android:title="Customers"
-        app:showAsAction="never"/>
+        app:showAsAction="never">
+
+        <menu>
+            <item
+                android:id="@+id/menu_customers_list"
+                android:title="View Customers"
+                app:showAsAction="never"/>
+
+            <item
+                android:id="@+id/menu_create_customer"
+                android:title="New Customer"
+                app:showAsAction="never"/>
+        </menu>
+    </item>
 
 
 </menu>

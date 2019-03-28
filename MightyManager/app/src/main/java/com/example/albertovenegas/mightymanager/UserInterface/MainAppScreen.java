@@ -225,6 +225,12 @@ public class MainAppScreen extends AppCompatActivity {
             case R.id.menu_employees_list:
                 openEmployeeList();
                 return true;
+            case R.id.menu_create_customer:
+                //createCustomer();
+                return true;
+            case R.id.menu_customers_list:
+                //openCustomerList();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
 
