@@ -226,10 +226,10 @@ public class MainAppScreen extends AppCompatActivity {
                 openEmployeeList();
                 return true;
             case R.id.menu_create_customer:
-                //createCustomer();
+                createCustomer();
                 return true;
             case R.id.menu_customers_list:
-                //openCustomerList();
+                openCustomerList();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -242,6 +242,11 @@ public class MainAppScreen extends AppCompatActivity {
         startActivity(newEmployeeIntent);
     }
 
+    private void createCustomer() {
+        Intent newCustomerIntent = new Intent(MainAppScreen.this, CreateCustomer.class);
+        startActivity(newCustomerIntent);
+    }
+
     private void signOut() {
         Intent signOutIntent = new Intent(MainAppScreen.this, MainLogin.class);
         startActivity(signOutIntent);
@@ -250,6 +255,11 @@ public class MainAppScreen extends AppCompatActivity {
     private void openEmployeeList() {
         Intent employeeListIntent = new Intent(MainAppScreen.this, EmployeeList.class);
         startActivity(employeeListIntent);
+    }
+
+    private void openCustomerList() {
+        Intent customerListIntent = new Intent(MainAppScreen.this, CustomerList.class);
+        startActivity(customerListIntent);
     }
 
     private List<Task> filterTasks(int type) {
