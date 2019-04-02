@@ -1,16 +1,26 @@
 package com.example.albertovenegas.mightymanager.UserInterface;
 
+import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Database.Customer;
@@ -20,6 +30,7 @@ import com.example.albertovenegas.mightymanager.Database.Task;
 import com.example.albertovenegas.mightymanager.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class AddTaskActivity extends AppCompatActivity {
@@ -30,10 +41,16 @@ public class AddTaskActivity extends AppCompatActivity {
     private EditText newTaskTitle;
     private EditText newTaskAddress;
     private Spinner employeeSpinner;
-    private EditText customerName;
+    private AutoCompleteTextView customerName;
     private EditText customerPhone;
     private EditText customerEmail;
     private EditText taskDetails;
+    private TextView taskDate;
+    private ImageButton dateButton;
+    private String dueDate;
+    private String dateCreated;
+
+    private DatePickerDialog.OnDateSetListener dateListener;
     //private ImageButton saveButton;
     //private ImageButton cancelButton;
     private MightyManagerViewModel mmvm;
@@ -55,6 +72,8 @@ public class AddTaskActivity extends AppCompatActivity {
         customerPhone = findViewById(R.id.add_task_customer_phone);
         customerEmail = findViewById(R.id.add_task_customer_email);
         taskDetails = findViewById(R.id.add_task_details);
+        taskDate = findViewById(R.id.add_task_due_date);
+        dateButton = findViewById(R.id.add_task_date_button);
         //saveButton = findViewById(R.id.add_task_save_button);
         //cancelButton = findViewById(R.id.add_task_cancel_button);
 
@@ -77,6 +96,63 @@ public class AddTaskActivity extends AppCompatActivity {
         {
             customerNames.add(customers.get(i).getCustomerName());
         }
+        //set adapter for customer name autocomplete
+        ArrayAdapter<String> customerAutoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, customerNames);
+        customerName.setAdapter(customerAutoCompleteAdapter);
+        //watch as text changes and if user selects a suggested customer, autofill their info
+        customerName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Customer findCustomer = mmvm.findCustomerByName(charSequence.toString());
+                if (findCustomer != null) {
+                    customerPhone.setText(findCustomer.getCustomerPhone());
+                    customerEmail.setText(findCustomer.getCustomerEmail());
+                }
+                else {
+                    customerPhone.setText("");
+                    customerEmail.setText("");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
+        Calendar currentDate = Calendar.getInstance();
+        dateCreated = currentDate.get(Calendar.MONTH) + "/" + currentDate.get(Calendar.DAY_OF_MONTH) + "/" + currentDate.get(Calendar.YEAR);
+        //Toast.makeText(AddTaskActivity.this, "current date would be: " + dateCreated, Toast.LENGTH_LONG).show();
+
+        //set calendar dialog
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(AddTaskActivity.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth, dateListener,
+                        year, month, day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        dateListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month += 1;
+                dueDate = month + "/" + day + "/" + year;
+                taskDate.setText("Due Date: " + dueDate);
+                Toast.makeText(AddTaskActivity.this, "Setting date as: " + taskDate.getText().toString().substring(10), Toast.LENGTH_LONG).show();
+            }
+        };
 
 //        saveButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -98,6 +174,7 @@ public class AddTaskActivity extends AppCompatActivity {
         String title = newTaskTitle.getText().toString().trim();
         String address = newTaskAddress.getText().toString().trim();
         String employee = employeeSpinner.getSelectedItem().toString().trim();
+        String taskDueDate = taskDate.getText().toString().substring(10);
         String cName = customerName.getText().toString().trim();
         String cPhone = customerPhone.getText().toString().trim();
         String cEmail = customerEmail.getText().toString().trim();
@@ -130,7 +207,7 @@ public class AddTaskActivity extends AppCompatActivity {
             if (notes.isEmpty()) {
                 notes = "";
             }
-            mmvm.insert(new Task(title, address, employeeId, 1, -888, notes));
+            mmvm.insert(new Task(title, address, employeeId, 1, -888, notes, dateCreated, taskDueDate));
             closeAddActivity(RESULT_OK);
         }
     }

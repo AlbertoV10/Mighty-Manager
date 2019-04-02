@@ -11,6 +11,7 @@ public class MightyManagerRepository {
     private EmployeeDAO employeeDAO;
     private CustomerDAO customerDAO;
     private LiveData<List<Task>> allTasks;
+    private LiveData<List<Task>> allTasksByDueSoon;
     private LiveData<List<Employee>> allEmployees;
     private LiveData<List<Customer>> allCustomers;
     private List<Employee> employeeList;
@@ -24,6 +25,7 @@ public class MightyManagerRepository {
         customerDAO = mmdb.customerDAO();
         allTasks = taskDAO.getAllTasks();
         taskList = taskDAO.getTasksList();
+        allTasksByDueSoon = taskDAO.getAllTasksByDueSoon();
         allEmployees = employeeDAO.getAllEmployees();
         employeeList = employeeDAO.getEmployeesList();
         allCustomers = customerDAO.getAllCustomers();
@@ -69,6 +71,10 @@ public class MightyManagerRepository {
 
     public List<Task> getTaskList() {
         return taskList;
+    }
+
+    public LiveData<List<Task>> getAllTasksByDueSoon() {
+        return allTasksByDueSoon;
     }
 
     //Async classes for TaskDAO

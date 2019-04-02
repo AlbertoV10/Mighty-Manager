@@ -12,11 +12,13 @@ public class MightyManagerViewModel extends AndroidViewModel {
     private LiveData<List<Task>> allTasks;
     private LiveData<List<Employee>> allEmployees;
     private LiveData<List<Customer>> allCustomers;
+    private LiveData<List<Task>> allTasksByDueSoon;
 
     public MightyManagerViewModel(@NonNull Application application) {
         super(application);
         mRepository = new MightyManagerRepository(application);
         allTasks = mRepository.getAllTasks();
+        allTasksByDueSoon = mRepository.getAllTasksByDueSoon();
         allEmployees = mRepository.getAllEmployees();
         allCustomers = mRepository.getAllCustomers();
     }
@@ -56,6 +58,10 @@ public class MightyManagerViewModel extends AndroidViewModel {
 
     public List<Task> getTaskList() {
         return mRepository.getTaskList();
+    }
+
+    public LiveData<List<Task>> getAllTasksByDueSoon() {
+        return allTasksByDueSoon;
     }
 
     // wrapper methods for Employees

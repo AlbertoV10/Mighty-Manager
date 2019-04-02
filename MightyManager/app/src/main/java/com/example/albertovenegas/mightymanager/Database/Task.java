@@ -32,13 +32,21 @@ public class Task {
     @ColumnInfo(name = "task_description")
     private String taskDescription;
 
-    public Task(String taskTitle, String taskAddress, int employeeID, int taskStatus, int customerID, String taskDescription) {
+    @ColumnInfo(name = "task_date_created")
+    private String taskDateCreated;
+
+    @ColumnInfo(name = "task_date_due")
+    private String taskDateDue;
+
+    public Task(String taskTitle, String taskAddress, int employeeID, int taskStatus, int customerID, String taskDescription, String taskDateCreated, String taskDateDue) {
         this.taskTitle = taskTitle;
         this.taskAddress = taskAddress;
         this.employeeID = employeeID;
         this.taskStatus = taskStatus;
         this.customerID = customerID;
         this.taskDescription = taskDescription;
+        this.taskDateCreated = taskDateCreated;
+        this.taskDateDue = taskDateDue;
     }
 
     public int getTaskId() {
@@ -69,6 +77,14 @@ public class Task {
         return taskDescription;
     }
 
+    public String getTaskDateCreated() {
+        return taskDateCreated;
+    }
+
+    public String getTaskDateDue() {
+        return taskDateDue;
+    }
+
     public void setTaskId(int id) {
         taskId = id;
     }
@@ -95,5 +111,13 @@ public class Task {
 
     public void setTaskDescription(String taskDescription) {
         this.taskDescription = taskDescription;
+    }
+
+    public void setTaskDateCreated(String taskDateCreated) {
+        this.taskDateCreated = taskDateCreated;
+    }
+
+    public void setTaskDateDue(String taskDateDue) {
+        this.taskDateDue = taskDateDue;
     }
 }

@@ -40,4 +40,7 @@ public interface TaskDAO {
 
     @Query("SELECT * FROM task_table ORDER BY task_id ASC")
     List<Task> getTasksList();
+
+    @Query("SELECT * FROM task_table ORDER BY task_date_due ASC")
+    LiveData<List<Task>> getAllTasksByDueSoon();
 }
