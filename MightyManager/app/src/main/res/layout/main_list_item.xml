@@ -5,26 +5,20 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
     android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp">
+    android:layout_marginEnd="8dp"
+    android:id="@+id/main_list_card">
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         android:background="@drawable/border"
         android:clickable="true"
         android:id="@+id/main_list_root_view">
-
-
-        <!--<android.support.v7.widget.AppCompatImageView-->
-            <!--android:id="@+id/main_list_status_icon"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:src="@drawable/ic_assignment_returned_black_24dp"-->
-            <!--android:visibility="invisible"-->
-            <!--/>-->
 
         <TextView
             android:id="@+id/main_list_title_txt"
@@ -34,28 +28,52 @@
             android:textSize="22dp"
             android:fontFamily="serif"
             android:textStyle="bold"
-            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
             />
 
         <TextView
             android:id="@+id/main_list_employee_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Employee Name"
-            android:textSize="18dp"
+            android:text="Employee"
+            android:textSize="18sp"
             android:fontFamily="serif-monospace"
             android:textStyle="bold"
-
             android:layout_below="@+id/main_list_title_txt"
             android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:id="@+id/main_list_due_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Due Date: 12/12/2019"
+            android:textSize="18sp"
+            android:layout_below="@id/main_list_title_txt"
+            android:layout_toRightOf="@id/main_list_employee_txt"
+            android:layout_marginLeft="30dp"
             />
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/main_list_edit_icon"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:src = "@android:drawable/ic_menu_edit"
             android:tint="@android:color/black"
-            android:layout_alignParentRight="true"/>
+            android:layout_toRightOf="@id/main_list_title_txt"
+            android:padding="15dp"
+            android:layout_marginLeft="10dp"
+            />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/main_list_alert_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_warning"
+            android:padding="15dp"
+
+            />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

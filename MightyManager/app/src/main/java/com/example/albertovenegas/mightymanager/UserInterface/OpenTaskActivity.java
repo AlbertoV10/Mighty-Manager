@@ -1,7 +1,10 @@
 package com.example.albertovenegas.mightymanager.UserInterface;
 
+import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,9 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Database.Employee;
@@ -21,6 +26,7 @@ import com.example.albertovenegas.mightymanager.Database.Task;
 import com.example.albertovenegas.mightymanager.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class OpenTaskActivity extends AppCompatActivity {
@@ -33,6 +39,8 @@ public class OpenTaskActivity extends AppCompatActivity {
     private EditText otCustomerPhone;
     private EditText otCustomerEmail;
     private EditText taskNotes;
+    private TextView dueDate;
+    private ImageButton dateButton;
     //private ImageButton editSaveBtn;
     //private ImageButton cancelBtn;
     private ArrayList<String> statusSelection = new ArrayList<>();
@@ -47,6 +55,9 @@ public class OpenTaskActivity extends AppCompatActivity {
     private String currentCustomerPhone;
     private String currentCustomerEmail;
     private String currentNotes;
+    private String currentDueDate;
+
+    private DatePickerDialog.OnDateSetListener dateListener;
     private Menu menu;
 
     @Override
@@ -70,6 +81,8 @@ public class OpenTaskActivity extends AppCompatActivity {
         otCustomerPhone = findViewById(R.id.open_task_customer_phone);
         otCustomerEmail = findViewById(R.id.open_task_customer_email);
         taskNotes = findViewById(R.id.open_task_task_notes);
+        dueDate = findViewById(R.id.open_task_due_date);
+        dateButton = findViewById(R.id.open_task_date_button);
         //editSaveBtn = findViewById(R.id.open_task_save_btn);
         //cancelBtn = findViewById(R.id.open_task_cancel_button);
 
@@ -86,6 +99,9 @@ public class OpenTaskActivity extends AppCompatActivity {
         otCustomerEmail.setEnabled(false);
         taskNotes.setText(task.getTaskDescription());
         taskNotes.setEnabled(false);
+        dueDate.setText("Due Date: " + task.getTaskDateDue());
+        dateButton.setEnabled(false);
+        dateButton.setVisibility(View.INVISIBLE);
         //editSaveBtn.setImageResource(R.drawable.ic_edit);
         //editSaveBtn.setTag(R.drawable.ic_edit);
 
@@ -122,7 +138,7 @@ public class OpenTaskActivity extends AppCompatActivity {
         statusSelection.add("Closed");
         int currentStatusNumber = task.getTaskStatus();
         String currentStatusText = statusSelection.get(currentStatusNumber - 1);
-        statusSelection.remove(currentStatus);
+        statusSelection.remove(currentStatusNumber-1);
         statusSelection.add(0, currentStatusText);
         ArrayAdapter<String> statusSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusSelection);
         statusSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -138,6 +154,34 @@ public class OpenTaskActivity extends AppCompatActivity {
         currentCustomerPhone = otCustomerPhone.getText().toString().trim();
         currentCustomerEmail = otCustomerEmail.getText().toString().trim();
         currentNotes = taskNotes.getText().toString();
+        currentDueDate = dueDate.getText().toString().substring(10);
+
+        //set calendar dialog
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(OpenTaskActivity.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth, dateListener,
+                        year, month, day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        dateListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month += 1;
+                String newDate = month + "/" + day + "/" + year;
+                dueDate.setText("Due Date: " + newDate);
+                Toast.makeText(OpenTaskActivity.this, "Setting date as: " + dueDate.getText().toString().substring(10), Toast.LENGTH_LONG).show();
+            }
+        };
 
 //        editSaveBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -241,17 +285,20 @@ public class OpenTaskActivity extends AppCompatActivity {
            otCustomerPhone.setEnabled(true);
            otCustomerEmail.setEnabled(true);
            taskNotes.setEnabled(true);
+           dateButton.setVisibility(View.VISIBLE);
+           dateButton.setEnabled(true);
            editable = true;
        }
        else {
            if (!otTitle.getText().toString().trim().equals(currentTitle) || !otAddress.getText().toString().trim().equals(currentAddress)
                    || !otEmployeeSpinner.getSelectedItem().toString().equals(currentEmployee) || !otStatusSpinner.getSelectedItem().toString().equals(currentStatus)
                    || !otCustomerName.getText().toString().trim().equals(currentCustomer) || !otCustomerPhone.getText().toString().trim().equals(currentCustomerPhone)
-                   || !otCustomerEmail.getText().toString().trim().equals(currentCustomerEmail) || !taskNotes.getText().toString().equals(currentNotes))
+                   || !otCustomerEmail.getText().toString().trim().equals(currentCustomerEmail) || !taskNotes.getText().toString().equals(currentNotes)
+                   || !dueDate.getText().toString().substring(10).equals(currentDueDate))
            {
                //save data and close activity
                String status = otStatusSpinner.getSelectedItem().toString();
-               if (status.equals("Open")) {
+               if (status.equals("New")) {
                    task.setTaskStatus(1);
                }
                else if (status.equals("In Progress")) {
@@ -277,6 +324,7 @@ public class OpenTaskActivity extends AppCompatActivity {
                }
                task.setCustomerID(-888);
                task.setTaskDescription(taskNotes.getText().toString());
+               task.setTaskDateDue(dueDate.getText().toString().substring(10));
                mmvm.update(task);
 
                closeActivity(RESULT_OK);

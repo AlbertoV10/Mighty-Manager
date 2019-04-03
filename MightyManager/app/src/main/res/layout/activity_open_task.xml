@@ -22,7 +22,7 @@
         android:id="@+id/open_task_scrollview"
         android:layout_below="@+id/open_task_title">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -43,7 +43,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/open_task_employee_spinner"
+        android:layout_below="@id/open_task_desc_employee"
         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/open_task_desc_date"
+        android:text="Due Date"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/open_task_employee_spinner"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/open_task_due_date"
+        android:layout_below="@+id/open_task_desc_date"
+        android:text="Due Date: mm/dd/yyyy"
+        android:textSize="20sp"/>
+
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/open_task_date_button"
+        android:layout_toRightOf="@+id/open_task_due_date"
+        android:layout_below="@+id/open_task_desc_date"
+        android:background="@drawable/ic_date_black_24dp"
+        />
+
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -54,6 +86,7 @@
         android:textStyle="bold"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="10dp"
+        android:layout_below="@id/open_task_due_date"
         />
 
     <EditText
@@ -61,6 +94,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/open_task_address"
         android:text="Address"
+        android:layout_below="@id/open_task_desc_address"
         />
 
     <TextView
@@ -72,12 +106,14 @@
         android:textStyle="bold"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="10dp"
+        android:layout_below="@id/open_task_address"
         />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/open_task_status_spinner" />
+        android:id="@+id/open_task_status_spinner"
+        android:layout_below="@id/open_task_desc_status"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -87,12 +123,14 @@
         android:textSize="25sp"
         android:textStyle="bold"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/open_task_status_spinner"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/open_task_customer_name" />
+        android:id="@+id/open_task_customer_name"
+        android:layout_below="@id/open_task_desc_customer_name"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -102,12 +140,14 @@
         android:textSize="25sp"
         android:textStyle="bold"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/open_task_customer_name"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/open_task_customer_phone" />
+        android:id="@+id/open_task_customer_phone"
+        android:layout_below="@id/open_task_desc_customer_phone"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -117,12 +157,14 @@
         android:textSize="25sp"
         android:textStyle="bold"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/open_task_customer_phone"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/open_task_customer_email" />
+        android:id="@+id/open_task_customer_email"
+        android:layout_below="@id/open_task_desc_customer_email"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -132,15 +174,17 @@
         android:textSize="25sp"
         android:textStyle="bold"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/open_task_customer_email"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/open_task_task_notes"
-        android:gravity="start"/>
+        android:gravity="start"
+        android:layout_below="@id/open_task_desc_task_notes"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 </ScrollView>
     <!--<ImageButton-->
         <!--android:layout_width="wrap_content"-->
