@@ -15,14 +15,20 @@ import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.Task;
 import com.example.albertovenegas.mightymanager.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapter.taskListHolder> {
     private List<Task> tasks = new ArrayList<>();
     private List<Employee> employees = new ArrayList<>();
     private OnItemClickListener listener;
+    private String currentDateString;
 
 
     @NonNull
@@ -37,6 +43,18 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
         Task currentTask = tasks.get(i);
         taskListHolder.taskTitle.setText(currentTask.getTaskTitle());
         String date = currentTask.getTaskDateDue();
+        long daysLeft = isTaskDueSoon(date);
+        if (daysLeft < 7 && daysLeft >= 0) {
+            taskListHolder.alertIcon.setVisibility(View.VISIBLE);
+            taskListHolder.alertIcon.setColorFilter(ContextCompat.getColor(taskListHolder.itemView.getContext(), R.color.in_progress_task));
+        }
+        else if (daysLeft < 0) {
+            taskListHolder.alertIcon.setVisibility(View.VISIBLE);
+            taskListHolder.alertIcon.setColorFilter(ContextCompat.getColor(taskListHolder.itemView.getContext(), R.color.new_task));
+        }
+        else {
+            taskListHolder.alertIcon.setVisibility(View.INVISIBLE);
+        }
         String name;
         if (currentTask.getEmployeeID() == -999) {
             name = "Unassigned";
@@ -45,7 +63,7 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
             name = findEmployeeNameWithId(currentTask.getEmployeeID());
         }
         taskListHolder.assignedEmployee.setText(name);
-        taskListHolder.dueDate.setText("Due Date: " + date);
+        taskListHolder.dueDate.setText("Due: " + date);
         //set the background color of the list items
         int color;
         int status = currentTask.getTaskStatus();
@@ -138,51 +156,49 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
         return name;
     }
 
-    private boolean isTaskDueSoon(String dueDate) {
-        boolean dueSoon = false;
+    private long isTaskDueSoon(String dueDate) {
+        //boolean dueSoon = false;
+        getCurrentDate();
+        long daysTotal = 0;
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        Date startingDate = new Date();
+        Date endingDate = new Date();
+        try {
+            startingDate = df.parse(currentDateString);
+            endingDate = df.parse(dueDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //long diffInMilliseconds = Math.abs(endingDate.getTime() - startingDate.getTime());
+        long diffInMilliseconds = endingDate.getTime() - startingDate.getTime();
+        daysTotal = TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
+        return daysTotal;
+//        if (daysTotal < 7) {
+//            dueSoon = true;
+//        }
+//        return dueSoon;
+    }
+
+    private void getCurrentDate() {
         Calendar currentDate = Calendar.getInstance();
-        String todaysDate = currentDate.get(Calendar.MONTH) + "/" + currentDate.get(Calendar.DAY_OF_MONTH) + "/" + currentDate.get(Calendar.YEAR);
-        //get int values of current date
-        int currentYear = 0;
-        int currentMonth = 0;
-        int currentDay = 0;
-        boolean firstSlashSeen = true;
-        int firstSlashIndex = 0;
-        for (int i = 0; i < todaysDate.length(); i++)
-        {
-            if (todaysDate.charAt(i) == '/' && firstSlashSeen) {
-                firstSlashIndex = i;
-                currentMonth = Integer.parseInt(todaysDate.substring(0, i));
-                firstSlashSeen = false;
-            }
-            if (todaysDate.charAt(i) == '/' && !firstSlashSeen) {
-                currentDay = Integer.parseInt(todaysDate.substring(firstSlashIndex, i));
-                currentYear = Integer.parseInt(todaysDate.substring(i, todaysDate.length()-1));
-            }
+        int month = currentDate.get(Calendar.MONTH) + 1;
+        int day = currentDate.get(Calendar.DAY_OF_MONTH);
+        int year = currentDate.get(Calendar.YEAR);
+        String sDay;
+        String sMonth;
+        if (month < 10) {
+            sMonth = "0" + month;
         }
-        int dueYear = 0;
-        int dueMonth = 0;
-        int dueDay = 0;
-        firstSlashSeen = true;
-        firstSlashIndex = 0;
-        for (int i = 0; i < dueDate.length(); i++)
-        {
-            if (dueDate.charAt(i) == '/' && firstSlashSeen) {
-                firstSlashIndex = i;
-                dueMonth = Integer.parseInt(dueDate.substring(0, i));
-                firstSlashSeen = false;
-            }
-            if (dueDate.charAt(i) == '/' && !firstSlashSeen) {
-                dueDay = Integer.parseInt(dueDate.substring(firstSlashIndex, i));
-                dueYear = Integer.parseInt(dueDate.substring(i, todaysDate.length()-1));
-            }
+        else {
+            sMonth = "" + month;
         }
-//        int yearDiff = Math.abs(dueYear - currentYear);
-//        int monthDiff = Math.abs(dueMonth - currentMonth);
-//        int dayDiff = Math.abs(dueDay - currentMonth);
-
-        //if ((dueMonth - currentMonth == 0 && (dueDay - currentDay == )))
-
-        return dueSoon;
+        if (day < 10) {
+            sDay = "0" + day;
+        }
+        else {
+            sDay = "" + day;
+        }
+        currentDateString = sMonth + "/" + sDay + "/" + year;
+        //Toast.makeText(AddTaskActivity.this, "current date would be: " + dateCreated, Toast.LENGTH_LONG).show();
     }
 }

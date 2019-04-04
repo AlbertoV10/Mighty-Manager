@@ -39,7 +39,7 @@
         android:id="@+id/add_task_due_date"
         android:layout_below="@+id/add_task_employee_spinner"
         android:padding="15dp"
-        android:text="Due Date: mm/dd/yyyy"
+        android:text="Due: mm/dd/yyyy"
         android:textSize="20sp"/>
 
     <ImageButton

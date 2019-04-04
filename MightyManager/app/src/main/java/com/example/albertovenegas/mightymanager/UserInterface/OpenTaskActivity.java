@@ -25,9 +25,14 @@ import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
 import com.example.albertovenegas.mightymanager.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class OpenTaskActivity extends AppCompatActivity {
     private MightyManagerViewModel mmvm;
@@ -60,6 +65,9 @@ public class OpenTaskActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener dateListener;
     private Menu menu;
 
+    //for testing date difference
+    private String currentDateString;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +79,10 @@ public class OpenTaskActivity extends AppCompatActivity {
 
         final int taskID = getIntent().getExtras().getInt(MainAppScreen.OPEN_TASK_EXTRA_KEY);
         task = mmvm.findTaskById(taskID);
+
+        //for testing date diff
+        Toast.makeText(this, "Date created: " + task.getTaskDateCreated(), Toast.LENGTH_SHORT).show();
+        getCurrentDate();
 
         //initialize views
         otTitle = findViewById(R.id.open_task_title);
@@ -99,7 +111,7 @@ public class OpenTaskActivity extends AppCompatActivity {
         otCustomerEmail.setEnabled(false);
         taskNotes.setText(task.getTaskDescription());
         taskNotes.setEnabled(false);
-        dueDate.setText("Due Date: " + task.getTaskDateDue());
+        dueDate.setText("Due: " + task.getTaskDateDue());
         dateButton.setEnabled(false);
         dateButton.setVisibility(View.INVISIBLE);
         //editSaveBtn.setImageResource(R.drawable.ic_edit);
@@ -154,7 +166,7 @@ public class OpenTaskActivity extends AppCompatActivity {
         currentCustomerPhone = otCustomerPhone.getText().toString().trim();
         currentCustomerEmail = otCustomerEmail.getText().toString().trim();
         currentNotes = taskNotes.getText().toString();
-        currentDueDate = dueDate.getText().toString().substring(10);
+        currentDueDate = dueDate.getText().toString().substring(5);
 
         //set calendar dialog
         dateButton.setOnClickListener(new View.OnClickListener() {
@@ -177,9 +189,25 @@ public class OpenTaskActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month += 1;
-                String newDate = month + "/" + day + "/" + year;
-                dueDate.setText("Due Date: " + newDate);
-                Toast.makeText(OpenTaskActivity.this, "Setting date as: " + dueDate.getText().toString().substring(10), Toast.LENGTH_LONG).show();
+                String sMonth;
+                String sDay;
+                if (month < 10) {
+                    sMonth = "0" + month;
+                }
+                else {
+                    sMonth = "" + month;
+                }
+                if (day < 10) {
+                    sDay = "0" + day;
+                }
+                else {
+                    sDay = "" + day;
+                }
+                String newDate = sMonth + "/" + sDay + "/" + year;
+                dueDate.setText("Due: " + newDate);
+                long days = getDateDiff(currentDateString, newDate);
+                //Toast.makeText(OpenTaskActivity.this, "Setting date as: " + dueDate.getText().toString().substring(5), Toast.LENGTH_LONG).show();
+                Toast.makeText(OpenTaskActivity.this, "Date difference from " + currentDateString + " to " + newDate + " is " + days, Toast.LENGTH_LONG).show();
             }
         };
 
@@ -294,7 +322,7 @@ public class OpenTaskActivity extends AppCompatActivity {
                    || !otEmployeeSpinner.getSelectedItem().toString().equals(currentEmployee) || !otStatusSpinner.getSelectedItem().toString().equals(currentStatus)
                    || !otCustomerName.getText().toString().trim().equals(currentCustomer) || !otCustomerPhone.getText().toString().trim().equals(currentCustomerPhone)
                    || !otCustomerEmail.getText().toString().trim().equals(currentCustomerEmail) || !taskNotes.getText().toString().equals(currentNotes)
-                   || !dueDate.getText().toString().substring(10).equals(currentDueDate))
+                   || !dueDate.getText().toString().substring(5).equals(currentDueDate))
            {
                //save data and close activity
                String status = otStatusSpinner.getSelectedItem().toString();
@@ -324,7 +352,7 @@ public class OpenTaskActivity extends AppCompatActivity {
                }
                task.setCustomerID(-888);
                task.setTaskDescription(taskNotes.getText().toString());
-               task.setTaskDateDue(dueDate.getText().toString().substring(10));
+               task.setTaskDateDue(dueDate.getText().toString().substring(5));
                mmvm.update(task);
 
                closeActivity(RESULT_OK);
@@ -359,5 +387,44 @@ public class OpenTaskActivity extends AppCompatActivity {
             setResult(RESULT_OK, intent);
         }
         finish();
+    }
+
+    private void getCurrentDate() {
+        Calendar currentDate = Calendar.getInstance();
+        int month = currentDate.get(Calendar.MONTH) + 1;
+        int day = currentDate.get(Calendar.DAY_OF_MONTH);
+        int year = currentDate.get(Calendar.YEAR);
+        String sDay;
+        String sMonth;
+        if (month < 10) {
+            sMonth = "0" + month;
+        }
+        else {
+            sMonth = "" + month;
+        }
+        if (day < 10) {
+            sDay = "0" + day;
+        }
+        else {
+            sDay = "" + day;
+        }
+        currentDateString = sMonth + "/" + sDay + "/" + year;
+        //Toast.makeText(AddTaskActivity.this, "current date would be: " + dateCreated, Toast.LENGTH_LONG).show();
+    }
+
+    private long getDateDiff(String startDate, String endDate) {
+        long daysTotal = 0;
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        Date startingDate = new Date();
+        Date endingDate = new Date();
+        try {
+            startingDate = df.parse(startDate);
+            endingDate = df.parse(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long diffInMilliseconds = Math.abs(endingDate.getTime() - startingDate.getTime());
+        daysTotal = TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
+        return daysTotal;
     }
 }

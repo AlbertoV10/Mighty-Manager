@@ -123,9 +123,8 @@ public class AddTaskActivity extends AppCompatActivity {
             }
         });
 
-        Calendar currentDate = Calendar.getInstance();
-        dateCreated = currentDate.get(Calendar.MONTH) + "/" + currentDate.get(Calendar.DAY_OF_MONTH) + "/" + currentDate.get(Calendar.YEAR);
-        //Toast.makeText(AddTaskActivity.this, "current date would be: " + dateCreated, Toast.LENGTH_LONG).show();
+        //get day on which note is created
+        getCurrentDate();
 
         //set calendar dialog
         dateButton.setOnClickListener(new View.OnClickListener() {
@@ -148,9 +147,23 @@ public class AddTaskActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month += 1;
-                dueDate = month + "/" + day + "/" + year;
-                taskDate.setText("Due Date: " + dueDate);
-                Toast.makeText(AddTaskActivity.this, "Setting date as: " + taskDate.getText().toString().substring(10), Toast.LENGTH_LONG).show();
+                String sMonth;
+                String sDay;
+                if (month < 10) {
+                    sMonth = "0" + month;
+                }
+                else {
+                    sMonth = "" + month;
+                }
+                if (day < 10) {
+                    sDay = "0" + day;
+                }
+                else {
+                    sDay = "" + day;
+                }
+                dueDate = sMonth + "/" + sDay + "/" + year;
+                taskDate.setText("Due: " + dueDate);
+                Toast.makeText(AddTaskActivity.this, "Setting date as: " + taskDate.getText().toString().substring(5), Toast.LENGTH_LONG).show();
             }
         };
 
@@ -174,7 +187,7 @@ public class AddTaskActivity extends AppCompatActivity {
         String title = newTaskTitle.getText().toString().trim();
         String address = newTaskAddress.getText().toString().trim();
         String employee = employeeSpinner.getSelectedItem().toString().trim();
-        String taskDueDate = taskDate.getText().toString().substring(10);
+        String taskDueDate = taskDate.getText().toString().substring(5);
         String cName = customerName.getText().toString().trim();
         String cPhone = customerPhone.getText().toString().trim();
         String cEmail = customerEmail.getText().toString().trim();
@@ -252,5 +265,28 @@ public class AddTaskActivity extends AppCompatActivity {
     private int findEmployeeId(String eUsername) {
         Employee employee = mmvm.findEmployeeByUsername(eUsername);
         return employee.getEmployeeID();
+    }
+
+    private void getCurrentDate() {
+        Calendar currentDate = Calendar.getInstance();
+        int month = currentDate.get(Calendar.MONTH) + 1;
+        int day = currentDate.get(Calendar.DAY_OF_MONTH);
+        int year = currentDate.get(Calendar.YEAR);
+        String sDay;
+        String sMonth;
+        if (month < 10) {
+            sMonth = "0" + month;
+        }
+        else {
+            sMonth = "" + month;
+        }
+        if (day < 10) {
+            sDay = "0" + day;
+        }
+        else {
+            sDay = "" + day;
+        }
+        dateCreated = sMonth + "/" + sDay + "/" + year;
+        //Toast.makeText(AddTaskActivity.this, "current date would be: " + dateCreated, Toast.LENGTH_LONG).show();
     }
 }
