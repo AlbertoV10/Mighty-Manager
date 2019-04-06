@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Adapter.MainAppListAdapter;
 import com.example.albertovenegas.mightymanager.Adapter.MainTaskListAdapter;
+import com.example.albertovenegas.mightymanager.Database.Customer;
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
@@ -181,6 +182,29 @@ public class MainAppScreen extends AppCompatActivity {
 
         if (requestCode == ADD_TASK_REQUEST) {
             if (resultCode == RESULT_OK) {
+//                intent.putExtra(EXTRA_TITLE, title);
+//                intent.putExtra(EXTRA_ADDRESS, address);
+//                intent.putExtra(EXTRA_EMPLOYEE_ID, eId);
+//                intent.putExtra(EXTRA_CUSTOMER_ID, cId);
+//                intent.putExtra(EXTRA_NOTES, notes);
+//                intent.putExtra(EXTRA_DATE_CREATED, dateMade);
+//                intent.putExtra(EXTRA_DATE_DUE, dateDue);
+//                intent.putExtra(EXTRA_CUSTOMER_NAME, cName);
+                String title = data.getStringExtra(AddTaskActivity.EXTRA_TITLE);
+                String address = data.getStringExtra(AddTaskActivity.EXTRA_ADDRESS);
+                int eId = data.getIntExtra(AddTaskActivity.EXTRA_EMPLOYEE_ID, -999);
+                int cId = data.getIntExtra(AddTaskActivity.EXTRA_CUSTOMER_ID, -888);
+                String notes = data.getStringExtra(AddTaskActivity.EXTRA_NOTES);
+                String dateMade = data.getStringExtra(AddTaskActivity.EXTRA_DATE_CREATED);
+                String dateDue = data.getStringExtra(AddTaskActivity.EXTRA_DATE_DUE);
+                String cName = data.getStringExtra(AddTaskActivity.EXTRA_CUSTOMER_NAME);
+                if (cId == -888) {
+                    if (!cName.equals("")) {
+                        Customer findCustomer = mightyManagerViewModel.findCustomerByName(cName);
+                        cId = findCustomer.getCustomerID();
+                    }
+                }
+                mightyManagerViewModel.insert(new Task(title, address, employeeId, 1, cId, notes, dateMade, dateDue));
                 adapter.notifyDataSetChanged();
                 filterSpinner.setSelection(0);
                 Toast.makeText(this, "New task was added", Toast.LENGTH_SHORT).show();

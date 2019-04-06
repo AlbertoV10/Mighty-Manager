@@ -85,7 +85,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainLi
             assignmentTitle = (TextView) itemView.findViewById(R.id.main_list_title_txt);
             employeeName = (TextView) itemView.findViewById(R.id.main_list_employee_txt);
             //statusIcon = (ImageView) itemView.findViewById(R.id.main_list_status_icon);
-            editIcon = (ImageView) itemView.findViewById(R.id.main_list_edit_icon);
+            //editIcon = (ImageView) itemView.findViewById(R.id.main_list_edit_icon);
             editIcon.setOnClickListener(this);
             container = itemView.findViewById(R.id.main_list_root_view);
             container.setOnClickListener(this);

@@ -85,7 +85,7 @@ public class MainScreenListAdapter extends RecyclerView.Adapter<MainScreenListAd
             taskTitle = itemView.findViewById(R.id.main_list_title_txt);
             assignedEmployee = itemView.findViewById(R.id.main_list_employee_txt);
             //statusIcon = itemView.findViewById(R.id.main_list_status_icon);
-            editIcon = itemView.findViewById(R.id.main_list_edit_icon);
+            //editIcon = itemView.findViewById(R.id.main_list_edit_icon);
             editIcon.setOnClickListener(this);
             container = itemView.findViewById(R.id.main_list_root_view);
             container.setOnClickListener(this);

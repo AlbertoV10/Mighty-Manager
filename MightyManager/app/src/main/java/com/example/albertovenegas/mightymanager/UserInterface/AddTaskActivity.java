@@ -36,7 +36,12 @@ import java.util.List;
 public class AddTaskActivity extends AppCompatActivity {
     public static final String EXTRA_TITLE = "add.task.title";
     public static final String EXTRA_ADDRESS = "add.task.address";
-    public static final String EXTRA_EMPLOYEE_NAME = "add.task.employee.name";
+    public static final String EXTRA_EMPLOYEE_ID = "add.task.employee.id";
+    public static final String EXTRA_CUSTOMER_ID = "add.task.customer.id";
+    public static final String EXTRA_NOTES = "add.task.notes";
+    public static final String EXTRA_DATE_CREATED = "add.task.date.created";
+    public static final String EXTRA_DATE_DUE = "add.task.date.due";
+    public static final String EXTRA_CUSTOMER_NAME = "add.task.customer.name";
 
     private EditText newTaskTitle;
     private EditText newTaskAddress;
@@ -220,13 +225,15 @@ public class AddTaskActivity extends AppCompatActivity {
             if (notes.isEmpty()) {
                 notes = "";
             }
-            mmvm.insert(new Task(title, address, employeeId, 1, -888, notes, dateCreated, taskDueDate));
-            closeAddActivity(RESULT_OK);
+            int cId = customerExists(cName, cPhone, cEmail);
+            Task newTask = new Task(title, address, employeeId, 1, cId, notes, dateCreated, taskDueDate);
+            //mmvm.insert(new Task(title, address, employeeId, 1, cId, notes, dateCreated, taskDueDate));
+            closeAddActivity(RESULT_OK, newTask, cName);
         }
     }
 
     private void cancelScreen() {
-       closeAddActivity(RESULT_CANCELED);
+       closeAddActivity(RESULT_CANCELED, null, "");
     }
 
     @Override
@@ -251,12 +258,29 @@ public class AddTaskActivity extends AppCompatActivity {
         }
     }
 
-    private void closeAddActivity(int resultCode) {
+    private void closeAddActivity(int resultCode, Task task, String customerName) {
         Intent intent = new Intent();
         if (resultCode == RESULT_CANCELED) {
             setResult(RESULT_CANCELED, intent);
         }
         else  {
+            //mmvm.insert(new Task(title, address, employeeId, 1, cId, notes, dateCreated, taskDueDate));
+            String title = task.getTaskTitle();
+            String address = task.getTaskAddress();
+            int eId = task.getEmployeeID();
+            int cId = task.getCustomerID();
+            String notes = task.getTaskDescription();
+            String dateMade = task.getTaskDateCreated();
+            String dateDue = task.getTaskDateDue();
+            String cName = customerName;
+            intent.putExtra(EXTRA_TITLE, title);
+            intent.putExtra(EXTRA_ADDRESS, address);
+            intent.putExtra(EXTRA_EMPLOYEE_ID, eId);
+            intent.putExtra(EXTRA_CUSTOMER_ID, cId);
+            intent.putExtra(EXTRA_NOTES, notes);
+            intent.putExtra(EXTRA_DATE_CREATED, dateMade);
+            intent.putExtra(EXTRA_DATE_DUE, dateDue);
+            intent.putExtra(EXTRA_CUSTOMER_NAME, cName);
             setResult(RESULT_OK, intent);
         }
         finish();
@@ -288,5 +312,35 @@ public class AddTaskActivity extends AppCompatActivity {
         }
         dateCreated = sMonth + "/" + sDay + "/" + year;
         //Toast.makeText(AddTaskActivity.this, "current date would be: " + dateCreated, Toast.LENGTH_LONG).show();
+    }
+
+    private int customerExists(String name, String phone, String email) {
+        int customerId = -888;
+        Customer customer = mmvm.findCustomerByName(name);
+        //found a match by name
+        if (customer != null) {
+            customerId = customer.getCustomerID();
+            if ((!phone.equals(customer.getCustomerPhone()) && !phone.equals("")) || (!email.equals(customer.getCustomerEmail()) && !email.equals(""))) {
+                //update existing customer. Ask to update later
+                customer.setCustomerPhone(phone);
+                customer.setCustomerEmail(email);
+                mmvm.update(customer);
+            }
+        }
+        else {
+            // create the new customer
+            if (!name.equals("")) {
+                Customer newCustomer = new Customer(name, phone, email);
+                mmvm.insert(newCustomer);
+                Customer addCustomer = mmvm.findCustomerByName(name);
+                if (addCustomer != null) {
+                    customerId = addCustomer.getCustomerID();
+                }
+                else {
+                    Toast.makeText(this, "New customer was null", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        return customerId;
     }
 }

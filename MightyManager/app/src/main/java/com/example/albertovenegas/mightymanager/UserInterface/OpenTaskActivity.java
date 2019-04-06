@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.albertovenegas.mightymanager.Database.Customer;
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
@@ -56,7 +57,7 @@ public class OpenTaskActivity extends AppCompatActivity {
     private String currentAddress;
     private String currentEmployee;
     private String currentStatus;
-    private String currentCustomer;
+    private String currentCustomerName;
     private String currentCustomerPhone;
     private String currentCustomerEmail;
     private String currentNotes;
@@ -99,16 +100,24 @@ public class OpenTaskActivity extends AppCompatActivity {
         //cancelBtn = findViewById(R.id.open_task_cancel_button);
 
         //set data and images for buttons
+        Customer currentTaskCustomer = mmvm.findCustomerById(task.getCustomerID());
         otTitle.setText(task.getTaskTitle());
         otTitle.setEnabled(false);
         otAddress.setText(task.getTaskAddress());
         otAddress.setEnabled(false);
-        otCustomerName.setText("N/A will be fixed");
         otCustomerName.setEnabled(false);
-        otCustomerPhone.setText("N/A will be fixed");
         otCustomerPhone.setEnabled(false);
-        otCustomerEmail.setText("N/A will be fixed");
         otCustomerEmail.setEnabled(false);
+        if (currentTaskCustomer == null) {
+            otCustomerName.setText("");
+            otCustomerPhone.setText("");
+            otCustomerEmail.setText("");
+        }
+        else {
+            otCustomerName.setText(currentTaskCustomer.getCustomerName());
+            otCustomerPhone.setText(currentTaskCustomer.getCustomerPhone());
+            otCustomerEmail.setText(currentTaskCustomer.getCustomerEmail());
+        }
         taskNotes.setText(task.getTaskDescription());
         taskNotes.setEnabled(false);
         dueDate.setText("Due: " + task.getTaskDateDue());
@@ -162,7 +171,7 @@ public class OpenTaskActivity extends AppCompatActivity {
         currentAddress = otAddress.getText().toString().trim();
         currentEmployee = otEmployeeSpinner.getSelectedItem().toString().trim();
         currentStatus = otStatusSpinner.getSelectedItem().toString().trim();
-        currentCustomer = otCustomerName.getText().toString().trim();
+        currentCustomerName = otCustomerName.getText().toString().trim();
         currentCustomerPhone = otCustomerPhone.getText().toString().trim();
         currentCustomerEmail = otCustomerEmail.getText().toString().trim();
         currentNotes = taskNotes.getText().toString();
@@ -320,7 +329,7 @@ public class OpenTaskActivity extends AppCompatActivity {
        else {
            if (!otTitle.getText().toString().trim().equals(currentTitle) || !otAddress.getText().toString().trim().equals(currentAddress)
                    || !otEmployeeSpinner.getSelectedItem().toString().equals(currentEmployee) || !otStatusSpinner.getSelectedItem().toString().equals(currentStatus)
-                   || !otCustomerName.getText().toString().trim().equals(currentCustomer) || !otCustomerPhone.getText().toString().trim().equals(currentCustomerPhone)
+                   || !otCustomerName.getText().toString().trim().equals(currentCustomerName) || !otCustomerPhone.getText().toString().trim().equals(currentCustomerPhone)
                    || !otCustomerEmail.getText().toString().trim().equals(currentCustomerEmail) || !taskNotes.getText().toString().equals(currentNotes)
                    || !dueDate.getText().toString().substring(5).equals(currentDueDate))
            {
@@ -350,7 +359,8 @@ public class OpenTaskActivity extends AppCompatActivity {
                else {
                    task.setEmployeeID(-999);
                }
-               task.setCustomerID(-888);
+               int cId = updateCustomer(otCustomerName.getText().toString(), otCustomerPhone.getText().toString(), otCustomerEmail.getText().toString());
+               task.setCustomerID(cId);
                task.setTaskDescription(taskNotes.getText().toString());
                task.setTaskDateDue(dueDate.getText().toString().substring(5));
                mmvm.update(task);
@@ -426,5 +436,30 @@ public class OpenTaskActivity extends AppCompatActivity {
         long diffInMilliseconds = Math.abs(endingDate.getTime() - startingDate.getTime());
         daysTotal = TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
         return daysTotal;
+    }
+
+    private int updateCustomer(String name, String phone, String email) {
+        int id = -888;
+        Customer cust;
+        if (!name.equals("")) {
+            cust = mmvm.findCustomerByName(name);
+            if (cust != null) {
+                id = cust.getCustomerID();
+                if ((!phone.equals(cust.getCustomerPhone()) && !phone.equals("")) || (!email.equals(cust.getCustomerEmail()) && !email.equals(""))) {
+                    cust.setCustomerPhone(phone);
+                    cust.setCustomerEmail(email);
+                    mmvm.update(cust);
+                }
+            }
+            else {
+                //new customer
+                cust = new Customer(name, phone, email);
+                mmvm.insert(cust);
+                cust = mmvm.findCustomerByName(name);
+                id = cust.getCustomerID();
+            }
+        }
+
+        return id;
     }
 }
