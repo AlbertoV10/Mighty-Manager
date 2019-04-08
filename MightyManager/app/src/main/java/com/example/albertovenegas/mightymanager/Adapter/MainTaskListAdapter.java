@@ -42,13 +42,14 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
     public void onBindViewHolder(@NonNull taskListHolder taskListHolder, int i) {
         Task currentTask = tasks.get(i);
         taskListHolder.taskTitle.setText(currentTask.getTaskTitle());
+        int status = currentTask.getTaskStatus();
         String date = currentTask.getTaskDateDue();
         long daysLeft = isTaskDueSoon(date);
-        if (daysLeft < 7 && daysLeft >= 0) {
+        if (daysLeft < 7 && daysLeft >= 0 && status != 3) {
             taskListHolder.alertIcon.setVisibility(View.VISIBLE);
             taskListHolder.alertIcon.setColorFilter(ContextCompat.getColor(taskListHolder.itemView.getContext(), R.color.in_progress_task));
         }
-        else if (daysLeft < 0) {
+        else if (daysLeft < 0 && status != 3) {
             taskListHolder.alertIcon.setVisibility(View.VISIBLE);
             taskListHolder.alertIcon.setColorFilter(ContextCompat.getColor(taskListHolder.itemView.getContext(), R.color.new_task));
         }
@@ -66,7 +67,6 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
         taskListHolder.dueDate.setText("Due: " + date);
         //set the background color of the list items
         int color;
-        int status = currentTask.getTaskStatus();
         switch (status) {
             case 1:
                 color = R.color.new_task;

@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -54,6 +55,9 @@ public class EmployeeDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_details);
+
+        //prevent keyboard from opening at start
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
@@ -163,6 +167,7 @@ public class EmployeeDetails extends AppCompatActivity {
             ePhone.setEnabled(true);
             eEmail.setEnabled(true);
             adminCheck.setEnabled(true);
+            editable = true;
         }
         else {
             if (!eFirstName.getText().toString().equals(currentFirstName) || !eLastName.getText().toString().equals(currentLastName)
@@ -178,6 +183,9 @@ public class EmployeeDetails extends AppCompatActivity {
 
                 mmvm.update(currentEmployee);
                 closeActivity(RESULT_OK);
+            }
+            else {
+                cancelScreen();
             }
         }
     }

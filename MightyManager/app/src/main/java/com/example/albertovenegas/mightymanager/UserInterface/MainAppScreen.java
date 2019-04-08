@@ -35,6 +35,7 @@ public class MainAppScreen extends AppCompatActivity {
     public static final int EDIT_TASK_REQUEST = 2;
     public static final String OPEN_TASK_EXTRA_KEY = "main.app.screen.task.id";
     public static final String OPEN_TASK_INCOMING_ACTIVY = "MainAppScreen";
+    public static final String MY_PROFILE_USER_ID = "main.app.screen.user.id";
     private String[] filterChoices = {"All", "New", "In Progress", "Closed"};
 
     private MightyManagerViewModel mightyManagerViewModel;
@@ -154,6 +155,11 @@ public class MainAppScreen extends AppCompatActivity {
                 startActivityForResult(intent, ADD_TASK_REQUEST);
             }
         });
+        if (!currentUser.isAdmin()) {
+            //if user is not admin, disable floating action button
+            fab.setEnabled(false);
+            fab.hide();
+        }
     }
 
 //    @Override
@@ -204,7 +210,7 @@ public class MainAppScreen extends AppCompatActivity {
                         cId = findCustomer.getCustomerID();
                     }
                 }
-                mightyManagerViewModel.insert(new Task(title, address, employeeId, 1, cId, notes, dateMade, dateDue));
+                mightyManagerViewModel.insert(new Task(title, address, eId, 1, cId, notes, dateMade, dateDue));
                 adapter.notifyDataSetChanged();
                 filterSpinner.setSelection(0);
                 Toast.makeText(this, "New task was added", Toast.LENGTH_SHORT).show();
@@ -234,6 +240,16 @@ public class MainAppScreen extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main_menu, menu);
+        MenuItem createEmployee = menu.findItem(R.id.menu_create_employee);
+        MenuItem createCustomer = menu.findItem(R.id.menu_create_customer);
+        if (!currentUser.isAdmin()) {
+            if (createEmployee != null) {
+                createEmployee.setVisible(false);
+            }
+            if (createCustomer != null) {
+                createCustomer.setVisible(false);
+            }
+        }
         return true;
     }
 
@@ -248,6 +264,9 @@ public class MainAppScreen extends AppCompatActivity {
                 return true;
             case R.id.menu_employees_list:
                 openEmployeeList();
+                return true;
+            case R.id.menu_my_profile:
+                openMyProfile();
                 return true;
             case R.id.menu_create_customer:
                 createCustomer();
@@ -279,6 +298,12 @@ public class MainAppScreen extends AppCompatActivity {
     private void openEmployeeList() {
         Intent employeeListIntent = new Intent(MainAppScreen.this, EmployeeList.class);
         startActivity(employeeListIntent);
+    }
+
+    private void openMyProfile() {
+        Intent myProfileIntent = new Intent(MainAppScreen.this, MyProfile.class);
+        myProfileIntent.putExtra(MY_PROFILE_USER_ID, currentUser.getEmployeeID());
+        startActivity(myProfileIntent);
     }
 
     private void openCustomerList() {

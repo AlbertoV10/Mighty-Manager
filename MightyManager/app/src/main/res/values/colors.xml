@@ -8,5 +8,6 @@
     <color name="list_background">#696969</color>
     <color name="new_task">#FF9696</color>
     <color name="complete_task">#96FF96</color>
-    <color name="in_progress_task">#FFFF96</color>
+    <color name="in_progress_task">#FCFC01</color>
+    <color name="main_login_color">#5863B1</color>
 </resources>

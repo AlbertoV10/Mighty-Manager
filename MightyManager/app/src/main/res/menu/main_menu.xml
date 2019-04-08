@@ -24,6 +24,11 @@
                 android:id="@+id/menu_create_employee"
                 android:title="Create Employee"
                 app:showAsAction="never"/>
+
+            <item
+                android:id="@+id/menu_my_profile"
+                android:title="My Profile"
+                app:showAsAction="never"/>
         </menu>
     </item>
 

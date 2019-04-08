@@ -168,7 +168,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
                 dueDate = sMonth + "/" + sDay + "/" + year;
                 taskDate.setText("Due: " + dueDate);
-                Toast.makeText(AddTaskActivity.this, "Setting date as: " + taskDate.getText().toString().substring(5), Toast.LENGTH_LONG).show();
+                //Toast.makeText(AddTaskActivity.this, "Setting date as: " + taskDate.getText().toString().substring(5), Toast.LENGTH_LONG).show();
             }
         };
 
@@ -288,6 +288,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private int findEmployeeId(String eUsername) {
         Employee employee = mmvm.findEmployeeByUsername(eUsername);
+        Toast.makeText(this, "For employee" + employee.getEmployeeUsername() + "found id" + employee.getEmployeeID(), Toast.LENGTH_SHORT).show();
         return employee.getEmployeeID();
     }
 
@@ -337,7 +338,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     customerId = addCustomer.getCustomerID();
                 }
                 else {
-                    Toast.makeText(this, "New customer was null", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "New customer was null", Toast.LENGTH_SHORT).show();
                 }
             }
         }

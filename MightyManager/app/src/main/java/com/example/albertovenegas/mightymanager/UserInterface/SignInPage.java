@@ -74,7 +74,7 @@ public class SignInPage extends AppCompatActivity {
         }
         else {
             if (managerType) {
-                if (username.equals(user.getEmployeeUsername()) && password.equals("manageradmin")) {
+                if (username.equals(user.getEmployeeUsername()) && password.equals(user.getEmployeePassword())) {
                     Toast.makeText(SignInPage.this, "valid manager", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SignInPage.this, MainAppScreen.class);
                     intent.putExtra("user", user.getEmployeeID());
@@ -84,7 +84,7 @@ public class SignInPage extends AppCompatActivity {
                 }
 
             } else if (employeeType) {
-                if (username.equals(user.getEmployeeUsername()) && password.equals("employeeadmin")) {
+                if (username.equals(user.getEmployeeUsername()) && password.equals(user.getEmployeePassword())) {
                     Toast.makeText(SignInPage.this, "valid employee", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SignInPage.this, MainAppScreen.class);
                     intent.putExtra("user", user.getEmployeeID());
