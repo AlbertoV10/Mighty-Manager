@@ -132,4 +132,33 @@ public class MightyManagerViewModel extends AndroidViewModel {
     public List<Customer> getCustomerList() {
         return mRepository.getCustomerList();
     }
+
+    // wrapper methods for organization
+    public Organization findOrganizationById(int id) {
+        return mRepository.findOrganizationById(id);
+    }
+
+    public Organization findOrganizationByName(String name) {
+        return mRepository.findOrganizationByName(name);
+    }
+
+    public void insert(Organization organization) {
+        mRepository.insert(organization);
+    }
+
+    public void update(Organization organization) {
+        mRepository.update(organization);
+    }
+
+    public void delete(Organization organization) {
+        mRepository.delete(organization);
+    }
+
+    public void deleteAllOrganizations() {
+        mRepository.deleteAllOrganizations();
+    }
+
+    public List<Organization> getOrganizations() {
+        return mRepository.getOrganizations();
+    }
 }

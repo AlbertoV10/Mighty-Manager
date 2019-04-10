@@ -291,7 +291,7 @@ public class MainAppScreen extends AppCompatActivity {
     }
 
     private void signOut() {
-        Intent signOutIntent = new Intent(MainAppScreen.this, MainLogin.class);
+        Intent signOutIntent = new Intent(MainAppScreen.this, SignInPage.class);
         startActivity(signOutIntent);
     }
 

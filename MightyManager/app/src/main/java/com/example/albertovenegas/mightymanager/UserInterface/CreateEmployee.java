@@ -1,6 +1,7 @@
 package com.example.albertovenegas.mightymanager.UserInterface;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ public class CreateEmployee extends AppCompatActivity {
     private EditText ePhone;
     private EditText eEmail;
     private CheckBox adminCheck;
+    private boolean fromCreateOrg = false;
     private MightyManagerViewModel mmvm;
 
     @Override
@@ -39,6 +41,15 @@ public class CreateEmployee extends AppCompatActivity {
         ePhone = findViewById(R.id.create_employee_phone);
         eEmail = findViewById(R.id.create_employee_email);
         adminCheck = findViewById(R.id.create_employee_admin_check);
+
+        if (getIntent().hasExtra("fromCreateOrg")) {
+            fromCreateOrg = true;
+        }
+
+        if (fromCreateOrg) {
+            adminCheck.setChecked(true);
+            adminCheck.setEnabled(false);
+        }
 
         mmvm = ViewModelProviders.of(this).get(MightyManagerViewModel.class);
     }
@@ -82,6 +93,10 @@ public class CreateEmployee extends AppCompatActivity {
 
             mmvm.insert(new Employee(fName, lName, password, admin, username, phone, email));
             Toast.makeText(this, "New Username: " + username, Toast.LENGTH_SHORT).show();
+            if (fromCreateOrg) {
+                Intent signinScreenIntent = new Intent(CreateEmployee.this, SignInPage.class);
+                startActivity(signinScreenIntent);
+            }
             finish();
         }
     }

@@ -10,13 +10,14 @@ import android.support.annotation.NonNull;
 
 import java.util.concurrent.Executors;
 
-@Database(entities = {Task.class, Employee.class, Customer.class}, version = 8)
+@Database(entities = {Task.class, Employee.class, Customer.class, Organization.class}, version = 11)
 public abstract class MightyManagerDatabase extends RoomDatabase {
     public static final String DATABASE_NAME = "Mighty_Manager_Database";
 
     public abstract EmployeeDAO employeeDAO();
     public abstract TaskDAO taskDAO();
     public abstract CustomerDAO customerDAO();
+    public abstract OrganizationDAO organizationDAO();
     public EmployeeDAO employeeDAO;
 
 
@@ -49,11 +50,13 @@ public abstract class MightyManagerDatabase extends RoomDatabase {
         private TaskDAO taskDAO;
         private EmployeeDAO employeeDAO;
         private CustomerDAO customerDAO;
+        private OrganizationDAO organizationDAO;
 
         private PopulateDatabaseAsyncTask(MightyManagerDatabase database) {
             this.taskDAO = database.taskDAO();
             this.employeeDAO = database.employeeDAO();
             this.customerDAO = database.customerDAO();
+            this.organizationDAO = database.organizationDAO();
         }
         @Override
         protected Void doInBackground(Void... voids) {

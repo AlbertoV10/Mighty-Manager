@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserInterface.MyProfile"></activity>
+        <activity android:name=".UserInterface.CreateOrganization"></activity>
+        <activity android:name=".UserInterface.FirstTimeSignUp" />
+        <activity android:name=".UserInterface.MyProfile" />
         <activity android:name=".UserInterface.CustomerList" />
         <activity android:name=".UserInterface.EmployeeDetails" />
         <activity android:name=".UserInterface.CreateCustomer" />
@@ -18,14 +20,14 @@
         <activity android:name=".UserInterface.OpenTaskActivity" />
         <activity android:name=".UserInterface.AddTaskActivity" />
         <activity android:name=".UserInterface.MainAppScreen" />
-        <activity android:name=".UserInterface.MainLogin">
+        <activity android:name=".UserInterface.MainLogin" />
+        <activity android:name=".UserInterface.SignInPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserInterface.SignInPage" />
         <activity android:name=".UnusedFiles.MainScreen" />
     </application>
 

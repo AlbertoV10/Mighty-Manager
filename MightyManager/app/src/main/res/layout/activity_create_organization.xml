@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserInterface.CreateOrganization">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_org_screen_title"
+        android:background="@android:color/holo_blue_dark"
+        android:text="New Organization"
+        android:textSize="32sp"
+        android:gravity="center"
+        android:padding="10dp"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_org_name"
+        android:layout_below="@+id/create_org_screen_title"
+        android:hint="Organization Name"
+        android:padding="15dp"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_org_address"
+        android:layout_below="@+id/create_org_name"
+        android:hint="Organization Address"
+        android:inputType="textPostalAddress"
+        android:padding="15dp"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_org_phone"
+        android:layout_below="@+id/create_org_address"
+        android:hint="Main Phone"
+        android:inputType="phone"
+        android:padding="15dp"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_org_email"
+        android:layout_below="@+id/create_org_phone"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:padding="15dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_org_add_manager_button"
+        android:layout_below="@+id/create_org_email"
+        android:text="Create Manager"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        />
+
+</RelativeLayout>

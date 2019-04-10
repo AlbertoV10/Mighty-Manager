@@ -10,6 +10,7 @@ public class MightyManagerRepository {
     private TaskDAO taskDAO;
     private EmployeeDAO employeeDAO;
     private CustomerDAO customerDAO;
+    private OrganizationDAO organizationDAO;
     private LiveData<List<Task>> allTasks;
     private LiveData<List<Task>> allTasksByDueSoon;
     private LiveData<List<Employee>> allEmployees;
@@ -17,12 +18,14 @@ public class MightyManagerRepository {
     private List<Employee> employeeList;
     private List<Customer> customerList;
     private List<Task> taskList;
+    private List<Organization> organizationList;
 
     MightyManagerRepository(Application application) {
         MightyManagerDatabase mmdb = MightyManagerDatabase.getDatabase(application);
         taskDAO = mmdb.taskDAO();
         employeeDAO = mmdb.employeeDAO();
         customerDAO = mmdb.customerDAO();
+        organizationDAO = mmdb.organizationDAO();
         allTasks = taskDAO.getAllTasks();
         taskList = taskDAO.getTasksList();
         allTasksByDueSoon = taskDAO.getAllTasksByDueSoon();
@@ -30,6 +33,7 @@ public class MightyManagerRepository {
         employeeList = employeeDAO.getEmployeesList();
         allCustomers = customerDAO.getAllCustomers();
         customerList = customerDAO.getCustomersList();
+        organizationList = organizationDAO.getOrganizations();
     }
 
     // methods for TaskDAO
@@ -314,6 +318,92 @@ public class MightyManagerRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             customerDAO.deleteAllCustomers();
+            return null;
+        }
+    }
+
+    //Methods for OrganizationDAO
+    public Organization findOrganizationById(int organizationId) {
+        return organizationDAO.findOrganizationById(organizationId);
+    }
+
+    public Organization findOrganizationByName(String organizationName) {
+        return organizationDAO.findOrganizationByName(organizationName);
+    }
+
+    public List<Organization> getOrganizations() {
+        return organizationList;
+    }
+
+    public void insert(Organization organization) {
+        new InsertOrganizationAsyncTask(organizationDAO).execute(organization);
+    }
+
+    public void update(Organization organization) {
+        new UpdateOrganizationAsyncTask(organizationDAO).execute(organization);
+    }
+
+    public void delete(Organization organization) {
+        new DeleteOrganizationAsyncTask(organizationDAO).execute(organization);
+    }
+
+    public void deleteAllOrganizations() {
+        new DeleteAllOrganizationsAsyncTask(organizationDAO).execute();
+    }
+
+    //Async classes for OrganizationDAO
+    private static class InsertOrganizationAsyncTask extends AsyncTask<Organization, Void, Void> {
+        private OrganizationDAO organizationDAO;
+
+        private InsertOrganizationAsyncTask(OrganizationDAO organizationDAO) {
+            this.organizationDAO = organizationDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Organization... organizations) {
+            organizationDAO.insert(organizations[0]);
+            return null;
+        }
+    }
+
+    private static class UpdateOrganizationAsyncTask extends AsyncTask<Organization, Void, Void> {
+        private OrganizationDAO organizationDAO;
+
+        private UpdateOrganizationAsyncTask(OrganizationDAO organizationDAO) {
+            this.organizationDAO = organizationDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Organization... organizations) {
+            organizationDAO.update(organizations[0]);
+            return null;
+        }
+    }
+
+    private static class DeleteOrganizationAsyncTask extends AsyncTask<Organization, Void, Void> {
+        private OrganizationDAO organizationDAO;
+
+        private DeleteOrganizationAsyncTask(OrganizationDAO organizationDAO) {
+            this.organizationDAO = organizationDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Organization... organizations) {
+            organizationDAO.delete(organizations[0]);
+            return null;
+        }
+    }
+
+    private static class DeleteAllOrganizationsAsyncTask extends AsyncTask<Void, Void, Void> {
+        private OrganizationDAO organizationDAO;
+
+        private DeleteAllOrganizationsAsyncTask(OrganizationDAO organizationDAO) {
+            this.organizationDAO = organizationDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            organizationDAO.deleteAllOrganizations();
             return null;
         }
     }
