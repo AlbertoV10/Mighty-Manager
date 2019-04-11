@@ -41,6 +41,7 @@
         android:id="@+id/create_employee_password"
         android:layout_below="@+id/create_employee_last_name"
         android:hint="Password"
+        android:inputType="textPassword"
         android:padding="15dp"
         />
 

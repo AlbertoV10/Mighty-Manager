@@ -37,10 +37,10 @@ public class CreateOrganization extends AppCompatActivity {
             public void onClick(View view) {
                 name = orgName.getText().toString();
                 address = orgAddress.getText().toString();
-                phone = orgAddress.getText().toString();
+                phone = orgPhone.getText().toString();
                 email = orgEmail.getText().toString();
                 openReviewInfoDialog();
-                Toast.makeText(CreateOrganization.this, "Info Verified", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CreateOrganization.this, "Info Verified", Toast.LENGTH_SHORT).show();
             }
         });
     }

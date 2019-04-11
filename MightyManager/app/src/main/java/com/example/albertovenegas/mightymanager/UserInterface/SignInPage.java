@@ -31,7 +31,9 @@ public class SignInPage extends AppCompatActivity {
     private Boolean employeeType;
     private MightyManagerViewModel mmvm;
     private Employee user;
-    private List<Organization> org;
+    private List<Organization> orgs;
+
+    private String mainManagerUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +53,17 @@ public class SignInPage extends AppCompatActivity {
         //employeeType = getIntent().getExtras().getBoolean("employeeUserType");
         mmvm = ViewModelProviders.of(this).get(MightyManagerViewModel.class);
 
-        org = mmvm.getOrganizations();
-        if (org.size() != 0) {
-            Toast.makeText(this, "setupOrgButton will be invisible. NumberOfOrgs: "+org.size(), Toast.LENGTH_SHORT).show();
+        orgs = mmvm.getOrganizations();
+        if (orgs.size() != 0) {
+            Organization org = orgs.get(0);
+            if (getIntent().hasExtra("managerUserNameForFirstTime")) {
+                mainManagerUserName = getIntent().getExtras().getString("managerUserNameForFirstTime");
+                Employee mainManager = mmvm.findEmployeeByUsername(mainManagerUserName);
+                org.setManagerID(mainManager.getEmployeeID());
+                mmvm.update(org);
+            }
+
+            Toast.makeText(this, "setupOrgButton will be invisible. NumberOfOrgs: "+orgs.size(), Toast.LENGTH_SHORT).show();
             setUpOrgButton.setEnabled(false);
             setUpOrgButton.setVisibility(View.INVISIBLE);
         }

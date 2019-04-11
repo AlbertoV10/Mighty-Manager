@@ -39,6 +39,8 @@ public class ReviewInfoDialog extends AppCompatDialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //create the org here
+                Organization newOrg = new Organization(name, address, phone, email, -999, 0, 0);
+                mmvm.insert(newOrg);
                 Intent createManager = new Intent(getActivity(), CreateEmployee.class);
                 createManager.putExtra("fromCreateOrg", true);
                 startActivity(createManager);
@@ -47,7 +49,7 @@ public class ReviewInfoDialog extends AppCompatDialogFragment {
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(getActivity(), "Ok", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Cancel", Toast.LENGTH_SHORT).show();
             }
         });
 

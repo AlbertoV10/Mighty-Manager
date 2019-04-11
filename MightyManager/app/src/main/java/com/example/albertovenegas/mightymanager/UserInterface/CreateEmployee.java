@@ -95,6 +95,7 @@ public class CreateEmployee extends AppCompatActivity {
             Toast.makeText(this, "New Username: " + username, Toast.LENGTH_SHORT).show();
             if (fromCreateOrg) {
                 Intent signinScreenIntent = new Intent(CreateEmployee.this, SignInPage.class);
+                signinScreenIntent.putExtra("managerUserNameForFirstTime", username);
                 startActivity(signinScreenIntent);
             }
             finish();

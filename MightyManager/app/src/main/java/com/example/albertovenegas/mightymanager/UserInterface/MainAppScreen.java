@@ -27,7 +27,11 @@ import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
 import com.example.albertovenegas.mightymanager.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainAppScreen extends AppCompatActivity {
@@ -36,7 +40,7 @@ public class MainAppScreen extends AppCompatActivity {
     public static final String OPEN_TASK_EXTRA_KEY = "main.app.screen.task.id";
     public static final String OPEN_TASK_INCOMING_ACTIVY = "MainAppScreen";
     public static final String MY_PROFILE_USER_ID = "main.app.screen.user.id";
-    private String[] filterChoices = {"All", "New", "In Progress", "Closed"};
+    private String[] filterChoices = {"All", "New", "In Progress", "Closed", "Sort by Due Date"};
 
     private MightyManagerViewModel mightyManagerViewModel;
     private FloatingActionButton fab;
@@ -134,7 +138,7 @@ public class MainAppScreen extends AppCompatActivity {
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //Toast.makeText(MainAppScreen.this, "spinner selection: " + adapterView.getSelectedItem().toString() + "pos: " + i, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainAppScreen.this, "spinner selection: " + adapterView.getSelectedItem().toString() + "pos: " + i, Toast.LENGTH_SHORT).show();
                 adapter.setTasks(filterTasks(i));
             }
 
@@ -276,9 +280,18 @@ public class MainAppScreen extends AppCompatActivity {
                 return true;
             case R.id.menu_item_view_org:
                 openOrganizationDetails();
+                return true;
+            case R.id.menu_debug:
+                debug();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void debug() {
+        Intent newDebugIntent = new Intent(MainAppScreen.this, Debug.class);
+        startActivity(newDebugIntent);
     }
 
     private void createEmployee() {
@@ -323,7 +336,7 @@ public class MainAppScreen extends AppCompatActivity {
         if (type == 0) {
             return taskList;
         }
-        else {
+        else if (type >= 1 && type <= 3){
             for (int i = 0; i < taskList.size(); i++) {
                 // filter new tasks
                 if (taskList.get(i).getTaskStatus() == type) {
@@ -331,6 +344,66 @@ public class MainAppScreen extends AppCompatActivity {
                 }
             }
         }
+        else {
+            tasksFiltered = sortByDate(type);
+        }
         return tasksFiltered;
+    }
+
+    private List<Task> sortByDate(int type) {
+        List<Task> dateFilteredTasks = new ArrayList<>();
+        //ArrayList<String> stringDates = new ArrayList<>();
+        //ArrayList<Date> dates = new ArrayList<>();
+
+
+        if (type == 4) {
+            //sort by most soon due
+            dateFilteredTasks.addAll(taskList);
+            quickSortdates(dateFilteredTasks, 0, dateFilteredTasks.size()-1);
+        }
+        return dateFilteredTasks;
+    }
+
+    private List<Task> quickSortdates(List<Task> tasks, int begin, int end) {
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        if (begin < end) {
+            int partitionIndex = partition(tasks, begin, end, df);
+
+            quickSortdates(tasks, begin, partitionIndex-1);
+            quickSortdates(tasks, partitionIndex+1, end);
+        }
+        return tasks;
+    }
+
+    private int partition(List<Task> tasks, int begin, int end, DateFormat df) {
+        Date pivot = new Date();
+        try {
+            pivot = df.parse(tasks.get(end).getTaskDateDue());
+        }
+        catch (ParseException pe) {
+            pe.printStackTrace();
+        }
+        int i = begin-1;
+        Date currentDate = new Date();
+        for (int j = begin; j < end; j++) {
+            try{
+                currentDate = df.parse(tasks.get(j).getTaskDateDue());
+            }
+            catch (ParseException pe) {
+                pe.printStackTrace();
+            }
+            if (currentDate.getTime() <= pivot.getTime()) {
+                i++;
+
+                Task swapTemp = tasks.get(i);
+                tasks.set(i, tasks.get(j));
+                tasks.set(j, swapTemp);
+            }
+        }
+        Task swapTemp = tasks.get(i+1);
+        tasks.set(i+1, tasks.get(end));
+        tasks.set(end, swapTemp);
+        return i+1;
+
     }
 }

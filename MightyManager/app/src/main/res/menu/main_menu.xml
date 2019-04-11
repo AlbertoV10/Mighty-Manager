@@ -55,5 +55,10 @@
         android:title="Organization Details"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/menu_debug"
+        android:title="debug"
+        app:showAsAction="never"/>
+
 
 </menu>
