@@ -102,6 +102,9 @@ public class CreateEmployee extends AppCompatActivity {
     }
 
     private void cancelScreen() {
+        if (fromCreateOrg){
+            mmvm.deleteAllOrganizations();
+        }
         finish();
     }
 

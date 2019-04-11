@@ -41,21 +41,8 @@ public class MainLogin extends AppCompatActivity {
         //mmvm.insert(new Customer("Test Customer", "(123)555-3553"));
         //mmvm.insert(new Employee("manager", "admin", "manageradmin", true, "madmin", "(800)555-1234", "manager@mm.com"));
         //mmvm.insert(new Employee("employee", "admin", "employeeadmin", false, "eadmin", "(800)555-5678", "employee@mm.com"));
-        Employee manager = mmvm.findEmployeeByUsername("madmin");
         List<Employee> employees = mmvm.getEmployeesList();
         Toast.makeText(this, "number of employees: " + employees.size(), Toast.LENGTH_SHORT).show();
-        //Employee manager = mmvm.findEmployeeByName("manager admin");
-        Employee employee = mmvm.findEmployeeByUsername("eadmin");
-        //Employee employee = mmvm.findEmployeeByName("employee admin");
-        //Customer customer = mmvm.findCustomerByName("Test Customer");
-        //Toast.makeText(this, "manager id: " + manager.getEmployeeID() + "\nEmployee id: " + employee.getEmployeeID(), Toast.LENGTH_LONG).show();
-        if (manager == null)
-        {
-            Toast.makeText(this, "manager null", Toast.LENGTH_SHORT).show();
-        }
-        if (employee == null) {
-            Toast.makeText(this, "employee null", Toast.LENGTH_SHORT).show();
-        }
 
         managerButton = (Button) findViewById(R.id.login_manager_button);
         employeeButton = (Button) findViewById(R.id.login_employee_button);

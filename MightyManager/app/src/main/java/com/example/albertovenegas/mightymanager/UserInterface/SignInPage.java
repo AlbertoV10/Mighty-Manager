@@ -53,7 +53,13 @@ public class SignInPage extends AppCompatActivity {
 
         org = mmvm.getOrganizations();
         if (org.size() != 0) {
-            Toast.makeText(this, "setupOrgButton will be invisible", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "setupOrgButton will be invisible. NumberOfOrgs: "+org.size(), Toast.LENGTH_SHORT).show();
+            setUpOrgButton.setEnabled(false);
+            setUpOrgButton.setVisibility(View.INVISIBLE);
+        }
+        else {
+            loginButton.setEnabled(false);
+            signupButton.setEnabled(false);
         }
 
 

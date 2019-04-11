@@ -274,9 +274,10 @@ public class MainAppScreen extends AppCompatActivity {
             case R.id.menu_customers_list:
                 openCustomerList();
                 return true;
+            case R.id.menu_item_view_org:
+                openOrganizationDetails();
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
@@ -309,6 +310,11 @@ public class MainAppScreen extends AppCompatActivity {
     private void openCustomerList() {
         Intent customerListIntent = new Intent(MainAppScreen.this, CustomerList.class);
         startActivity(customerListIntent);
+    }
+
+    private void openOrganizationDetails() {
+        Intent orgDetailsIntent = new Intent(MainAppScreen.this, OrganizationDetails.class);
+        startActivity(orgDetailsIntent);
     }
 
     private List<Task> filterTasks(int type) {
