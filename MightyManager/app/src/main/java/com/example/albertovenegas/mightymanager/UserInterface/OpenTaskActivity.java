@@ -1,10 +1,17 @@
 package com.example.albertovenegas.mightymanager.UserInterface;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +44,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class OpenTaskActivity extends AppCompatActivity {
+    public static final int REQUEST_CALL = 1;
+
     private MightyManagerViewModel mmvm;
     private EditText otTitle;
     private EditText otAddress;
@@ -69,6 +78,8 @@ public class OpenTaskActivity extends AppCompatActivity {
 
     //for testing date difference
     private String currentDateString;
+
+    ColorStateList originalTextColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,13 +116,17 @@ public class OpenTaskActivity extends AppCompatActivity {
 
         //set data and images for buttons
         Customer currentTaskCustomer = mmvm.findCustomerById(task.getCustomerID());
+        originalTextColor = otCustomerPhone.getTextColors();
         otTitle.setText(task.getTaskTitle());
         otTitle.setEnabled(false);
         otAddress.setText(task.getTaskAddress());
         otAddress.setEnabled(false);
         otCustomerName.setEnabled(false);
-        otCustomerPhone.setEnabled(false);
-        otCustomerEmail.setEnabled(false);
+        otCustomerPhone.setFocusable(false);
+        otCustomerPhone.setTextColor(ContextCompat.getColor(this, R.color.clickable_text));
+        otCustomerEmail.setFocusable(false);
+        otCustomerEmail.setTextColor(ContextCompat.getColor(this, R.color.clickable_text));
+
         if (currentTaskCustomer == null) {
             otCustomerName.setText("");
             otCustomerPhone.setText("");
@@ -121,6 +136,8 @@ public class OpenTaskActivity extends AppCompatActivity {
             otCustomerName.setText(currentTaskCustomer.getCustomerName());
             otCustomerPhone.setText(currentTaskCustomer.getCustomerPhone());
             otCustomerEmail.setText(currentTaskCustomer.getCustomerEmail());
+            otCustomerPhone.setClickable(true);
+            otCustomerEmail.setClickable(true);
         }
         taskNotes.setText(task.getTaskDescription());
         taskNotes.setEnabled(false);
@@ -224,6 +241,22 @@ public class OpenTaskActivity extends AppCompatActivity {
             }
         };
 
+        //set click listener for calling phone number
+        otCustomerPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callPhoneNumber();
+            }
+        });
+
+        //set click listener to send email
+        otCustomerEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendEmail();
+            }
+        });
+
 //        editSaveBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -323,8 +356,14 @@ public class OpenTaskActivity extends AppCompatActivity {
            otEmployeeSpinner.setEnabled(true);
            otStatusSpinner.setEnabled(true);
            otCustomerName.setEnabled(true);
-           otCustomerPhone.setEnabled(true);
-           otCustomerEmail.setEnabled(true);
+           otCustomerPhone.setTextColor(originalTextColor);
+           otCustomerPhone.setFocusableInTouchMode(true);
+           otCustomerPhone.setFocusable(true);
+           otCustomerPhone.setClickable(false);
+           otCustomerEmail.setTextColor(originalTextColor);
+           otCustomerEmail.setFocusableInTouchMode(true);
+           otCustomerEmail.setFocusable(true);
+           otCustomerEmail.setClickable(false);
            taskNotes.setEnabled(true);
            dateButton.setVisibility(View.VISIBLE);
            dateButton.setEnabled(true);
@@ -463,7 +502,46 @@ public class OpenTaskActivity extends AppCompatActivity {
                 id = cust.getCustomerID();
             }
         }
-
         return id;
+    }
+
+    private void callPhoneNumber() {
+        String phoneNumber = otCustomerPhone.getText().toString();
+        if (phoneNumber.trim().length() > 0) {
+            if (ContextCompat.checkSelfPermission(OpenTaskActivity.this,
+                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(OpenTaskActivity.this,
+                        new String[] {Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+            }
+            else {
+                String dialNumber = "tel:" + phoneNumber;
+                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dialNumber)));
+            }
+        }
+        else {
+            Toast.makeText(this, "No Number To Call", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CALL) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                callPhoneNumber();
+            }
+            else {
+                Toast.makeText(this, "Permision Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void sendEmail() {
+        String emailRecipient = otCustomerEmail.getText().toString();
+        if (emailRecipient.trim().length() > 0){
+            Intent emailIntent = new Intent(Intent.ACTION_SEND);
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, emailRecipient);
+            emailIntent.setType("message/rfc822");
+            startActivity(Intent.createChooser(emailIntent, "Choose an email client"));
+        }
     }
 }

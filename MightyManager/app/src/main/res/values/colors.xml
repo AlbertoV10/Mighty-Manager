@@ -10,4 +10,5 @@
     <color name="complete_task">#96FF96</color>
     <color name="in_progress_task">#FCFC01</color>
     <color name="main_login_color">#5863B1</color>
+    <color name="clickable_text">#354CD3</color>
 </resources>

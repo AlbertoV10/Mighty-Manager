@@ -2,6 +2,7 @@ package com.example.albertovenegas.mightymanager.UserInterface;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,9 @@ import com.example.albertovenegas.mightymanager.R;
 import java.util.List;
 
 public class CustomerList extends AppCompatActivity {
+    public static final String CUSTOMER_DESCRIPTION_EXTRA_KEY = "customer.list.screen.customer.id";
+    public static final int CUSTOMER_DESCRIPTION_TASK = 1;
+
     private MightyManagerViewModel mmvm;
     private CustomerListAdapter adapter;
 
@@ -42,6 +46,10 @@ public class CustomerList extends AppCompatActivity {
             @Override
             public void onItemClick(Customer customer) {
                 Toast.makeText(CustomerList.this, "Edit Customer: " + customer.getCustomerName(), Toast.LENGTH_SHORT).show();
+                int customerId = customer.getCustomerID();
+                Intent intent = new Intent(CustomerList.this, CustomerDetails.class);
+                intent.putExtra(CUSTOMER_DESCRIPTION_EXTRA_KEY, customerId);
+                startActivityForResult(intent, CUSTOMER_DESCRIPTION_TASK);
             }
         });
 
@@ -68,5 +76,20 @@ public class CustomerList extends AppCompatActivity {
 
     private void cancelScreen() {
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CUSTOMER_DESCRIPTION_TASK) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(this, "Customer Edited", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(this, "Customer Unchanged", Toast.LENGTH_SHORT).show();
+
+            }
+        }
     }
 }

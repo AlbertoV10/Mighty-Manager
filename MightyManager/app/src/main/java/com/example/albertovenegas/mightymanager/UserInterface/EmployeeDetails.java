@@ -1,9 +1,16 @@
 package com.example.albertovenegas.mightymanager.UserInterface;
 
+import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -30,6 +38,7 @@ import java.util.List;
 public class EmployeeDetails extends AppCompatActivity {
     public static final String OPEN_TASK_EXTRA_KEY = "employee.details.task.id";
     public static final int EDIT_TASK_REQUEST = 3;
+    public static final int REQUEST_CALL = 1;
 
     private EditText eFirstName;
     private EditText eLastName;
@@ -50,6 +59,8 @@ public class EmployeeDetails extends AppCompatActivity {
     private String currentPhone;
     private String currentEmail;
     private boolean currentAdmin;
+
+    ColorStateList originalTextColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +87,7 @@ public class EmployeeDetails extends AppCompatActivity {
         adminCheck = findViewById(R.id.employee_details_admin_check);
 
         //populate each view and disable editing by default
+        originalTextColor = ePhone.getTextColors();
         eFirstName.setText(currentEmployee.getEmployeeFirstName());
         eFirstName.setEnabled(false);
         eLastName.setText(currentEmployee.getEmployeeLastName());
@@ -83,9 +95,13 @@ public class EmployeeDetails extends AppCompatActivity {
         ePassword.setText(currentEmployee.getEmployeePassword());
         ePassword.setEnabled(false);
         ePhone.setText(currentEmployee.getEmployeePhone());
-        ePhone.setEnabled(false);
+        ePhone.setFocusable(false);
+        ePhone.setTextColor(ContextCompat.getColor(this, R.color.clickable_text));
+        ePhone.setClickable(true);
         eEmail.setText(currentEmployee.getEmployeeEmail());
-        eEmail.setEnabled(false);
+        eEmail.setFocusable(false);
+        eEmail.setTextColor(ContextCompat.getColor(this, R.color.clickable_text));
+        eEmail.setClickable(true);
         if (currentEmployee.isAdmin()) {
             adminCheck.setChecked(true);
         }
@@ -128,6 +144,22 @@ public class EmployeeDetails extends AppCompatActivity {
                 eAdapter.setTasks(taskList);
             }
         });
+
+        //set click listener for calling phone number
+        ePhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callPhoneNumber();
+            }
+        });
+
+        //set click listener to send email
+        eEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendEmail();
+            }
+        });
     }
 
     @Override
@@ -164,8 +196,14 @@ public class EmployeeDetails extends AppCompatActivity {
             eFirstName.setEnabled(true);
             eLastName.setEnabled(true);
             ePassword.setEnabled(true);
-            ePhone.setEnabled(true);
-            eEmail.setEnabled(true);
+            ePhone.setTextColor(originalTextColor);
+            ePhone.setFocusableInTouchMode(true);
+            ePhone.setFocusable(true);
+            ePhone.setClickable(false);
+            eEmail.setTextColor(originalTextColor);
+            eEmail.setFocusableInTouchMode(true);
+            eEmail.setFocusable(true);
+            eEmail.setClickable(false);
             adminCheck.setEnabled(true);
             editable = true;
         }
@@ -221,6 +259,46 @@ public class EmployeeDetails extends AppCompatActivity {
                 //data unchanged
                 Toast.makeText(this, "data was NOT changed in edit mode", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void callPhoneNumber() {
+        String phoneNumber = ePhone.getText().toString();
+        if (phoneNumber.trim().length() > 0) {
+            if (ContextCompat.checkSelfPermission(EmployeeDetails.this,
+                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(EmployeeDetails.this,
+                        new String[] {Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+            }
+            else {
+                String dialNumber = "tel:" + phoneNumber;
+                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dialNumber)));
+            }
+        }
+        else {
+            Toast.makeText(this, "No Number To Call", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CALL) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                callPhoneNumber();
+            }
+            else {
+                Toast.makeText(this, "Permision Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void sendEmail() {
+        String emailRecipient = eEmail.getText().toString();
+        if (emailRecipient.trim().length() > 0){
+            Intent emailIntent = new Intent(Intent.ACTION_SEND);
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, emailRecipient);
+            emailIntent.setType("message/rfc822");
+            startActivity(Intent.createChooser(emailIntent, "Choose an email client"));
         }
     }
 }

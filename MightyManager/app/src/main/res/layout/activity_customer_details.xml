@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserInterface.CustomerDetails">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/customer_details_screen_title"
+        android:background="@android:color/holo_blue_dark"
+        android:text="Customer Details"
+        android:textSize="32sp"
+        android:gravity="center"
+        android:padding="10dp"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/customer_details_name"
+        android:hint="Name"
+        android:layout_below="@id/customer_details_screen_title"
+        android:padding="15dp"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/customer_details_phone"
+        android:hint="Phone"
+        android:inputType="phone"
+        android:layout_below="@id/customer_details_name"
+        android:padding="15dp"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/customer_details_email"
+        android:inputType="textEmailAddress"
+        android:hint="Email"
+        android:layout_below="@id/customer_details_phone"
+        android:padding="15dp"
+        />
+
+</RelativeLayout>
