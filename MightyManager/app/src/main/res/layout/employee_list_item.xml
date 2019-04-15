@@ -26,15 +26,36 @@
             android:layout_height="wrap_content"
             android:id="@+id/employee_list_item_name"
             android:text="Employee Name"
-            android:textSize="22dp"/>
+            android:textSize="22sp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/employee_list_item_username"
-            android:text="Employee Username"
-            android:textSize="18dp"
+            android:id="@+id/employee_list_item_description"
+            android:text="Employee Description"
+            android:textSize="18sp"
             android:layout_below="@id/employee_list_item_name"/>
+
+        <TextView
+            android:id="@+id/employee_list_item_total_tasks_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:text="Active Tasks: "
+            android:textSize="15sp"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/employee_list_item_total_tasks"
+            android:layout_below="@id/employee_list_item_total_tasks_text"
+            android:text="0"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="45dp"/>
 
     </RelativeLayout>
 

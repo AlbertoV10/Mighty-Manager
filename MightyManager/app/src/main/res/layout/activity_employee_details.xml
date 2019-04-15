@@ -55,7 +55,7 @@
                 />
 
             <EditText
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/employee_details_phone"
                 android:hint="Phone #"
@@ -63,13 +63,29 @@
                 android:padding="15dp"/>
 
             <EditText
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/employee_details_email"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:padding="15dp"
                 />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/employee_details_description"
+                android:hint="Employee Description"
+                android:padding="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/employee_details_total_tasks"
+                android:text="Total Active Tasks: "
+                android:textSize="18sp"
+                android:padding="15dp"/>
+
 
             <CheckBox
                 android:layout_width="wrap_content"

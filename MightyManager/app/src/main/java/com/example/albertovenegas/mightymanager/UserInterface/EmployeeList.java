@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.albertovenegas.mightymanager.Adapter.EmployeeListAdapter;
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
+import com.example.albertovenegas.mightymanager.Database.Task;
 import com.example.albertovenegas.mightymanager.R;
 
 import java.util.List;
@@ -59,6 +60,12 @@ public class EmployeeList extends AppCompatActivity {
             }
         });
 
+        mmvm.getAllTasks().observe(this, new Observer<List<Task>>() {
+            @Override
+            public void onChanged(@Nullable List<Task> tasks) {
+                adapter.setTasks(tasks);
+            }
+        });
     }
 
     @Override

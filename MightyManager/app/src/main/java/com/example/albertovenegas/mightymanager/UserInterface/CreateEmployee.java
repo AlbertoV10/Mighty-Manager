@@ -22,8 +22,10 @@ public class CreateEmployee extends AppCompatActivity {
     private EditText ePassword;
     private EditText ePhone;
     private EditText eEmail;
+    private EditText eDescription;
     private CheckBox adminCheck;
     private boolean fromCreateOrg = false;
+    private boolean firstTimeSignUp = true;
     private MightyManagerViewModel mmvm;
 
     @Override
@@ -40,6 +42,7 @@ public class CreateEmployee extends AppCompatActivity {
         ePassword = findViewById(R.id.create_employee_password);
         ePhone = findViewById(R.id.create_employee_phone);
         eEmail = findViewById(R.id.create_employee_email);
+        eDescription = findViewById(R.id.create_employee_description);
         adminCheck = findViewById(R.id.create_employee_admin_check);
 
         if (getIntent().hasExtra("fromCreateOrg")) {
@@ -87,11 +90,16 @@ public class CreateEmployee extends AppCompatActivity {
             String password = ePassword.getText().toString();
             String phone = ePhone.getText().toString().trim();
             String email = eEmail.getText().toString().trim();
+            String description = eDescription.getText().toString().trim();
             boolean admin = adminCheck.isChecked();
 
             String username = generateUsername(fName, lName);
 
-            mmvm.insert(new Employee(fName, lName, password, admin, username, phone, email));
+            if (fromCreateOrg) {
+                firstTimeSignUp = false;
+            }
+
+            mmvm.insert(new Employee(fName, lName, password, admin, username, phone, email, description, firstTimeSignUp));
             Toast.makeText(this, "New Username: " + username, Toast.LENGTH_SHORT).show();
             if (fromCreateOrg) {
                 Intent signinScreenIntent = new Intent(CreateEmployee.this, SignInPage.class);

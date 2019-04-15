@@ -144,7 +144,7 @@
         android:layout_below="@id/open_task_customer_name"/>
 
     <EditText
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/open_task_customer_phone"
         android:layout_below="@id/open_task_desc_customer_phone"/>
@@ -161,7 +161,7 @@
         android:layout_below="@id/open_task_customer_phone"/>
 
     <EditText
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/open_task_customer_email"
         android:layout_below="@id/open_task_desc_customer_email"/>

@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Adapter.MainAppListAdapter;
@@ -45,11 +46,14 @@ public class EmployeeDetails extends AppCompatActivity {
     private EditText ePassword;
     private EditText ePhone;
     private EditText eEmail;
+    private EditText eDescription;
+    private TextView eTotalTasks;
     private CheckBox adminCheck;
     private MightyManagerViewModel mmvm;
     private Employee currentEmployee;
     private MainTaskListAdapter eAdapter;
     private List<Task> taskList = new ArrayList<>();
+    private List<Task> tasksForCurrentEmployee = new ArrayList<>();
     private Menu menu;
     private Boolean editable = false;
     //values for current data
@@ -58,6 +62,7 @@ public class EmployeeDetails extends AppCompatActivity {
     private String currentPassword;
     private String currentPhone;
     private String currentEmail;
+    private String currentDescription;
     private boolean currentAdmin;
 
     ColorStateList originalTextColor;
@@ -77,6 +82,7 @@ public class EmployeeDetails extends AppCompatActivity {
         mmvm = ViewModelProviders.of(this).get(MightyManagerViewModel.class);
         final int employeeId = getIntent().getExtras().getInt(EmployeeList.EMPLOYEE_DESCRIPTION_EXTRA_KEY);
         currentEmployee = mmvm.findEmployeeById(employeeId);
+        tasksForCurrentEmployee = mmvm.findTaskByEmployee(employeeId);
 
         //intialize views
         eFirstName = findViewById(R.id.employee_details_first_name);
@@ -84,6 +90,8 @@ public class EmployeeDetails extends AppCompatActivity {
         ePassword = findViewById(R.id.employee_details_password);
         ePhone = findViewById(R.id.employee_details_phone);
         eEmail = findViewById(R.id.employee_details_email);
+        eDescription = findViewById(R.id.employee_details_description);
+        eTotalTasks = findViewById(R.id.employee_details_total_tasks);
         adminCheck = findViewById(R.id.employee_details_admin_check);
 
         //populate each view and disable editing by default
@@ -102,6 +110,9 @@ public class EmployeeDetails extends AppCompatActivity {
         eEmail.setFocusable(false);
         eEmail.setTextColor(ContextCompat.getColor(this, R.color.clickable_text));
         eEmail.setClickable(true);
+        eDescription.setText(currentEmployee.getEmployeeDescription());
+        eDescription.setEnabled(false);
+        eTotalTasks.setText("Total Active Tasks: " + tasksForCurrentEmployee.size());
         if (currentEmployee.isAdmin()) {
             adminCheck.setChecked(true);
         }
@@ -116,6 +127,7 @@ public class EmployeeDetails extends AppCompatActivity {
         currentPassword = ePassword.getText().toString();
         currentPhone = ePhone.getText().toString().trim();
         currentEmail = eEmail.getText().toString().trim();
+        currentDescription = eDescription.getText().toString();
         currentAdmin = adminCheck.isChecked();
 
 
@@ -204,19 +216,22 @@ public class EmployeeDetails extends AppCompatActivity {
             eEmail.setFocusableInTouchMode(true);
             eEmail.setFocusable(true);
             eEmail.setClickable(false);
+            eDescription.setEnabled(true);
             adminCheck.setEnabled(true);
             editable = true;
         }
         else {
             if (!eFirstName.getText().toString().equals(currentFirstName) || !eLastName.getText().toString().equals(currentLastName)
                 || !ePassword.getText().toString().equals(currentPassword) || !ePhone.getText().toString().equals(currentPhone)
-                || !eEmail.getText().toString().equals(currentEmail) || adminCheck.isChecked() != currentAdmin)
+                || !eEmail.getText().toString().equals(currentEmail) || !eDescription.getText().toString().equals(currentDescription)
+                || adminCheck.isChecked() != currentAdmin)
             {
                 currentEmployee.setEmployeeFirstName(eFirstName.getText().toString());
                 currentEmployee.setEmployeeLastName(eLastName.getText().toString());
                 currentEmployee.setEmployeePassword(ePassword.getText().toString());
                 currentEmployee.setEmployeePhone(ePhone.getText().toString());
                 currentEmployee.setEmployeeEmail(eEmail.getText().toString());
+                currentEmployee.setEmployeeDescription(eDescription.getText().toString());
                 currentEmployee.setAdmin(adminCheck.isChecked());
 
                 mmvm.update(currentEmployee);

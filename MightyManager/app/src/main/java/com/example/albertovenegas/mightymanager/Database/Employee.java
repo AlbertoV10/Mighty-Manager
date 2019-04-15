@@ -38,7 +38,14 @@ public class Employee {
     @ColumnInfo(name = "employee_email")
     private String employeeEmail;
 
-   public Employee(String employeeFirstName, String employeeLastName, String employeePassword, boolean admin, String employeeUsername, String employeePhone, String employeeEmail) {
+    @ColumnInfo(name = "employee_description")
+    private String employeeDescription;
+
+    @ColumnInfo(name = "first_sign_in")
+    private boolean firstSignIn;
+
+
+   public Employee(String employeeFirstName, String employeeLastName, String employeePassword, boolean admin, String employeeUsername, String employeePhone, String employeeEmail, String employeeDescription, boolean firstSignIn) {
        this.employeeFirstName = employeeFirstName;
        this.employeeLastName = employeeLastName;
        this.employeeName = employeeFirstName.concat(" " + employeeLastName);
@@ -47,6 +54,8 @@ public class Employee {
        this.employeeUsername = employeeUsername;
        this.employeePhone = employeePhone;
        this.employeeEmail = employeeEmail;
+       this.employeeDescription = employeeDescription;
+       this.firstSignIn = firstSignIn;
    }
 
     public int getEmployeeID() {
@@ -85,6 +94,14 @@ public class Employee {
         return employeeEmail;
     }
 
+    public String getEmployeeDescription() {
+        return employeeDescription;
+    }
+
+    public boolean isFirstSignIn() {
+        return firstSignIn;
+    }
+
     //should not be used
     public void setEmployeeID(int id) {
        employeeID = id;
@@ -120,5 +137,13 @@ public class Employee {
 
     public void setEmployeeEmail(String employeeEmail) {
         this.employeeEmail = employeeEmail;
+    }
+
+    public void setEmployeeDescription(String employeeDescription) {
+        this.employeeDescription = employeeDescription;
+    }
+
+    public void setFirstSignIn(boolean firstSignIn) {
+        this.firstSignIn = firstSignIn;
     }
 }

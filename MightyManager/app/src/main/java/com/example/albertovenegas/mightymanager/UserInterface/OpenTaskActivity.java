@@ -377,16 +377,6 @@ public class OpenTaskActivity extends AppCompatActivity {
                    || !dueDate.getText().toString().substring(5).equals(currentDueDate))
            {
                //save data and close activity
-               String status = otStatusSpinner.getSelectedItem().toString();
-               if (status.equals("New")) {
-                   task.setTaskStatus(1);
-               }
-               else if (status.equals("In Progress")) {
-                   task.setTaskStatus(2);
-               }
-               else if (status.equals("Closed")) {
-                   task.setTaskStatus(3);
-               }
                if (!otTitle.getText().toString().isEmpty()) {
                    task.setTaskTitle(otTitle.getText().toString().trim());
                }
@@ -401,6 +391,16 @@ public class OpenTaskActivity extends AppCompatActivity {
                }
                else {
                    task.setEmployeeID(-999);
+               }
+               String status = otStatusSpinner.getSelectedItem().toString();
+               if (status.equals("New")) {
+                   task.setTaskStatus(1);
+               }
+               else if (status.equals("In Progress")) {
+                   task.setTaskStatus(2);
+               }
+               else if (status.equals("Closed")) {
+                   task.setTaskStatus(3);
                }
                int cId = updateCustomer(otCustomerName.getText().toString(), otCustomerPhone.getText().toString(), otCustomerEmail.getText().toString());
                task.setCustomerID(cId);
