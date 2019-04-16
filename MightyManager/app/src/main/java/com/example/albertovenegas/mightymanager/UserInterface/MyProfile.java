@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,21 +25,24 @@ public class MyProfile extends AppCompatActivity {
     private TextView username;
     private EditText firstName;
     private EditText lastName;
-    private EditText password;
+    //private EditText password;
     private EditText phoneNumber;
     private EditText email;
+    private EditText description;
     private TextView employeeType;
 
     //Strings to save currentDate
     private String currentUserName;
     private String currentFirstName;
     private String currentLastName;
-    private String currentPassword;
+    //private String currentPassword;
     private String currentPhone;
     private String currentEmail;
+    private String currentDescription;
 
     private boolean editable = false;
     private Menu menu;
+    private Button changePasswordButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,24 +64,25 @@ public class MyProfile extends AppCompatActivity {
         username = findViewById(R.id.my_profile_username);
         firstName = findViewById(R.id.my_profile_first_name);
         lastName = findViewById(R.id.my_profile_last_name);
-        password = findViewById(R.id.my_profile_password);
         phoneNumber = findViewById(R.id.my_profile_phone);
         email = findViewById(R.id.my_profile_email);
+        description = findViewById(R.id.my_profile_employee_description);
         employeeType = findViewById(R.id.my_profile_employee_type);
+        changePasswordButton = findViewById(R.id.my_profile_change_password_button);
 
         username.setText(currentEmployee.getEmployeeUsername());
         firstName.setText(currentEmployee.getEmployeeFirstName());
         firstName.setEnabled(false);
         lastName.setText(currentEmployee.getEmployeeLastName());
         lastName.setEnabled(false);
-        password.setText(currentEmployee.getEmployeePassword());
-        password.setEnabled(false);
         phoneNumber.setText(currentEmployee.getEmployeePhone());
         phoneNumber.setEnabled(false);
         email.setText(currentEmployee.getEmployeeEmail());
         email.setEnabled(false);
+        description.setText(currentEmployee.getEmployeeDescription());
+        description.setEnabled(false);
         if (currentEmployee.isAdmin()) {
-            employeeType.setText("Status: Admin");
+            employeeType.setText("Status: Manager");
         }
         else {
             employeeType.setText("Status: Employee");
@@ -85,9 +91,18 @@ public class MyProfile extends AppCompatActivity {
         //save current data
         currentFirstName = currentEmployee.getEmployeeFirstName();
         currentLastName = currentEmployee.getEmployeeLastName();
-        currentPassword = currentEmployee.getEmployeePassword();
         currentPhone = currentEmployee.getEmployeePhone();
         currentEmail = currentEmployee.getEmployeeEmail();
+        currentDescription = currentEmployee.getEmployeeDescription();
+
+        changePasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent changePasswordIntent = new Intent(MyProfile.this, ChangePassword.class);
+                changePasswordIntent.putExtra("user", currentEmployee.getEmployeeID());
+                startActivity(changePasswordIntent);
+            }
+        });
     }
 
     @Override
@@ -123,21 +138,21 @@ public class MyProfile extends AppCompatActivity {
             //enable the edit text fields
             firstName.setEnabled(true);
             lastName.setEnabled(true);
-            password.setEnabled(true);
             phoneNumber.setEnabled(true);
             email.setEnabled(true);
+            description.setEnabled(true);
             editable = true;
         }
         else {
             if (!firstName.getText().toString().equals(currentFirstName) || !lastName.getText().toString().equals(currentLastName)
-                    || !password.getText().toString().equals(currentPassword) || !phoneNumber.getText().toString().equals(currentPhone)
-                    || !email.getText().toString().equals(currentEmail))
+                    || !phoneNumber.getText().toString().equals(currentPhone) || !email.getText().toString().equals(currentEmail)
+                    || !description.getText().toString().equals(currentDescription))
             {
                 currentEmployee.setEmployeeFirstName(firstName.getText().toString());
                 currentEmployee.setEmployeeLastName(lastName.getText().toString());
-                currentEmployee.setEmployeePassword(password.getText().toString());
                 currentEmployee.setEmployeePhone(phoneNumber.getText().toString());
                 currentEmployee.setEmployeeEmail(email.getText().toString());
+                currentEmployee.setEmployeeDescription(description.getText().toString());
 
                 mightyManagerViewModel.update(currentEmployee);
                 //closeActivity(RESULT_OK);

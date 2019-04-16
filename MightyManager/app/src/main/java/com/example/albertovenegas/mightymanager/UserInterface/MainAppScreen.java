@@ -85,7 +85,6 @@ public class MainAppScreen extends AppCompatActivity {
         adapter = new MainTaskListAdapter();
         recyclerView.setAdapter(adapter);
         //adapter.setItemClickCallback(this);
-        adapter.setEmployees(mightyManagerViewModel.getEmployeesList());
 
         adapter.setOnItemClickListener(new MainTaskListAdapter.OnItemClickListener() {
             @Override
@@ -111,6 +110,13 @@ public class MainAppScreen extends AppCompatActivity {
 //            taskList = mightyManagerViewModel.findTaskByEmployee(currentUser.getEmployeeID());
 //            adapter.setTasks(taskList);
 //        }
+        //adapter.setEmployees(mightyManagerViewModel.getEmployeesList());
+        mightyManagerViewModel.getAllEmployees().observe(this, new Observer<List<Employee>>() {
+            @Override
+            public void onChanged(@Nullable List<Employee> employees) {
+                adapter.setEmployees(employees);
+            }
+        });
 
         mightyManagerViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
             @Override

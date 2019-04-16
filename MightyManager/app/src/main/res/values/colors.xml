@@ -11,4 +11,6 @@
     <color name="in_progress_task">#FCFC01</color>
     <color name="main_login_color">#5863B1</color>
     <color name="clickable_text">#354CD3</color>
+    <color name="wrong_password">#C21326</color>
+
 </resources>
