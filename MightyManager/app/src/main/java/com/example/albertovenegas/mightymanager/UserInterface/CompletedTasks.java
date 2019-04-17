@@ -83,7 +83,7 @@ public class CompletedTasks extends AppCompatActivity {
         adapter.setOnItemClickListener(new MainTaskListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Task task) {
-                Toast.makeText(CompletedTasks.this, "Edit Task: " + task.getTaskTitle(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CompletedTasks.this, "Edit Task: " + task.getTaskTitle(), Toast.LENGTH_SHORT).show();
                 Intent openTask = new Intent(CompletedTasks.this, OpenTaskActivity.class);
                 int taskID = task.getTaskId();
                 openTask.putExtra(OPEN_TASK_EXTRA_KEY, taskID);
@@ -121,7 +121,7 @@ public class CompletedTasks extends AppCompatActivity {
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(CompletedTasks.this, "spinner selection: " + adapterView.getSelectedItem().toString() + "pos: " + i, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CompletedTasks.this, "spinner selection: " + adapterView.getSelectedItem().toString() + "pos: " + i, Toast.LENGTH_SHORT).show();
                 adapter.setTasks(filterTasks(i));
             }
 

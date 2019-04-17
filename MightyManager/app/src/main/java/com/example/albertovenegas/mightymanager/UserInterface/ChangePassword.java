@@ -38,10 +38,16 @@ public class ChangePassword extends AppCompatActivity {
         int id = getIntent().getExtras().getInt("user");
         currentEmployee = mmvm.findEmployeeById(id);
 
+        getSupportActionBar().setTitle("");
+
         if (!currentEmployee.isFirstSignIn()) {
+            Toast.makeText(this, "not First Sign in", Toast.LENGTH_SHORT).show();
             getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
-            getSupportActionBar().setTitle("");
+        }
+        else {
+            Toast.makeText(this, "First Sign in", Toast.LENGTH_SHORT).show();
+
         }
 
 

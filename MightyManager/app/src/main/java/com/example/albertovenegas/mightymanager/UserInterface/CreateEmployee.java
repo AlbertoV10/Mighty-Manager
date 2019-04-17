@@ -105,13 +105,13 @@ public class CreateEmployee extends AppCompatActivity {
             }
 
             mmvm.insert(new Employee(fName, lName, password, admin, username, phone, email, description, firstTimeSignUp));
-            Toast.makeText(this, "New Username: " + username, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "New Username: " + username, Toast.LENGTH_SHORT).show();
             if (fromCreateOrg) {
-                Intent signinScreenIntent = new Intent(CreateEmployee.this, SignInPage.class);
-                signinScreenIntent.putExtra("managerUserNameForFirstTime", username);
-                startActivity(signinScreenIntent);
+                showFirstTimeManagerDialog(username, password);
             }
-            showNewUsernameDialog(fName, lName, username, password);
+            else {
+                showNewUsernameDialog(fName, lName, username, password);
+            }
             //finish();
         }
     }
@@ -133,6 +133,15 @@ public class CreateEmployee extends AppCompatActivity {
         bundle.putInt("managerID", currentUserId);
         dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "NewEmployeeUsernameDialog");
+    }
+
+    public void showFirstTimeManagerDialog(String username, String password) {
+        NewMainManagerUsernameDialog dialog = new NewMainManagerUsernameDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString("mUsername", username);
+        bundle.putString("mPassword", password);
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(), "NewMainManagerUsernameDialog");
     }
 
     private boolean nameExists(String username) {

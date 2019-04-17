@@ -97,7 +97,7 @@ public class OpenTaskActivity extends AppCompatActivity {
         task = mmvm.findTaskById(taskID);
 
         //for testing date diff
-        Toast.makeText(this, "Date created: " + task.getTaskDateCreated(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Date created: " + task.getTaskDateCreated(), Toast.LENGTH_SHORT).show();
         getCurrentDate();
 
         //initialize views
@@ -237,7 +237,7 @@ public class OpenTaskActivity extends AppCompatActivity {
                 dueDate.setText("Due: " + newDate);
                 long days = getDateDiff(currentDateString, newDate);
                 //Toast.makeText(OpenTaskActivity.this, "Setting date as: " + dueDate.getText().toString().substring(5), Toast.LENGTH_LONG).show();
-                Toast.makeText(OpenTaskActivity.this, "Date difference from " + currentDateString + " to " + newDate + " is " + days, Toast.LENGTH_LONG).show();
+                //Toast.makeText(OpenTaskActivity.this, "Date difference from " + currentDateString + " to " + newDate + " is " + days, Toast.LENGTH_LONG).show();
             }
         };
 
@@ -419,15 +419,15 @@ public class OpenTaskActivity extends AppCompatActivity {
     }
 
     private void cancelScreen() {
-        if (!otTitle.getText().toString().trim().equals(currentTitle) || !otAddress.getText().toString().trim().equals(currentAddress)
-                || !otEmployeeSpinner.getSelectedItem().toString().equals(currentEmployee) || !otStatusSpinner.getSelectedItem().toString().equals(currentStatus))
-        {
-            Toast.makeText(OpenTaskActivity.this, "Data was changed but canceling", Toast.LENGTH_LONG).show();
-        }
-        else
-        {
-            Toast.makeText(OpenTaskActivity.this, "Data unchanged canceling", Toast.LENGTH_LONG).show();
-        }
+//        if (!otTitle.getText().toString().trim().equals(currentTitle) || !otAddress.getText().toString().trim().equals(currentAddress)
+//                || !otEmployeeSpinner.getSelectedItem().toString().equals(currentEmployee) || !otStatusSpinner.getSelectedItem().toString().equals(currentStatus))
+//        {
+//            Toast.makeText(OpenTaskActivity.this, "Data was changed but canceling", Toast.LENGTH_LONG).show();
+//        }
+//        else
+//        {
+//            Toast.makeText(OpenTaskActivity.this, "Data unchanged canceling", Toast.LENGTH_LONG).show();
+//        }
         closeActivity(RESULT_CANCELED);
     }
 

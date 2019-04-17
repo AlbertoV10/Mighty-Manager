@@ -46,7 +46,7 @@ public class MainAppScreen extends AppCompatActivity {
     private FloatingActionButton fab;
     //private MainAppListAdapter adapter;
     private MainTaskListAdapter adapter;
-    private TextView mainTitle;
+    //private TextView mainTitle;
     private int employeeId; //change this to use employee id since no duplication possible
     Employee currentUser;
     private Spinner filterSpinner;
@@ -64,13 +64,13 @@ public class MainAppScreen extends AppCompatActivity {
         employeeId = getIntent().getExtras().getInt("user");
         currentUser = mightyManagerViewModel.findEmployeeById(employeeId);
 
-        mainTitle = (TextView) findViewById(R.id.app_mainscreen_title);
-        if(currentUser.isAdmin()) {
-            mainTitle.setText("Manager Assignments");
-        }
-        else {
-            mainTitle.setText("Employee Assignments");
-        }
+//        mainTitle = (TextView) findViewById(R.id.app_mainscreen_title);
+//        if(currentUser.isAdmin()) {
+//            mainTitle.setText("Manager Assignments");
+//        }
+//        else {
+//            mainTitle.setText("Employee Assignments");
+//        }
 
         //intialize task filter
         filterSpinner = findViewById(R.id.app_mainscreen_filter_spinner);
@@ -89,7 +89,7 @@ public class MainAppScreen extends AppCompatActivity {
         adapter.setOnItemClickListener(new MainTaskListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Task task) {
-                Toast.makeText(MainAppScreen.this, "Edit Task: " + task.getTaskTitle(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainAppScreen.this, "Edit Task: " + task.getTaskTitle(), Toast.LENGTH_SHORT).show();
                 Intent openTask = new Intent(MainAppScreen.this, OpenTaskActivity.class);
                 int taskID = task.getTaskId();
                 openTask.putExtra(OPEN_TASK_EXTRA_KEY, taskID);
@@ -118,7 +118,7 @@ public class MainAppScreen extends AppCompatActivity {
             }
         });
 
-        mightyManagerViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
+        mightyManagerViewModel.getAllUnclosedTasks().observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(@Nullable List<Task> tasks) {
                 //adapter.setTasks(tasks);
@@ -137,14 +137,14 @@ public class MainAppScreen extends AppCompatActivity {
             }
         });
 
-        Toast.makeText(this, "Total tasks on phone: " + taskList.size(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Total tasks on phone: " + taskList.size(), Toast.LENGTH_SHORT).show();
 
 
         //filter the tasks by filter value
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(MainAppScreen.this, "spinner selection: " + adapterView.getSelectedItem().toString() + "pos: " + i, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainAppScreen.this, "spinner selection: " + adapterView.getSelectedItem().toString() + "pos: " + i, Toast.LENGTH_SHORT).show();
                 adapter.setTasks(filterTasks(i));
             }
 

@@ -79,11 +79,11 @@ public class FirstTimeSignUp extends AppCompatActivity {
            currentEmployee.setEmployeePhone(phone.getText().toString());
            currentEmployee.setEmployeeEmail(email.getText().toString());
            //set first sign in flag to false
-           currentEmployee.setFirstSignIn(false);
-           mmvm.update(currentEmployee);
            Toast.makeText(this, "Verified with changes", Toast.LENGTH_SHORT).show();
 
        }
+        currentEmployee.setFirstSignIn(false);
+        mmvm.update(currentEmployee);
         Toast.makeText(this, "Verified", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(FirstTimeSignUp.this, MainAppScreen.class);
         intent.putExtra("user", currentEmployee.getEmployeeID());
