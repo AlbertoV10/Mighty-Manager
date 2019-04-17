@@ -43,4 +43,10 @@ public interface TaskDAO {
 
     @Query("SELECT * FROM task_table ORDER BY task_date_due ASC")
     LiveData<List<Task>> getAllTasksByDueSoon();
+
+    @Query("SELECT * FROM task_table WHERE status = 1 OR status = 2 ORDER BY task_id ASC")
+    LiveData<List<Task>> getAllUnclosedTasks();
+
+    @Query("SELECT * FROM task_table WHERE status = 3 ORDER BY task_id ASC")
+    LiveData<List<Task>> getAllClosedTasks();
 }

@@ -287,6 +287,9 @@ public class MainAppScreen extends AppCompatActivity {
             case R.id.menu_item_view_org:
                 openOrganizationDetails();
                 return true;
+            case R.id.menu_completed_tasks:
+                openCompletedTasks();
+                return true;
             case R.id.menu_debug:
                 debug();
                 return true;
@@ -302,6 +305,7 @@ public class MainAppScreen extends AppCompatActivity {
 
     private void createEmployee() {
         Intent newEmployeeIntent = new Intent(MainAppScreen.this, CreateEmployee.class);
+        newEmployeeIntent.putExtra("user", currentUser.getEmployeeID());
         startActivity(newEmployeeIntent);
     }
 
@@ -334,6 +338,12 @@ public class MainAppScreen extends AppCompatActivity {
     private void openOrganizationDetails() {
         Intent orgDetailsIntent = new Intent(MainAppScreen.this, OrganizationDetails.class);
         startActivity(orgDetailsIntent);
+    }
+
+    private void openCompletedTasks() {
+        Intent completedTasksIntent = new Intent(MainAppScreen.this, CompletedTasks.class);
+        completedTasksIntent.putExtra("user", currentUser.getEmployeeID());
+        startActivity(completedTasksIntent);
     }
 
     private List<Task> filterTasks(int type) {

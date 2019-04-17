@@ -1,5 +1,6 @@
 package com.example.albertovenegas.mightymanager.UserInterface;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
@@ -27,6 +28,7 @@ public class CreateEmployee extends AppCompatActivity {
     private boolean fromCreateOrg = false;
     private boolean firstTimeSignUp = true;
     private MightyManagerViewModel mmvm;
+    private int currentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,9 @@ public class CreateEmployee extends AppCompatActivity {
 
         if (getIntent().hasExtra("fromCreateOrg")) {
             fromCreateOrg = true;
+        }
+        if (getIntent().hasExtra("user")) {
+            currentUserId = getIntent().getExtras().getInt("user");
         }
 
         if (fromCreateOrg) {
@@ -106,7 +111,8 @@ public class CreateEmployee extends AppCompatActivity {
                 signinScreenIntent.putExtra("managerUserNameForFirstTime", username);
                 startActivity(signinScreenIntent);
             }
-            finish();
+            showNewUsernameDialog(fName, lName, username, password);
+            //finish();
         }
     }
 
@@ -115,6 +121,18 @@ public class CreateEmployee extends AppCompatActivity {
             mmvm.deleteAllOrganizations();
         }
         finish();
+    }
+
+    public void showNewUsernameDialog(String fName, String lName, String username, String password) {
+        NewEmployeeUsernameDialog dialog = new NewEmployeeUsernameDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString("eFName", fName);
+        bundle.putString("eLName", lName);
+        bundle.putString("eUsername", username);
+        bundle.putString("ePassword", password);
+        bundle.putInt("managerID", currentUserId);
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(), "NewEmployeeUsernameDialog");
     }
 
     private boolean nameExists(String username) {

@@ -63,7 +63,6 @@ public class SignInPage extends AppCompatActivity {
                 mmvm.update(org);
             }
 
-            Toast.makeText(this, "setupOrgButton will be invisible. NumberOfOrgs: "+orgs.size(), Toast.LENGTH_SHORT).show();
             setUpOrgButton.setEnabled(false);
             setUpOrgButton.setVisibility(View.INVISIBLE);
         }
@@ -117,24 +116,23 @@ public class SignInPage extends AppCompatActivity {
 
     private void validateCredentials(String username, String password) {
         if (user == null) {
-            Toast.makeText(this, "user is null", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "User does not exist", Toast.LENGTH_LONG).show();
         }
         else {
             if (username.equals(user.getEmployeeUsername()) && password.equals(user.getEmployeePassword())) {
-                    Toast.makeText(SignInPage.this, "valid", Toast.LENGTH_SHORT).show();
-//                    if (user.isFirstSignIn()) {
-//                        Intent firstSignInIntent = new Intent(SignInPage.this, FirstTimeSignUp.class);
-//                        firstSignInIntent.putExtra("user", user.getEmployeeID());
-//                        startActivity(firstSignInIntent);
-//                    }
-//                    else {
-//                        Intent intent = new Intent(SignInPage.this, MainAppScreen.class);
-//                        intent.putExtra("user", user.getEmployeeID());
-//                        startActivity(intent);
-//                    }
+                    //Toast.makeText(SignInPage.this, "valid", Toast.LENGTH_SHORT).show();
+                    if (user.isFirstSignIn()) {
+                        //Toast.makeText(this, "First sign in", Toast.LENGTH_SHORT).show();
+                        Intent firstSignInIntent = new Intent(SignInPage.this, ChangePassword.class);
+                        firstSignInIntent.putExtra("user", user.getEmployeeID());
+                        startActivity(firstSignInIntent);
+                    }
+                    else {
+                        //Toast.makeText(this, "Not first sign in", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(SignInPage.this, MainAppScreen.class);
                         intent.putExtra("user", user.getEmployeeID());
                         startActivity(intent);
+                    }
                 } else {
                     Toast.makeText(SignInPage.this, "invalid", Toast.LENGTH_SHORT).show();
                 }

@@ -51,6 +51,11 @@
     </item>
 
     <item
+        android:id="@+id/menu_completed_tasks"
+        android:title="Completed Tasks"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/menu_item_view_org"
         android:title="Organization Details"
         app:showAsAction="never"/>

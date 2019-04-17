@@ -1,12 +1,14 @@
 package com.example.albertovenegas.mightymanager.UserInterface;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
@@ -55,6 +57,12 @@ public class FirstTimeSignUp extends AppCompatActivity {
         phone.setText(currentEmployee.getEmployeePhone());
         email.setText(currentEmployee.getEmployeeEmail());
 
+        //save current information
+        currentFName = fName.getText().toString();
+        currentLName = lName.getText().toString();
+        currentEmail = email.getText().toString();
+        currentPhone = phone.getText().toString();
+
         verifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,6 +72,21 @@ public class FirstTimeSignUp extends AppCompatActivity {
     }
 
     private void verifyAndUpdate() {
-       
+       if (!fName.getText().toString().equals(currentFName) || !lName.getText().toString().equals(currentLName)
+            || !email.getText().toString().equals(currentEmail) || !phone.getText().toString().equals(currentPhone)) {
+           currentEmployee.setEmployeeFirstName(fName.getText().toString());
+           currentEmployee.setEmployeeLastName(lName.getText().toString());
+           currentEmployee.setEmployeePhone(phone.getText().toString());
+           currentEmployee.setEmployeeEmail(email.getText().toString());
+           //set first sign in flag to false
+           currentEmployee.setFirstSignIn(false);
+           mmvm.update(currentEmployee);
+           Toast.makeText(this, "Verified with changes", Toast.LENGTH_SHORT).show();
+
+       }
+        Toast.makeText(this, "Verified", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(FirstTimeSignUp.this, MainAppScreen.class);
+        intent.putExtra("user", currentEmployee.getEmployeeID());
+        startActivity(intent);
     }
 }
