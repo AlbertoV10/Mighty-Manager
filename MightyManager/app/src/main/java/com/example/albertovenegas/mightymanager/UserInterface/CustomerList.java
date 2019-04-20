@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Adapter.CustomerListAdapter;
 import com.example.albertovenegas.mightymanager.Database.Customer;
+import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.R;
 
@@ -26,16 +27,24 @@ public class CustomerList extends AppCompatActivity {
     private MightyManagerViewModel mmvm;
     private CustomerListAdapter adapter;
 
+    int eId;
+    private Employee currentEmployee;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_list);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         getSupportActionBar().setTitle("");
 
         mmvm = ViewModelProviders.of(this).get(MightyManagerViewModel.class);
+
+        if (getIntent().hasExtra("user")) {
+            eId = getIntent().getExtras().getInt("user");
+            currentEmployee = mmvm.findEmployeeById(eId);
+        }
 
         RecyclerView recyclerView = findViewById(R.id.customer_screen_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -45,10 +54,10 @@ public class CustomerList extends AppCompatActivity {
         adapter.setOnItemClickListener(new CustomerListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Customer customer) {
-                Toast.makeText(CustomerList.this, "Edit Customer: " + customer.getCustomerName(), Toast.LENGTH_SHORT).show();
                 int customerId = customer.getCustomerID();
                 Intent intent = new Intent(CustomerList.this, CustomerDetails.class);
                 intent.putExtra(CUSTOMER_DESCRIPTION_EXTRA_KEY, customerId);
+                intent.putExtra("user", eId);
                 startActivityForResult(intent, CUSTOMER_DESCRIPTION_TASK);
             }
         });

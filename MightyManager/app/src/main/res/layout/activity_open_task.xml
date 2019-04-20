@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/open_task_desc_date"
-        android:text="Due Date"
+        android:text="Appointment:"
         android:textSize="25sp"
         android:textStyle="bold"
         android:layout_marginTop="15dp"
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/open_task_due_date"
         android:layout_below="@+id/open_task_desc_date"
-        android:text="Due: mm/dd/yyyy"
+        android:text="Date: mm/dd/yyyy"
         android:textSize="20sp"/>
 
 

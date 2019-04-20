@@ -94,11 +94,11 @@
                 android:text="Manager Privilege"
                 android:padding="15dp"/>
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/employee_details_recyclerview">
-            </android.support.v7.widget.RecyclerView>
+            <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/employee_details_recyclerview">-->
+            <!--</android.support.v7.widget.RecyclerView>-->
 
         </LinearLayout>
 

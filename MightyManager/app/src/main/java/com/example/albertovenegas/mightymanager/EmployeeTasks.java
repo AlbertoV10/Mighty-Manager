@@ -1,4 +1,4 @@
-package com.example.albertovenegas.mightymanager.UserInterface;
+package com.example.albertovenegas.mightymanager;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -20,11 +20,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Adapter.MainTaskListAdapter;
-import com.example.albertovenegas.mightymanager.Database.Customer;
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
-import com.example.albertovenegas.mightymanager.R;
+import com.example.albertovenegas.mightymanager.UserInterface.CompletedTasks;
+import com.example.albertovenegas.mightymanager.UserInterface.EmployeeList;
+import com.example.albertovenegas.mightymanager.UserInterface.OpenTaskActivity;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -33,12 +34,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CompletedTasks extends AppCompatActivity {
+public class EmployeeTasks extends AppCompatActivity {
     public static final int ADD_TASK_REQUEST = 1;
     public static final int EDIT_TASK_REQUEST = 2;
     public static final String OPEN_TASK_EXTRA_KEY = "main.app.screen.task.id";
-    public static final String OPEN_TASK_INCOMING_ACTIVY = "CompletedTasks";
-    public static final String MY_PROFILE_USER_ID = "completed.tasks.screen.user.id";
+    public static final String OPEN_TASK_INCOMING_ACTIVY = "EmployeeTasks";
+    public static final String MY_PROFILE_USER_ID = "employee.tasks.screen.user.id";
     private String[] filterChoices = {"All", "New", "In Progress", "Closed", "Sort by Due Date"};
 
     private MightyManagerViewModel mightyManagerViewModel;
@@ -47,6 +48,8 @@ public class CompletedTasks extends AppCompatActivity {
     private TextView mainTitle;
     private int employeeId; //change this to use employee id since no duplication possible
     Employee currentUser;
+    Employee requestingUser;
+    private int requesterId; //employee trying to view another employees tasks, regular employees can see but not edit
     private Spinner filterSpinner;
     private List<Task> taskList = new ArrayList<>();
 
@@ -55,7 +58,7 @@ public class CompletedTasks extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_completed_tasks);
+        setContentView(R.layout.activity_employee_tasks);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
@@ -63,33 +66,40 @@ public class CompletedTasks extends AppCompatActivity {
 
         mightyManagerViewModel = ViewModelProviders.of(this).get(MightyManagerViewModel.class);
 
-        employeeId = getIntent().getExtras().getInt("user");
+        employeeId = getIntent().getExtras().getInt(EmployeeList.EMPLOYEE_DESCRIPTION_EXTRA_KEY);
         currentUser = mightyManagerViewModel.findEmployeeById(employeeId);
+        requesterId = getIntent().getExtras().getInt(EmployeeList.REQUESTING_EMPLOYEE_EXTRA_KEY);
+        requestingUser = mightyManagerViewModel.findEmployeeById(requesterId);
+        mainTitle = findViewById(R.id.employee_tasks_title);
+        mainTitle.setText("Assignments for " + currentUser.getEmployeeName());
+        Toast.makeText(this, requestingUser.getEmployeeUsername() + "requesting to see "+ currentUser.getEmployeeUsername() , Toast.LENGTH_SHORT).show();
 
         //intialize task filter
-        filterSpinner = findViewById(R.id.completed_tasks_filter_spinner);
+        filterSpinner = findViewById(R.id.employee_tasks_filter_spinner);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, filterChoices);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         filterSpinner.setAdapter(spinnerAdapter);
 
         //set up recycler view
-        RecyclerView recyclerView = findViewById(R.id.completed_tasks_list);
+        RecyclerView recyclerView = findViewById(R.id.employee_tasks_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //adapter = new MainAppListAdapter(this);
         adapter = new MainTaskListAdapter();
         recyclerView.setAdapter(adapter);
         //adapter.setItemClickCallback(this);
 
-        adapter.setOnItemClickListener(new MainTaskListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Task task) {
-                //Toast.makeText(CompletedTasks.this, "Edit Task: " + task.getTaskTitle(), Toast.LENGTH_SHORT).show();
-                Intent openTask = new Intent(CompletedTasks.this, OpenTaskActivity.class);
-                int taskID = task.getTaskId();
-                openTask.putExtra(OPEN_TASK_EXTRA_KEY, taskID);
-                startActivityForResult(openTask, EDIT_TASK_REQUEST);
-            }
-        });
+        if (requestingUser.isAdmin()) {
+            adapter.setOnItemClickListener(new MainTaskListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Task task) {
+                    //Toast.makeText(CompletedTasks.this, "Edit Task: " + task.getTaskTitle(), Toast.LENGTH_SHORT).show();
+                    Intent openTask = new Intent(EmployeeTasks.this, OpenTaskActivity.class);
+                    int taskID = task.getTaskId();
+                    openTask.putExtra(OPEN_TASK_EXTRA_KEY, taskID);
+                    startActivityForResult(openTask, EDIT_TASK_REQUEST);
+                }
+            });
+        }
 
         mightyManagerViewModel.getAllEmployees().observe(this, new Observer<List<Employee>>() {
             @Override
@@ -98,22 +108,14 @@ public class CompletedTasks extends AppCompatActivity {
             }
         });
 
-        mightyManagerViewModel.getAllClosedTasks().observe(this, new Observer<List<Task>>() {
+        mightyManagerViewModel.getAllUnclosedTasks().observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(@Nullable List<Task> tasks) {
                 //adapter.setTasks(tasks);
-                if (tasks != null) {
-                    taskList.clear();
-                    taskList.addAll(tasks);
-                }
-                if (!currentUser.isAdmin()) {
-                    taskList = mightyManagerViewModel.findTaskByEmployee(currentUser.getEmployeeID());
-                    adapter.setTasks(taskList);
-                }
-                else {
-                    adapter.setTasks(taskList);
-                }
 
+                taskList.clear();
+                taskList = mightyManagerViewModel.findTaskByEmployee(currentUser.getEmployeeID());
+                adapter.setTasks(taskList);
             }
         });
 

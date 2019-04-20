@@ -64,7 +64,7 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
             name = findEmployeeNameWithId(currentTask.getEmployeeID());
         }
         taskListHolder.assignedEmployee.setText(name);
-        taskListHolder.dueDate.setText("Due: " + date);
+        taskListHolder.appDate.setText("Date: " + date);
         //set the background color of the list items
         int color;
         switch (status) {
@@ -109,7 +109,7 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
     class taskListHolder extends RecyclerView.ViewHolder {
         private TextView taskTitle;
         private TextView assignedEmployee;
-        private TextView dueDate;
+        private TextView appDate;
         private View container;
         private View border;
         private ImageView alertIcon;
@@ -120,7 +120,7 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
             assignedEmployee = itemView.findViewById(R.id.main_list_employee_txt);
             container = itemView.findViewById(R.id.main_list_root_view);
             border = itemView.findViewById(R.id.main_list_card);
-            dueDate = itemView.findViewById(R.id.main_list_due_date);
+            appDate = itemView.findViewById(R.id.main_list_due_date);
             alertIcon = itemView.findViewById(R.id.main_list_alert_icon);
 
             container.setOnClickListener(new View.OnClickListener() {

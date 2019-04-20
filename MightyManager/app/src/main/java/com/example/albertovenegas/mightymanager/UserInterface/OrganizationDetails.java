@@ -34,7 +34,7 @@ public class OrganizationDetails extends AppCompatActivity {
         setContentView(R.layout.activity_organization_details);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         getSupportActionBar().setTitle("");
 
         mmvm = ViewModelProviders.of(this).get(MightyManagerViewModel.class);

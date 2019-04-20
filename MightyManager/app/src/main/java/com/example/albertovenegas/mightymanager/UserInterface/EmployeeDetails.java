@@ -51,7 +51,7 @@ public class EmployeeDetails extends AppCompatActivity {
     private CheckBox adminCheck;
     private MightyManagerViewModel mmvm;
     private Employee currentEmployee;
-    private MainTaskListAdapter eAdapter;
+    //private MainTaskListAdapter eAdapter;
     private List<Task> taskList = new ArrayList<>();
     private List<Task> tasksForCurrentEmployee = new ArrayList<>();
     private Menu menu;
@@ -67,6 +67,9 @@ public class EmployeeDetails extends AppCompatActivity {
 
     ColorStateList originalTextColor;
 
+    private int eId;
+    private Employee requestingEmployee;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,11 +79,15 @@ public class EmployeeDetails extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         getSupportActionBar().setTitle("");
 
         mmvm = ViewModelProviders.of(this).get(MightyManagerViewModel.class);
         final int employeeId = getIntent().getExtras().getInt(EmployeeList.EMPLOYEE_DESCRIPTION_EXTRA_KEY);
+        if (getIntent().hasExtra("user")) {
+            eId = getIntent().getExtras().getInt("user");
+            requestingEmployee = mmvm.findEmployeeById(eId);
+        }
         currentEmployee = mmvm.findEmployeeById(employeeId);
         tasksForCurrentEmployee = mmvm.findTaskByEmployee(employeeId);
 
@@ -131,31 +138,31 @@ public class EmployeeDetails extends AppCompatActivity {
         currentAdmin = adminCheck.isChecked();
 
 
-        RecyclerView eRecyclerView = findViewById(R.id.employee_details_recyclerview);
-        eRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        eAdapter = new MainTaskListAdapter();
-        eAdapter.setEmployees(mmvm.getEmployeesList());
-        eRecyclerView.setAdapter(eAdapter);
-
-        eAdapter.setOnItemClickListener(new MainTaskListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Task task) {
-                Toast.makeText(EmployeeDetails.this, "Edit Task: " + task.getTaskTitle(), Toast.LENGTH_SHORT).show();
-                Intent openTask = new Intent(EmployeeDetails.this, OpenTaskActivity.class);
-                int taskID = task.getTaskId();
-                openTask.putExtra(OPEN_TASK_EXTRA_KEY, taskID);
-                startActivityForResult(openTask, EDIT_TASK_REQUEST);
-                //startActivity(openTask);
-            }
-        });
-
-        mmvm.getAllTasks().observe(this, new Observer<List<Task>>() {
-            @Override
-            public void onChanged(@Nullable List<Task> tasks) {
-                taskList = mmvm.findTaskByEmployee(currentEmployee.getEmployeeID());
-                eAdapter.setTasks(taskList);
-            }
-        });
+//        RecyclerView eRecyclerView = findViewById(R.id.employee_details_recyclerview);
+////        eRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+////        eAdapter = new MainTaskListAdapter();
+////        eAdapter.setEmployees(mmvm.getEmployeesList());
+////        eRecyclerView.setAdapter(eAdapter);
+////
+////        eAdapter.setOnItemClickListener(new MainTaskListAdapter.OnItemClickListener() {
+////            @Override
+////            public void onItemClick(Task task) {
+////                Toast.makeText(EmployeeDetails.this, "Edit Task: " + task.getTaskTitle(), Toast.LENGTH_SHORT).show();
+////                Intent openTask = new Intent(EmployeeDetails.this, OpenTaskActivity.class);
+////                int taskID = task.getTaskId();
+////                openTask.putExtra(OPEN_TASK_EXTRA_KEY, taskID);
+////                startActivityForResult(openTask, EDIT_TASK_REQUEST);
+////                //startActivity(openTask);
+////            }
+////        });
+////
+////        mmvm.getAllTasks().observe(this, new Observer<List<Task>>() {
+////            @Override
+////            public void onChanged(@Nullable List<Task> tasks) {
+////                taskList = mmvm.findTaskByEmployee(currentEmployee.getEmployeeID());
+////                eAdapter.setTasks(taskList);
+////            }
+////        });
 
         //set click listener for calling phone number
         ePhone.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +186,9 @@ public class EmployeeDetails extends AppCompatActivity {
         this.menu = menu;
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.edit_task_menu, menu);
+        if (!requestingEmployee.isAdmin()) {
+            menu.getItem(0).setVisible(false);
+        }
         return true;
     }
 
@@ -258,24 +268,24 @@ public class EmployeeDetails extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == EDIT_TASK_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                //data was changed
-                eAdapter.notifyDataSetChanged();
-                //filterSpinner.setSelection(0);
-                Toast.makeText(this, "data was changed in edit mode", Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                //data unchanged
-                Toast.makeText(this, "data was NOT changed in edit mode", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == EDIT_TASK_REQUEST) {
+//            if (resultCode == RESULT_OK) {
+//                //data was changed
+//                eAdapter.notifyDataSetChanged();
+//                //filterSpinner.setSelection(0);
+//                Toast.makeText(this, "data was changed in edit mode", Toast.LENGTH_SHORT).show();
+//            }
+//            else
+//            {
+//                //data unchanged
+//                Toast.makeText(this, "data was NOT changed in edit mode", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
 
     private void callPhoneNumber() {
         String phoneNumber = ePhone.getText().toString();

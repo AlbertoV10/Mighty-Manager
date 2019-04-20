@@ -40,7 +40,7 @@ public class MainAppScreen extends AppCompatActivity {
     public static final String OPEN_TASK_EXTRA_KEY = "main.app.screen.task.id";
     public static final String OPEN_TASK_INCOMING_ACTIVY = "MainAppScreen";
     public static final String MY_PROFILE_USER_ID = "main.app.screen.user.id";
-    private String[] filterChoices = {"All", "New", "In Progress", "Closed", "Sort by Due Date"};
+    private String[] filterChoices = {"All", "New", "In Progress", "Closed", "Sort by Appointment Date"};
 
     private MightyManagerViewModel mightyManagerViewModel;
     private FloatingActionButton fab;
@@ -93,6 +93,7 @@ public class MainAppScreen extends AppCompatActivity {
                 Intent openTask = new Intent(MainAppScreen.this, OpenTaskActivity.class);
                 int taskID = task.getTaskId();
                 openTask.putExtra(OPEN_TASK_EXTRA_KEY, taskID);
+                openTask.putExtra("user", currentUser.getEmployeeID());
                 startActivityForResult(openTask, EDIT_TASK_REQUEST);
             }
         });
@@ -128,6 +129,7 @@ public class MainAppScreen extends AppCompatActivity {
                 }
                 if (!currentUser.isAdmin()) {
                     taskList = mightyManagerViewModel.findTaskByEmployee(currentUser.getEmployeeID());
+                    taskList = filterUnclosedTasksForUser(taskList);
                     adapter.setTasks(taskList);
                 }
                 else {
@@ -212,7 +214,7 @@ public class MainAppScreen extends AppCompatActivity {
                 int cId = data.getIntExtra(AddTaskActivity.EXTRA_CUSTOMER_ID, -888);
                 String notes = data.getStringExtra(AddTaskActivity.EXTRA_NOTES);
                 String dateMade = data.getStringExtra(AddTaskActivity.EXTRA_DATE_CREATED);
-                String dateDue = data.getStringExtra(AddTaskActivity.EXTRA_DATE_DUE);
+                String appDate = data.getStringExtra(AddTaskActivity.EXTRA_DATE_DUE);
                 String cName = data.getStringExtra(AddTaskActivity.EXTRA_CUSTOMER_NAME);
                 if (cId == -888) {
                     if (!cName.equals("")) {
@@ -220,7 +222,7 @@ public class MainAppScreen extends AppCompatActivity {
                         cId = findCustomer.getCustomerID();
                     }
                 }
-                mightyManagerViewModel.insert(new Task(title, address, eId, 1, cId, notes, dateMade, dateDue));
+                mightyManagerViewModel.insert(new Task(title, address, eId, 1, cId, notes, dateMade, appDate));
                 adapter.notifyDataSetChanged();
                 filterSpinner.setSelection(0);
                 Toast.makeText(this, "New task was added", Toast.LENGTH_SHORT).show();
@@ -233,7 +235,7 @@ public class MainAppScreen extends AppCompatActivity {
         }
         else if (requestCode == EDIT_TASK_REQUEST) {
             if (resultCode == RESULT_OK) {
-                //data was changed
+                //data was changedF
                 adapter.notifyDataSetChanged();
                 filterSpinner.setSelection(0);
                 Toast.makeText(this, "data was changed in edit mode", Toast.LENGTH_SHORT).show();
@@ -321,6 +323,7 @@ public class MainAppScreen extends AppCompatActivity {
 
     private void openEmployeeList() {
         Intent employeeListIntent = new Intent(MainAppScreen.this, EmployeeList.class);
+        employeeListIntent.putExtra("user", employeeId);
         startActivity(employeeListIntent);
     }
 
@@ -332,6 +335,7 @@ public class MainAppScreen extends AppCompatActivity {
 
     private void openCustomerList() {
         Intent customerListIntent = new Intent(MainAppScreen.this, CustomerList.class);
+        customerListIntent.putExtra("user", employeeId);
         startActivity(customerListIntent);
     }
 
@@ -421,5 +425,15 @@ public class MainAppScreen extends AppCompatActivity {
         tasks.set(end, swapTemp);
         return i+1;
 
+    }
+
+    private List<Task> filterUnclosedTasksForUser(List<Task> tasks) {
+        List<Task> filteredTasks = new ArrayList<>();
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getTaskStatus() != 3) {
+                filteredTasks.add(tasks.get(i));
+            }
+        }
+        return filteredTasks;
     }
 }

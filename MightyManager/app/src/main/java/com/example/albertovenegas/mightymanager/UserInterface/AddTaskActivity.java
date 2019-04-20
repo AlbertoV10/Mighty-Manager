@@ -50,9 +50,9 @@ public class AddTaskActivity extends AppCompatActivity {
     private EditText customerPhone;
     private EditText customerEmail;
     private EditText taskDetails;
-    private TextView taskDate;
+    private TextView taskAppDate;
     private ImageButton dateButton;
-    private String dueDate;
+    private String appDate;
     private String dateCreated;
 
     private DatePickerDialog.OnDateSetListener dateListener;
@@ -77,7 +77,7 @@ public class AddTaskActivity extends AppCompatActivity {
         customerPhone = findViewById(R.id.add_task_customer_phone);
         customerEmail = findViewById(R.id.add_task_customer_email);
         taskDetails = findViewById(R.id.add_task_details);
-        taskDate = findViewById(R.id.add_task_due_date);
+        taskAppDate = findViewById(R.id.add_task_due_date);
         dateButton = findViewById(R.id.add_task_date_button);
         //saveButton = findViewById(R.id.add_task_save_button);
         //cancelButton = findViewById(R.id.add_task_cancel_button);
@@ -166,8 +166,8 @@ public class AddTaskActivity extends AppCompatActivity {
                 else {
                     sDay = "" + day;
                 }
-                dueDate = sMonth + "/" + sDay + "/" + year;
-                taskDate.setText("Due: " + dueDate);
+                appDate = sMonth + "/" + sDay + "/" + year;
+                taskAppDate.setText("Date: " + appDate);
                 //Toast.makeText(AddTaskActivity.this, "Setting date as: " + taskDate.getText().toString().substring(5), Toast.LENGTH_LONG).show();
             }
         };
@@ -192,7 +192,7 @@ public class AddTaskActivity extends AppCompatActivity {
         String title = newTaskTitle.getText().toString().trim();
         String address = newTaskAddress.getText().toString().trim();
         String employee = employeeSpinner.getSelectedItem().toString().trim();
-        String taskDueDate = taskDate.getText().toString().substring(5);
+        String taskDueDate = taskAppDate.getText().toString().substring(6);
         String cName = customerName.getText().toString().trim();
         String cPhone = customerPhone.getText().toString().trim();
         String cEmail = customerEmail.getText().toString().trim();
@@ -288,7 +288,6 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private int findEmployeeId(String eUsername) {
         Employee employee = mmvm.findEmployeeByUsername(eUsername);
-        Toast.makeText(this, "For employee" + employee.getEmployeeUsername() + "found id" + employee.getEmployeeID(), Toast.LENGTH_SHORT).show();
         return employee.getEmployeeID();
     }
 

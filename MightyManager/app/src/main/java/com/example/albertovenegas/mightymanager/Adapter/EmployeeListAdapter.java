@@ -54,12 +54,24 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
         private TextView eName;
         private TextView eDescription;
         private TextView eTotalTasks;
+        private View totalTasksBox;
 
         public employeeListHolder(@NonNull View itemView) {
             super(itemView);
             eName = itemView.findViewById(R.id.employee_list_item_name);
             eDescription = itemView.findViewById(R.id.employee_list_item_description);
             eTotalTasks = itemView.findViewById(R.id.employee_list_item_total_tasks);
+            totalTasksBox = itemView.findViewById(R.id.employee_list_active_tasks_root);
+
+            totalTasksBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onTotalTasksClicked(employeeList.get(position));
+                    }
+                }
+            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,6 +87,7 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
 
     public interface OnItemClickListener {
         void onItemCLick(Employee employee);
+        void onTotalTasksClicked(Employee employee);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

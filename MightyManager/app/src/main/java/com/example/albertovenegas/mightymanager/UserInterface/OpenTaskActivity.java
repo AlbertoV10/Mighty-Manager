@@ -3,11 +3,14 @@ package com.example.albertovenegas.mightymanager.UserInterface;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -45,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 
 public class OpenTaskActivity extends AppCompatActivity {
     public static final int REQUEST_CALL = 1;
+    public static final int REQUEST_MAP = 2;
 
     private MightyManagerViewModel mmvm;
     private EditText otTitle;
@@ -55,7 +59,7 @@ public class OpenTaskActivity extends AppCompatActivity {
     private EditText otCustomerPhone;
     private EditText otCustomerEmail;
     private EditText taskNotes;
-    private TextView dueDate;
+    private TextView appDate;
     private ImageButton dateButton;
     //private ImageButton editSaveBtn;
     //private ImageButton cancelBtn;
@@ -71,7 +75,7 @@ public class OpenTaskActivity extends AppCompatActivity {
     private String currentCustomerPhone;
     private String currentCustomerEmail;
     private String currentNotes;
-    private String currentDueDate;
+    private String currentAppDate;
 
     private DatePickerDialog.OnDateSetListener dateListener;
     private Menu menu;
@@ -79,6 +83,8 @@ public class OpenTaskActivity extends AppCompatActivity {
     //for testing date difference
     private String currentDateString;
 
+    private int eId;
+    private Employee requestingEmployee;
     ColorStateList originalTextColor;
 
     @Override
@@ -88,12 +94,16 @@ public class OpenTaskActivity extends AppCompatActivity {
         mmvm = ViewModelProviders.of(this).get(MightyManagerViewModel.class);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
 
         //prevent keyboard from opening at start
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         final int taskID = getIntent().getExtras().getInt(MainAppScreen.OPEN_TASK_EXTRA_KEY);
+        if (getIntent().hasExtra("user")) {
+            eId = getIntent().getExtras().getInt("user");
+            requestingEmployee = mmvm.findEmployeeById(eId);
+        }
         task = mmvm.findTaskById(taskID);
 
         //for testing date diff
@@ -109,7 +119,7 @@ public class OpenTaskActivity extends AppCompatActivity {
         otCustomerPhone = findViewById(R.id.open_task_customer_phone);
         otCustomerEmail = findViewById(R.id.open_task_customer_email);
         taskNotes = findViewById(R.id.open_task_task_notes);
-        dueDate = findViewById(R.id.open_task_due_date);
+        appDate = findViewById(R.id.open_task_due_date);
         dateButton = findViewById(R.id.open_task_date_button);
         //editSaveBtn = findViewById(R.id.open_task_save_btn);
         //cancelBtn = findViewById(R.id.open_task_cancel_button);
@@ -120,7 +130,9 @@ public class OpenTaskActivity extends AppCompatActivity {
         otTitle.setText(task.getTaskTitle());
         otTitle.setEnabled(false);
         otAddress.setText(task.getTaskAddress());
-        otAddress.setEnabled(false);
+        otAddress.setFocusable(false);
+        otAddress.setTextColor(ContextCompat.getColor(this, R.color.clickable_text));
+        otAddress.setClickable(true);
         otCustomerName.setEnabled(false);
         otCustomerPhone.setFocusable(false);
         otCustomerPhone.setTextColor(ContextCompat.getColor(this, R.color.clickable_text));
@@ -141,7 +153,7 @@ public class OpenTaskActivity extends AppCompatActivity {
         }
         taskNotes.setText(task.getTaskDescription());
         taskNotes.setEnabled(false);
-        dueDate.setText("Due: " + task.getTaskDateDue());
+        appDate.setText("Date: " + task.getTaskDateDue());
         dateButton.setEnabled(false);
         dateButton.setVisibility(View.INVISIBLE);
         //editSaveBtn.setImageResource(R.drawable.ic_edit);
@@ -196,7 +208,7 @@ public class OpenTaskActivity extends AppCompatActivity {
         currentCustomerPhone = otCustomerPhone.getText().toString().trim();
         currentCustomerEmail = otCustomerEmail.getText().toString().trim();
         currentNotes = taskNotes.getText().toString();
-        currentDueDate = dueDate.getText().toString().substring(5);
+        currentAppDate = appDate.getText().toString().substring(6);
 
         //set calendar dialog
         dateButton.setOnClickListener(new View.OnClickListener() {
@@ -234,12 +246,19 @@ public class OpenTaskActivity extends AppCompatActivity {
                     sDay = "" + day;
                 }
                 String newDate = sMonth + "/" + sDay + "/" + year;
-                dueDate.setText("Due: " + newDate);
+                appDate.setText("Date: " + newDate);
                 long days = getDateDiff(currentDateString, newDate);
                 //Toast.makeText(OpenTaskActivity.this, "Setting date as: " + dueDate.getText().toString().substring(5), Toast.LENGTH_LONG).show();
                 //Toast.makeText(OpenTaskActivity.this, "Date difference from " + currentDateString + " to " + newDate + " is " + days, Toast.LENGTH_LONG).show();
             }
         };
+
+        otAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMaps();
+            }
+        });
 
         //set click listener for calling phone number
         otCustomerPhone.setOnClickListener(new View.OnClickListener() {
@@ -350,10 +369,16 @@ public class OpenTaskActivity extends AppCompatActivity {
        if (!editable) {
            //change the edit icon to save
            menu.getItem(0).setIcon(R.drawable.ic_save_white);
+           getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
            //enable edit text fields
            otTitle.setEnabled(true);
-           otAddress.setEnabled(true);
-           otEmployeeSpinner.setEnabled(true);
+           otAddress.setTextColor(originalTextColor);
+           otAddress.setFocusableInTouchMode(true);
+           otAddress.setFocusable(true);
+           otAddress.setClickable(false);
+           if (requestingEmployee.isAdmin()) {
+               otEmployeeSpinner.setEnabled(true);
+           }
            otStatusSpinner.setEnabled(true);
            otCustomerName.setEnabled(true);
            otCustomerPhone.setTextColor(originalTextColor);
@@ -374,7 +399,7 @@ public class OpenTaskActivity extends AppCompatActivity {
                    || !otEmployeeSpinner.getSelectedItem().toString().equals(currentEmployee) || !otStatusSpinner.getSelectedItem().toString().equals(currentStatus)
                    || !otCustomerName.getText().toString().trim().equals(currentCustomerName) || !otCustomerPhone.getText().toString().trim().equals(currentCustomerPhone)
                    || !otCustomerEmail.getText().toString().trim().equals(currentCustomerEmail) || !taskNotes.getText().toString().equals(currentNotes)
-                   || !dueDate.getText().toString().substring(5).equals(currentDueDate))
+                   || !appDate.getText().toString().substring(6).equals(currentAppDate))
            {
                //save data and close activity
                if (!otTitle.getText().toString().isEmpty()) {
@@ -405,7 +430,7 @@ public class OpenTaskActivity extends AppCompatActivity {
                int cId = updateCustomer(otCustomerName.getText().toString(), otCustomerPhone.getText().toString(), otCustomerEmail.getText().toString());
                task.setCustomerID(cId);
                task.setTaskDescription(taskNotes.getText().toString());
-               task.setTaskDateDue(dueDate.getText().toString().substring(5));
+               task.setTaskDateDue(appDate.getText().toString().substring(6));
                mmvm.update(task);
 
                closeActivity(RESULT_OK);
@@ -503,6 +528,31 @@ public class OpenTaskActivity extends AppCompatActivity {
             }
         }
         return id;
+    }
+
+    private void openMaps() {
+        double latitude;
+        double longitude;
+        if (ContextCompat.checkSelfPermission(OpenTaskActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(OpenTaskActivity.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_MAP);
+        }
+        else {
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location != null) {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
+            else {
+                latitude = 0.0;
+                longitude = 0.0;
+            }
+            String address = otAddress.getText().toString().trim();
+            Uri uri = Uri.parse("geo:" + latitude + ", " + longitude + "?q=" + address);
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
+        }
     }
 
     private void callPhoneNumber() {

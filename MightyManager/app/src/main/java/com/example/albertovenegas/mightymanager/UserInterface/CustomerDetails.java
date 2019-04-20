@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Database.Customer;
+import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.R;
 
@@ -41,6 +42,9 @@ public class CustomerDetails extends AppCompatActivity {
     private Menu menu;
     private boolean editable = false;
 
+    private int eId;
+    private Employee employee;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +54,16 @@ public class CustomerDetails extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         getSupportActionBar().setTitle("");
 
         mmvm = ViewModelProviders.of(this).get(MightyManagerViewModel.class);
         final int customerId = getIntent().getExtras().getInt(CustomerList.CUSTOMER_DESCRIPTION_EXTRA_KEY);
         currentCustomer = mmvm.findCustomerById(customerId);
+        if (getIntent().hasExtra("user")) {
+            eId = getIntent().getExtras().getInt("user");
+            employee = mmvm.findEmployeeById(eId);
+        }
 
         cName = findViewById(R.id.customer_details_name);
         cPhone = findViewById(R.id.customer_details_phone);
@@ -108,7 +116,7 @@ public class CustomerDetails extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit_task:
-                editSaveEmployee();
+                editSaveCustomer();
                 return true;
 //            case R.id.save_edits:
 //                saveTask();
@@ -122,10 +130,12 @@ public class CustomerDetails extends AppCompatActivity {
         }
     }
 
-    private void editSaveEmployee() {
+    private void editSaveCustomer() {
         if (!editable) {
             //change edit icon to save
             menu.getItem(0).setIcon(R.drawable.ic_save_white);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
+
             //enable the edit text fields
             cName.setEnabled(true);
             cPhone.setTextColor(originalTextColor);

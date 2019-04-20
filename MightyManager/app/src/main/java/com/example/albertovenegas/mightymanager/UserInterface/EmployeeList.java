@@ -16,15 +16,19 @@ import com.example.albertovenegas.mightymanager.Adapter.EmployeeListAdapter;
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
+import com.example.albertovenegas.mightymanager.EmployeeTasks;
 import com.example.albertovenegas.mightymanager.R;
 
 import java.util.List;
 
 public class EmployeeList extends AppCompatActivity {
     public static final String EMPLOYEE_DESCRIPTION_EXTRA_KEY = "employee.list.screen.employee.id";
+    public static final String REQUESTING_EMPLOYEE_EXTRA_KEY = "employee.list.screen.requester.privilege";
     public static final int EMPLOYEE_DESCRIPTION_TASK = 1;
+    public static final int EMPLOYEE_TASKS_ACTIVITY = 2;
     private MightyManagerViewModel mmvm;
     private EmployeeListAdapter adapter;
+    private int currentEmployeeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +36,14 @@ public class EmployeeList extends AppCompatActivity {
         setContentView(R.layout.activity_employee_list);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         getSupportActionBar().setTitle("");
 
         mmvm = ViewModelProviders.of(this).get(MightyManagerViewModel.class);
+
+        if (getIntent().hasExtra("user")) {
+            currentEmployeeId = getIntent().getExtras().getInt("user");
+        }
 
         RecyclerView recyclerView = findViewById(R.id.employee_screen_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -45,11 +53,19 @@ public class EmployeeList extends AppCompatActivity {
         adapter.setOnItemClickListener(new EmployeeListAdapter.OnItemClickListener() {
             @Override
             public void onItemCLick(Employee employee) {
-                Toast.makeText(EmployeeList.this, "Edit employee: " + employee.getEmployeeUsername(), Toast.LENGTH_SHORT).show();
                 int employeeId = employee.getEmployeeID();
                 Intent intent = new Intent(EmployeeList.this, EmployeeDetails.class);
+                intent.putExtra("user", currentEmployeeId);
                 intent.putExtra(EMPLOYEE_DESCRIPTION_EXTRA_KEY, employeeId);
                 startActivityForResult(intent, EMPLOYEE_DESCRIPTION_TASK);
+            }
+            public void onTotalTasksClicked(Employee employee) {
+                int employeeId = employee.getEmployeeID();
+                Toast.makeText(EmployeeList.this, "See tasks for employee: " + employee.getEmployeeUsername(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(EmployeeList.this, EmployeeTasks.class);
+                intent.putExtra(EMPLOYEE_DESCRIPTION_EXTRA_KEY, employeeId);
+                intent.putExtra(REQUESTING_EMPLOYEE_EXTRA_KEY, currentEmployeeId);
+                startActivityForResult(intent, EMPLOYEE_TASKS_ACTIVITY);
             }
         });
 
@@ -97,6 +113,16 @@ public class EmployeeList extends AppCompatActivity {
 
             }
         }
+//        else if (requestCode == EMPLOYEE_TASKS_ACTIVITY) {
+//            if (resultCode == RESULT_OK) {
+//                Toast.makeText(this, "Employee tasks views", Toast.LENGTH_SHORT).show();
+//            }
+//            else
+//            {
+//                Toast.makeText(this, "Employee tasks viewed", Toast.LENGTH_SHORT).show();
+//
+//            }
+//        }
     }
 
 }
