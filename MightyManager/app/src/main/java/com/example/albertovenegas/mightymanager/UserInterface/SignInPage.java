@@ -24,7 +24,7 @@ public class SignInPage extends AppCompatActivity {
     private EditText username;
     private EditText password;
     private Button loginButton;
-    //private Button signupButton;
+    private Button forgotPasswordButton;
     private Button setUpOrgButton;
     private Button cancelButton;
     private Boolean managerType;
@@ -46,7 +46,7 @@ public class SignInPage extends AppCompatActivity {
         username = (EditText) findViewById(R.id.signin_page_username);
         password = (EditText) findViewById(R.id.signin_page_password);
         loginButton = (Button) findViewById(R.id.signin_page_login_button);
-        //signupButton = findViewById(R.id.signin_page_first_use_button);
+        forgotPasswordButton = findViewById(R.id.signin_page_forgot_password_button);
         setUpOrgButton = findViewById(R.id.signin_page_setup_org_button);
         //cancelButton = (Button) findViewById(R.id.signin_page_cancel_button);
         //managerType = getIntent().getExtras().getBoolean("managerUserType");
@@ -68,7 +68,7 @@ public class SignInPage extends AppCompatActivity {
         }
         else {
             loginButton.setEnabled(false);
-            //signupButton.setEnabled(false);
+            forgotPasswordButton.setEnabled(false);
         }
 
 
@@ -89,13 +89,13 @@ public class SignInPage extends AppCompatActivity {
             }
         });
 
-//        signupButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent newUser = new Intent(SignInPage.this, FirstTimeSignUp.class);
-//                startActivity(newUser);
-//            }
-//        });
+        forgotPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent newUser = new Intent(SignInPage.this, ForgotPassword.class);
+                startActivity(newUser);
+            }
+        });
 
         setUpOrgButton.setOnClickListener(new View.OnClickListener() {
             @Override

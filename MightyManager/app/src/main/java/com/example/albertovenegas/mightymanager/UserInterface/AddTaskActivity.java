@@ -1,10 +1,12 @@
 package com.example.albertovenegas.mightymanager.UserInterface;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Database.Customer;
@@ -33,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class AddTaskActivity extends AppCompatActivity {
+public class AddTaskActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     public static final String EXTRA_TITLE = "add.task.title";
     public static final String EXTRA_ADDRESS = "add.task.address";
     public static final String EXTRA_EMPLOYEE_ID = "add.task.employee.id";
@@ -41,6 +44,7 @@ public class AddTaskActivity extends AppCompatActivity {
     public static final String EXTRA_NOTES = "add.task.notes";
     public static final String EXTRA_DATE_CREATED = "add.task.date.created";
     public static final String EXTRA_DATE_DUE = "add.task.date.due";
+    public static final String EXTRA_APP_TIME = "add.task.app.time";
     public static final String EXTRA_CUSTOMER_NAME = "add.task.customer.name";
 
     private EditText newTaskTitle;
@@ -52,8 +56,11 @@ public class AddTaskActivity extends AppCompatActivity {
     private EditText taskDetails;
     private TextView taskAppDate;
     private ImageButton dateButton;
-    private String appDate;
-    private String dateCreated;
+    private TextView taskAppTime;
+    private ImageButton timeButton;
+    private String appDate = "";
+    private String dateCreated = "";
+    private String appTime = "";
 
     private DatePickerDialog.OnDateSetListener dateListener;
     //private ImageButton saveButton;
@@ -79,6 +86,8 @@ public class AddTaskActivity extends AppCompatActivity {
         taskDetails = findViewById(R.id.add_task_details);
         taskAppDate = findViewById(R.id.add_task_due_date);
         dateButton = findViewById(R.id.add_task_date_button);
+        taskAppTime = findViewById(R.id.add_task_app_time);
+        timeButton = findViewById(R.id.add_task_app_time_button);
         //saveButton = findViewById(R.id.add_task_save_button);
         //cancelButton = findViewById(R.id.add_task_cancel_button);
 
@@ -172,6 +181,14 @@ public class AddTaskActivity extends AppCompatActivity {
             }
         };
 
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment timePicker = new TimePickerFragment();
+                timePicker.show(getSupportFragmentManager(), "Time Picker");
+            }
+        });
+
 //        saveButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -192,14 +209,15 @@ public class AddTaskActivity extends AppCompatActivity {
         String title = newTaskTitle.getText().toString().trim();
         String address = newTaskAddress.getText().toString().trim();
         String employee = employeeSpinner.getSelectedItem().toString().trim();
-        String taskDueDate = taskAppDate.getText().toString().substring(6);
+        //String taskDueDate = taskAppDate.getText().toString().substring(6);
+        String taskDueDate = appDate;
         String cName = customerName.getText().toString().trim();
         String cPhone = customerPhone.getText().toString().trim();
         String cEmail = customerEmail.getText().toString().trim();
         String notes = taskDetails.getText().toString();
 
-        if (title.isEmpty() || address.isEmpty() || employee.equals("-Employees-")) {
-            Toast.makeText(this, "Please fill in title, address, and select employee", Toast.LENGTH_LONG).show();
+        if (title.isEmpty() || employee.equals("-Employees-")) {
+            Toast.makeText(this, "Please fill in title and select employee option", Toast.LENGTH_LONG).show();
         } else {
 //            Intent intent = new Intent();
 ////            intent.putExtra(EXTRA_TITLE, title);
@@ -226,7 +244,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 notes = "";
             }
             int cId = customerExists(cName, cPhone, cEmail);
-            Task newTask = new Task(title, address, employeeId, 1, cId, notes, dateCreated, taskDueDate);
+            Task newTask = new Task(title, address, employeeId, 1, cId, notes, dateCreated, taskDueDate, appTime);
             //mmvm.insert(new Task(title, address, employeeId, 1, cId, notes, dateCreated, taskDueDate));
             closeAddActivity(RESULT_OK, newTask, cName);
         }
@@ -272,6 +290,7 @@ public class AddTaskActivity extends AppCompatActivity {
             String notes = task.getTaskDescription();
             String dateMade = task.getTaskDateCreated();
             String dateDue = task.getTaskDateDue();
+            String time = task.getTaskAppTime();
             String cName = customerName;
             intent.putExtra(EXTRA_TITLE, title);
             intent.putExtra(EXTRA_ADDRESS, address);
@@ -280,6 +299,7 @@ public class AddTaskActivity extends AppCompatActivity {
             intent.putExtra(EXTRA_NOTES, notes);
             intent.putExtra(EXTRA_DATE_CREATED, dateMade);
             intent.putExtra(EXTRA_DATE_DUE, dateDue);
+            intent.putExtra(EXTRA_APP_TIME, time);
             intent.putExtra(EXTRA_CUSTOMER_NAME, cName);
             setResult(RESULT_OK, intent);
         }
@@ -342,5 +362,28 @@ public class AddTaskActivity extends AppCompatActivity {
             }
         }
         return customerId;
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        String amPm = "AM";
+        String leadingZero = "";
+        if(hourOfDay >= 12) {
+            amPm = "PM";
+            if (hourOfDay >= 13 && hourOfDay < 24) {
+                hourOfDay-=12;
+            }
+            else {
+                hourOfDay = 12;
+            }
+        }
+        else if (hourOfDay == 0) {
+            hourOfDay = 12;
+        }
+        if (minute < 10) {
+            leadingZero = "0";
+        }
+        appTime = hourOfDay + ":" + leadingZero + minute + " " + amPm;
+        taskAppTime.setText("Time: " + appTime);
     }
 }

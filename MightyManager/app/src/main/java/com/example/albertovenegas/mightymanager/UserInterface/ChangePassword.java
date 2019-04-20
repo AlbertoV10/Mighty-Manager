@@ -28,6 +28,8 @@ public class ChangePassword extends AppCompatActivity {
     private Employee currentEmployee;
     private Menu menu;
 
+    private boolean fromForgotPassword = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,16 +42,19 @@ public class ChangePassword extends AppCompatActivity {
 
         getSupportActionBar().setTitle("");
 
-        if (!currentEmployee.isFirstSignIn()) {
+        if (!currentEmployee.isFirstSignIn() && !fromForgotPassword) {
             Toast.makeText(this, "not First Sign in", Toast.LENGTH_SHORT).show();
             getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         }
         else {
             Toast.makeText(this, "First Sign in", Toast.LENGTH_SHORT).show();
 
         }
 
+        if (getIntent().hasExtra(ForgotPassword.FORGOT_PASSWORD_ACTIVITY)) {
+            fromForgotPassword = true;
+        }
 
         message = findViewById(R.id.change_password_message);
         errorMessage = findViewById(R.id.change_password_retry_message);
@@ -62,7 +67,7 @@ public class ChangePassword extends AppCompatActivity {
 
         message.setText("Hello " + currentEmployee.getEmployeeFirstName() + " " + currentEmployee.getEmployeeLastName()+ ". Please enter and confirm your new password.");
 
-        if (currentEmployee.isFirstSignIn()) {
+        if (currentEmployee.isFirstSignIn() || fromForgotPassword) {
             changePasswordButton.setVisibility(View.VISIBLE);
             changePasswordButton.setEnabled(true);
         }
@@ -86,6 +91,10 @@ public class ChangePassword extends AppCompatActivity {
                 intent.putExtra("user", currentEmployee.getEmployeeID());
                 startActivity(intent);
             }
+            else if (fromForgotPassword) {
+                Intent intent = new Intent(ChangePassword.this, SignInPage.class);
+                startActivity(intent);
+            }
             else {
                 finish();
             }
@@ -101,7 +110,7 @@ public class ChangePassword extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.edit_task_menu, menu);
         menu.getItem(0).setIcon(R.drawable.ic_save_white);
-        if (currentEmployee.isFirstSignIn()) {
+        if (currentEmployee.isFirstSignIn() || fromForgotPassword) {
             menu.getItem(0).setVisible(false);
         }
         return true;

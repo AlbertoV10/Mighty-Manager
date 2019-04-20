@@ -2,6 +2,7 @@ package com.example.albertovenegas.mightymanager.UserInterface;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.albertovenegas.mightymanager.Database.Customer;
@@ -46,7 +49,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class OpenTaskActivity extends AppCompatActivity {
+public class OpenTaskActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     public static final int REQUEST_CALL = 1;
     public static final int REQUEST_MAP = 2;
 
@@ -61,6 +64,11 @@ public class OpenTaskActivity extends AppCompatActivity {
     private EditText taskNotes;
     private TextView appDate;
     private ImageButton dateButton;
+    private TextView appTime;
+    private ImageButton timeButton;
+
+    String appDateString = "";
+    String appTimeString = "";
     //private ImageButton editSaveBtn;
     //private ImageButton cancelBtn;
     private ArrayList<String> statusSelection = new ArrayList<>();
@@ -76,6 +84,7 @@ public class OpenTaskActivity extends AppCompatActivity {
     private String currentCustomerEmail;
     private String currentNotes;
     private String currentAppDate;
+    private String currentAppTime;
 
     private DatePickerDialog.OnDateSetListener dateListener;
     private Menu menu;
@@ -121,6 +130,8 @@ public class OpenTaskActivity extends AppCompatActivity {
         taskNotes = findViewById(R.id.open_task_task_notes);
         appDate = findViewById(R.id.open_task_due_date);
         dateButton = findViewById(R.id.open_task_date_button);
+        appTime = findViewById(R.id.open_task_time);
+        timeButton = findViewById(R.id.open_task_time_button);
         //editSaveBtn = findViewById(R.id.open_task_save_btn);
         //cancelBtn = findViewById(R.id.open_task_cancel_button);
 
@@ -154,8 +165,13 @@ public class OpenTaskActivity extends AppCompatActivity {
         taskNotes.setText(task.getTaskDescription());
         taskNotes.setEnabled(false);
         appDate.setText("Date: " + task.getTaskDateDue());
+        appDateString = task.getTaskDateDue();
         dateButton.setEnabled(false);
         dateButton.setVisibility(View.INVISIBLE);
+        appTime.setText("Time: " + task.getTaskAppTime());
+        appTimeString = task.getTaskAppTime();
+        timeButton.setEnabled(false);
+        timeButton.setVisibility(View.INVISIBLE);
         //editSaveBtn.setImageResource(R.drawable.ic_edit);
         //editSaveBtn.setTag(R.drawable.ic_edit);
 
@@ -208,7 +224,8 @@ public class OpenTaskActivity extends AppCompatActivity {
         currentCustomerPhone = otCustomerPhone.getText().toString().trim();
         currentCustomerEmail = otCustomerEmail.getText().toString().trim();
         currentNotes = taskNotes.getText().toString();
-        currentAppDate = appDate.getText().toString().substring(6);
+        currentAppDate = appDateString;
+        currentAppTime = appTimeString;
 
         //set calendar dialog
         dateButton.setOnClickListener(new View.OnClickListener() {
@@ -245,13 +262,21 @@ public class OpenTaskActivity extends AppCompatActivity {
                 else {
                     sDay = "" + day;
                 }
-                String newDate = sMonth + "/" + sDay + "/" + year;
-                appDate.setText("Date: " + newDate);
-                long days = getDateDiff(currentDateString, newDate);
+                appDateString = sMonth + "/" + sDay + "/" + year;
+                appDate.setText("Date: " + appDateString);
+                long days = getDateDiff(currentDateString, appDateString);
                 //Toast.makeText(OpenTaskActivity.this, "Setting date as: " + dueDate.getText().toString().substring(5), Toast.LENGTH_LONG).show();
                 //Toast.makeText(OpenTaskActivity.this, "Date difference from " + currentDateString + " to " + newDate + " is " + days, Toast.LENGTH_LONG).show();
             }
         };
+
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment timePicker = new TimePickerFragment();
+                timePicker.show(getSupportFragmentManager(), "Time Picker");
+            }
+        });
 
         otAddress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -392,6 +417,8 @@ public class OpenTaskActivity extends AppCompatActivity {
            taskNotes.setEnabled(true);
            dateButton.setVisibility(View.VISIBLE);
            dateButton.setEnabled(true);
+           timeButton.setVisibility(View.VISIBLE);
+           timeButton.setEnabled(true);
            editable = true;
        }
        else {
@@ -399,7 +426,7 @@ public class OpenTaskActivity extends AppCompatActivity {
                    || !otEmployeeSpinner.getSelectedItem().toString().equals(currentEmployee) || !otStatusSpinner.getSelectedItem().toString().equals(currentStatus)
                    || !otCustomerName.getText().toString().trim().equals(currentCustomerName) || !otCustomerPhone.getText().toString().trim().equals(currentCustomerPhone)
                    || !otCustomerEmail.getText().toString().trim().equals(currentCustomerEmail) || !taskNotes.getText().toString().equals(currentNotes)
-                   || !appDate.getText().toString().substring(6).equals(currentAppDate))
+                   || !appDateString.equals(currentAppDate) || !appTimeString.equals(currentAppTime))
            {
                //save data and close activity
                if (!otTitle.getText().toString().isEmpty()) {
@@ -430,7 +457,8 @@ public class OpenTaskActivity extends AppCompatActivity {
                int cId = updateCustomer(otCustomerName.getText().toString(), otCustomerPhone.getText().toString(), otCustomerEmail.getText().toString());
                task.setCustomerID(cId);
                task.setTaskDescription(taskNotes.getText().toString());
-               task.setTaskDateDue(appDate.getText().toString().substring(6));
+               task.setTaskDateDue(appDateString);
+               task.setTaskAppTime(appTimeString);
                mmvm.update(task);
 
                closeActivity(RESULT_OK);
@@ -593,5 +621,28 @@ public class OpenTaskActivity extends AppCompatActivity {
             emailIntent.setType("message/rfc822");
             startActivity(Intent.createChooser(emailIntent, "Choose an email client"));
         }
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        String amPm = "AM";
+        String leadingZero = "";
+        if(hourOfDay >= 12) {
+            amPm = "PM";
+            if (hourOfDay >= 13 && hourOfDay < 24) {
+                hourOfDay-=12;
+            }
+            else {
+                hourOfDay = 12;
+            }
+        }
+        else if (hourOfDay == 0) {
+            hourOfDay = 12;
+        }
+        if (minute < 10) {
+            leadingZero = "0";
+        }
+        appTimeString = hourOfDay + ":" + leadingZero + minute + " " + amPm;
+        appTime.setText("Time: " + appTimeString);
     }
 }

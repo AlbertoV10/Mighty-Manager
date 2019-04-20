@@ -9,10 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -215,6 +217,7 @@ public class MainAppScreen extends AppCompatActivity {
                 String notes = data.getStringExtra(AddTaskActivity.EXTRA_NOTES);
                 String dateMade = data.getStringExtra(AddTaskActivity.EXTRA_DATE_CREATED);
                 String appDate = data.getStringExtra(AddTaskActivity.EXTRA_DATE_DUE);
+                String appTime = data.getStringExtra(AddTaskActivity.EXTRA_APP_TIME);
                 String cName = data.getStringExtra(AddTaskActivity.EXTRA_CUSTOMER_NAME);
                 if (cId == -888) {
                     if (!cName.equals("")) {
@@ -222,7 +225,7 @@ public class MainAppScreen extends AppCompatActivity {
                         cId = findCustomer.getCustomerID();
                     }
                 }
-                mightyManagerViewModel.insert(new Task(title, address, eId, 1, cId, notes, dateMade, appDate));
+                mightyManagerViewModel.insert(new Task(title, address, eId, 1, cId, notes, dateMade, appDate, appTime));
                 adapter.notifyDataSetChanged();
                 filterSpinner.setSelection(0);
                 Toast.makeText(this, "New task was added", Toast.LENGTH_SHORT).show();
@@ -262,6 +265,22 @@ public class MainAppScreen extends AppCompatActivity {
                 createCustomer.setVisible(false);
             }
         }
+        //add search bar
+        MenuItem searchItem = menu.findItem(R.id.menu_item_search);
+        SearchView searchView = (android.support.v7.widget.SearchView) searchItem.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                adapter.getFilter().filter(s);
+                return false;
+            }
+        });
         return true;
     }
 

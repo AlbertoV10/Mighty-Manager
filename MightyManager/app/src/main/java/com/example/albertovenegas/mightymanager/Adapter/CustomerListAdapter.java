@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.example.albertovenegas.mightymanager.Database.Customer;
@@ -13,9 +15,10 @@ import com.example.albertovenegas.mightymanager.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapter.customerListHolder>{
+public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapter.customerListHolder> implements Filterable {
     private List<Customer> customerList = new ArrayList<>();
     private OnItemClickListener listener;
+    private List<Customer> allCustomers;
 
     @NonNull
     @Override
@@ -37,8 +40,45 @@ public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapte
 
     public void setCustomerList(List<Customer> customerList) {
         this.customerList = customerList;
+        allCustomers = new ArrayList<>(customerList);
         notifyDataSetChanged();
     }
+
+    @Override
+    public Filter getFilter() {
+        return searchFilter;
+    }
+
+    private Filter searchFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Customer> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(allCustomers);
+            }
+            else {
+                String searchPattern = constraint.toString().toLowerCase().trim();
+
+                for (Customer customer : allCustomers) {
+                    if (customer.getCustomerName().toLowerCase().contains(searchPattern)) {
+                        filteredList.add(customer);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            customerList.clear();
+            customerList.addAll((List)results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     class customerListHolder extends RecyclerView.ViewHolder {
         private TextView cName;

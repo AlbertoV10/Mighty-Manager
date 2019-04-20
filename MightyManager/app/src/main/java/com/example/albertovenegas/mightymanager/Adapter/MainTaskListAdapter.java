@@ -1,17 +1,22 @@
 package com.example.albertovenegas.mightymanager.Adapter;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.albertovenegas.mightymanager.Database.Employee;
+import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
 import com.example.albertovenegas.mightymanager.R;
 
@@ -24,12 +29,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapter.taskListHolder> {
+public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapter.taskListHolder> implements Filterable {
     private List<Task> tasks = new ArrayList<>();
     private List<Employee> employees = new ArrayList<>();
     private OnItemClickListener listener;
     private String currentDateString;
-
+    private List<Task> allTasks;
 
     @NonNull
     @Override
@@ -91,8 +96,10 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+        allTasks = new ArrayList<>(tasks);
         notifyDataSetChanged();
     }
+
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
@@ -105,6 +112,43 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
     public Task getTaskAt(int p) {
         return tasks.get(p);
     }
+
+    //add search bar capability
+    @Override
+    public Filter getFilter() {
+        return searchFilter;
+    }
+
+    private Filter searchFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Task> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(allTasks);
+            }
+            else {
+                String searchPattern = constraint.toString().toLowerCase().trim();
+
+                for (Task task : allTasks) {
+                    if (task.getTaskTitle().toLowerCase().contains(searchPattern.toLowerCase())) {
+                        filteredList.add(task);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            tasks.clear();
+            tasks.addAll((List)results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     class taskListHolder extends RecyclerView.ViewHolder {
         private TextView taskTitle;
@@ -201,4 +245,5 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
         currentDateString = sMonth + "/" + sDay + "/" + year;
         //Toast.makeText(AddTaskActivity.this, "current date would be: " + dateCreated, Toast.LENGTH_LONG).show();
     }
+
 }

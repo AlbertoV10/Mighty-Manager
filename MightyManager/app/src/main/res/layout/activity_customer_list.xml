@@ -12,8 +12,9 @@
         android:layout_height="wrap_content"
         android:text="Customers"
         android:textSize="32sp"
+        android:textColor="@color/main_theme"
         android:textAlignment="center"
-        android:background="@android:color/holo_blue_dark"
+        android:background="@drawable/gradient_color"
         />
 
     <android.support.v7.widget.RecyclerView

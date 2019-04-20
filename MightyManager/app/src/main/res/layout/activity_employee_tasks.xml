@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EmployeeTasks">
+    tools:context=".UserInterface.EmployeeTasks">
 
 
     <TextView
@@ -13,8 +13,9 @@
         android:layout_height="wrap_content"
         android:text="Assignments"
         android:textSize="32sp"
+        android:textColor="@color/main_theme"
         android:textAlignment="center"
-        android:background="@android:color/holo_blue_dark"
+        android:background="@drawable/gradient_color"
         />
 
     <TextView

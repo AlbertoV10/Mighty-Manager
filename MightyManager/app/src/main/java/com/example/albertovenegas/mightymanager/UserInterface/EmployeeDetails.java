@@ -43,7 +43,7 @@ public class EmployeeDetails extends AppCompatActivity {
 
     private EditText eFirstName;
     private EditText eLastName;
-    private EditText ePassword;
+    //private EditText ePassword;
     private EditText ePhone;
     private EditText eEmail;
     private EditText eDescription;
@@ -59,7 +59,7 @@ public class EmployeeDetails extends AppCompatActivity {
     //values for current data
     private String currentFirstName;
     private String currentLastName;
-    private String currentPassword;
+   // private String currentPassword;
     private String currentPhone;
     private String currentEmail;
     private String currentDescription;
@@ -94,7 +94,7 @@ public class EmployeeDetails extends AppCompatActivity {
         //intialize views
         eFirstName = findViewById(R.id.employee_details_first_name);
         eLastName = findViewById(R.id.employee_details_last_name);
-        ePassword = findViewById(R.id.employee_details_password);
+        //ePassword = findViewById(R.id.employee_details_password);
         ePhone = findViewById(R.id.employee_details_phone);
         eEmail = findViewById(R.id.employee_details_email);
         eDescription = findViewById(R.id.employee_details_description);
@@ -107,8 +107,8 @@ public class EmployeeDetails extends AppCompatActivity {
         eFirstName.setEnabled(false);
         eLastName.setText(currentEmployee.getEmployeeLastName());
         eLastName.setEnabled(false);
-        ePassword.setText(currentEmployee.getEmployeePassword());
-        ePassword.setEnabled(false);
+        //ePassword.setText(currentEmployee.getEmployeePassword());
+        //ePassword.setEnabled(false);
         ePhone.setText(currentEmployee.getEmployeePhone());
         ePhone.setFocusable(false);
         ePhone.setTextColor(ContextCompat.getColor(this, R.color.clickable_text));
@@ -131,7 +131,7 @@ public class EmployeeDetails extends AppCompatActivity {
         //save current data
         currentFirstName = eFirstName.getText().toString().trim();
         currentLastName = eLastName.getText().toString().trim();
-        currentPassword = ePassword.getText().toString();
+        //currentPassword = ePassword.getText().toString();
         currentPhone = ePhone.getText().toString().trim();
         currentEmail = eEmail.getText().toString().trim();
         currentDescription = eDescription.getText().toString();
@@ -217,7 +217,7 @@ public class EmployeeDetails extends AppCompatActivity {
             //enable the edit text fields
             eFirstName.setEnabled(true);
             eLastName.setEnabled(true);
-            ePassword.setEnabled(true);
+            //ePassword.setEnabled(true);
             ePhone.setTextColor(originalTextColor);
             ePhone.setFocusableInTouchMode(true);
             ePhone.setFocusable(true);
@@ -232,13 +232,12 @@ public class EmployeeDetails extends AppCompatActivity {
         }
         else {
             if (!eFirstName.getText().toString().equals(currentFirstName) || !eLastName.getText().toString().equals(currentLastName)
-                || !ePassword.getText().toString().equals(currentPassword) || !ePhone.getText().toString().equals(currentPhone)
-                || !eEmail.getText().toString().equals(currentEmail) || !eDescription.getText().toString().equals(currentDescription)
-                || adminCheck.isChecked() != currentAdmin)
+                || !ePhone.getText().toString().equals(currentPhone) || !eEmail.getText().toString().equals(currentEmail)
+                || !eDescription.getText().toString().equals(currentDescription) || adminCheck.isChecked() != currentAdmin)
             {
                 currentEmployee.setEmployeeFirstName(eFirstName.getText().toString());
                 currentEmployee.setEmployeeLastName(eLastName.getText().toString());
-                currentEmployee.setEmployeePassword(ePassword.getText().toString());
+                //currentEmployee.setEmployeePassword(ePassword.getText().toString());
                 currentEmployee.setEmployeePhone(ePhone.getText().toString());
                 currentEmployee.setEmployeeEmail(eEmail.getText().toString());
                 currentEmployee.setEmployeeDescription(eDescription.getText().toString());

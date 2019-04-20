@@ -36,7 +36,7 @@ public class CreateEmployee extends AppCompatActivity {
         setContentView(R.layout.activity_create_employee);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         getSupportActionBar().setTitle("");
 
         eFirstName = findViewById(R.id.create_employee_first_name);

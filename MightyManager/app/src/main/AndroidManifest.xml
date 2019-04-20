@@ -3,7 +3,7 @@
     package="com.example.albertovenegas.mightymanager">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EmployeeTasks"></activity>
+        <activity android:name=".UserInterface.ForgotPassword"></activity>
+        <activity android:name=".UserInterface.EmployeeTasks" />
         <activity android:name=".UserInterface.CompletedTasks" />
         <activity android:name=".UserInterface.ChangePassword" />
         <activity android:name=".UserInterface.CustomerDetails" />

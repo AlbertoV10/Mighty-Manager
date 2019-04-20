@@ -10,9 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/create_customer_screen_name"
-        android:background="@android:color/holo_blue_dark"
+        android:background="@drawable/gradient_color"
         android:text="Create Customer"
         android:textSize="32sp"
+        android:textColor="@color/main_theme"
         android:gravity="center"
         android:padding="10dp"
         />

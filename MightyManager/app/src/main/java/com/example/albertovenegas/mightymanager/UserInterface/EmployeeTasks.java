@@ -1,4 +1,4 @@
-package com.example.albertovenegas.mightymanager;
+package com.example.albertovenegas.mightymanager.UserInterface;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -23,9 +23,7 @@ import com.example.albertovenegas.mightymanager.Adapter.MainTaskListAdapter;
 import com.example.albertovenegas.mightymanager.Database.Employee;
 import com.example.albertovenegas.mightymanager.Database.MightyManagerViewModel;
 import com.example.albertovenegas.mightymanager.Database.Task;
-import com.example.albertovenegas.mightymanager.UserInterface.CompletedTasks;
-import com.example.albertovenegas.mightymanager.UserInterface.EmployeeList;
-import com.example.albertovenegas.mightymanager.UserInterface.OpenTaskActivity;
+import com.example.albertovenegas.mightymanager.R;
 
 import java.text.DateFormat;
 import java.text.ParseException;

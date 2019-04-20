@@ -26,7 +26,7 @@ public class CreateCustomer extends AppCompatActivity {
         setContentView(R.layout.activity_create_customer);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         getSupportActionBar().setTitle("");
 
         customerName = findViewById(R.id.create_customer_name);

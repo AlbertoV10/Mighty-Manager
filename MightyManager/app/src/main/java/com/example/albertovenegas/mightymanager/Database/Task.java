@@ -38,7 +38,10 @@ public class Task {
     @ColumnInfo(name = "task_date_due")
     private String taskDateDue;
 
-    public Task(String taskTitle, String taskAddress, int employeeID, int taskStatus, int customerID, String taskDescription, String taskDateCreated, String taskDateDue) {
+    @ColumnInfo(name = "task_date_time")
+    private String taskAppTime;
+
+    public Task(String taskTitle, String taskAddress, int employeeID, int taskStatus, int customerID, String taskDescription, String taskDateCreated, String taskDateDue, String taskAppTime) {
         this.taskTitle = taskTitle;
         this.taskAddress = taskAddress;
         this.employeeID = employeeID;
@@ -47,6 +50,7 @@ public class Task {
         this.taskDescription = taskDescription;
         this.taskDateCreated = taskDateCreated;
         this.taskDateDue = taskDateDue;
+        this.taskAppTime = taskAppTime;
     }
 
     public int getTaskId() {
@@ -85,6 +89,10 @@ public class Task {
         return taskDateDue;
     }
 
+    public String getTaskAppTime() {
+        return taskAppTime;
+    }
+
     public void setTaskId(int id) {
         taskId = id;
     }
@@ -119,5 +127,9 @@ public class Task {
 
     public void setTaskDateDue(String taskDateDue) {
         this.taskDateDue = taskDateDue;
+    }
+
+    public void setTaskAppTime(String taskAppTime) {
+        this.taskAppTime = taskAppTime;
     }
 }

@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 
 import java.util.concurrent.Executors;
 
-@Database(entities = {Task.class, Employee.class, Customer.class, Organization.class}, version = 13)
+@Database(entities = {Task.class, Employee.class, Customer.class, Organization.class}, version = 14)
 public abstract class MightyManagerDatabase extends RoomDatabase {
     public static final String DATABASE_NAME = "Mighty_Manager_Database";
 
