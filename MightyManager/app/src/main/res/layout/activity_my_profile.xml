@@ -101,7 +101,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/my_profile_change_password_button"
                 android:text="Change Password"
-                android:backgroundTint="@android:color/holo_blue_dark"
+                android:textColor="@color/main_theme"
+                android:background="@drawable/button_gradient_color"
                 android:padding="15dp"/>
 
         </LinearLayout>

@@ -12,7 +12,9 @@
     <color name="main_login_color">#5863B1</color>
     <color name="clickable_text">#354CD3</color>
     <color name="wrong_password">#C21326</color>
-    <color name="grad_start">#377ADD</color>
+    <color name="grad_start">#3A84F0</color>
     <color name="grad_end">#1A3B70</color>
+    <color name="button_grad_start">#989899</color>
+    <color name="button_grad_end">#272727</color>
 
 </resources>

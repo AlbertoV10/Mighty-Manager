@@ -7,24 +7,46 @@
     android:background="@drawable/gradient_color"
     tools:context=".UserInterface.SignInPage">
 
-    <ImageView
-        android:id="@+id/signin_page_title_image"
-        android:layout_width="377dp"
-        android:layout_height="344dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:src="@drawable/mm_title_grey"
-        />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/signin_page_frame_layout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        >
+
+        <ImageView
+            android:id="@+id/signin_page_title_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:src="@drawable/oval_grey_with_title" />
+
+        <!--<TextView-->
+            <!--android:id="@+id/signin_page_title"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:fontFamily="sans-serif-black"-->
+            <!--android:text="Mighty Manager"-->
+            <!--android:textColor="@color/main_theme"-->
+            <!--android:textSize="35sp"-->
+            <!--android:textStyle="italic"-->
+            <!--/>-->
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/signin_page_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/signin_page_title_image"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:background="@android:color/background_light"
+        android:layout_below="@+id/signin_page_frame_layout"
         android:hint="Username"
         android:inputType="textPersonName"
          />
@@ -67,6 +89,8 @@
         android:layout_below="@+id/signin_page_password"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:background="@drawable/button_gradient_color"
+        android:textColor="@color/main_theme"
         android:text="Login"
         />
 
@@ -77,6 +101,8 @@
         android:layout_below="@+id/signin_page_login_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:background="@drawable/button_gradient_color"
+        android:textColor="@color/main_theme"
         android:text="Forgot Password"/>
 
     <Button
@@ -86,6 +112,8 @@
         android:layout_below="@+id/signin_page_forgot_password_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:background="@drawable/button_gradient_color"
+        android:textColor="@color/main_theme"
         android:text="Setup Organization"/>
 
 
