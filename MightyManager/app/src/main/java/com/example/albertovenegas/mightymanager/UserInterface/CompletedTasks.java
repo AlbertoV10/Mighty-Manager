@@ -89,6 +89,7 @@ public class CompletedTasks extends AppCompatActivity {
                 Intent openTask = new Intent(CompletedTasks.this, OpenTaskActivity.class);
                 int taskID = task.getTaskId();
                 openTask.putExtra(OPEN_TASK_EXTRA_KEY, taskID);
+                openTask.putExtra("user", employeeId);
                 startActivityForResult(openTask, EDIT_TASK_REQUEST);
             }
         });
@@ -109,7 +110,7 @@ public class CompletedTasks extends AppCompatActivity {
                     taskList.addAll(tasks);
                 }
                 if (!currentUser.isAdmin()) {
-                    taskList = mightyManagerViewModel.findTaskByEmployee(currentUser.getEmployeeID());
+                    taskList = getUserTasks(tasks);
                     adapter.setTasks(taskList);
                 }
                 else {
@@ -269,5 +270,15 @@ public class CompletedTasks extends AppCompatActivity {
         tasks.set(end, swapTemp);
         return i+1;
 
+    }
+
+    private List<Task> getUserTasks(List<Task> tasks) {
+        ArrayList<Task> userTasks = new ArrayList<>();
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getEmployeeID() == employeeId) {
+                userTasks.add(tasks.get(i));
+            }
+        }
+        return userTasks;
     }
 }

@@ -94,6 +94,7 @@ public class EmployeeTasks extends AppCompatActivity {
                     Intent openTask = new Intent(EmployeeTasks.this, OpenTaskActivity.class);
                     int taskID = task.getTaskId();
                     openTask.putExtra(OPEN_TASK_EXTRA_KEY, taskID);
+                    openTask.putExtra("user", requesterId);
                     startActivityForResult(openTask, EDIT_TASK_REQUEST);
                 }
             });
