@@ -94,27 +94,27 @@
         android:text="Login"
         />
 
-    <Button
-        android:id="@+id/signin_page_forgot_password_button"
+    <TextView
+        android:id="@+id/signin_page_forgot_password_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/signin_page_login_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:background="@drawable/button_gradient_color"
         android:textColor="@color/main_theme"
-        android:text="Forgot Password"/>
+        android:text="Forgot Password"
+        />
 
     <Button
         android:id="@+id/signin_page_setup_org_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/signin_page_forgot_password_button"
+        android:layout_below="@+id/signin_page_forgot_password_text"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_gradient_color"
         android:textColor="@color/main_theme"
-        android:text="Setup Organization"/>
+        android:text="Setup Business"/>
 
 
     <!--<Button-->

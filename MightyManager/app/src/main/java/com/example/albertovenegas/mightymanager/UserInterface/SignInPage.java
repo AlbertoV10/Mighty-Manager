@@ -24,7 +24,7 @@ public class SignInPage extends AppCompatActivity {
     private EditText username;
     private EditText password;
     private Button loginButton;
-    private Button forgotPasswordButton;
+    private TextView forgotPasswordButton;
     private Button setUpOrgButton;
     private Button cancelButton;
     private Boolean managerType;
@@ -46,7 +46,7 @@ public class SignInPage extends AppCompatActivity {
         username = (EditText) findViewById(R.id.signin_page_username);
         password = (EditText) findViewById(R.id.signin_page_password);
         loginButton = (Button) findViewById(R.id.signin_page_login_button);
-        forgotPasswordButton = findViewById(R.id.signin_page_forgot_password_button);
+        forgotPasswordButton = findViewById(R.id.signin_page_forgot_password_text);
         setUpOrgButton = findViewById(R.id.signin_page_setup_org_button);
         //cancelButton = (Button) findViewById(R.id.signin_page_cancel_button);
         //managerType = getIntent().getExtras().getBoolean("managerUserType");
@@ -66,10 +66,10 @@ public class SignInPage extends AppCompatActivity {
             setUpOrgButton.setEnabled(false);
             setUpOrgButton.setVisibility(View.INVISIBLE);
         }
-        else {
-            loginButton.setEnabled(false);
-            forgotPasswordButton.setEnabled(false);
-        }
+//        else {
+//            loginButton.setEnabled(false);
+//            forgotPasswordButton.setEnabled(false);
+//        }
 
 
 
@@ -84,16 +84,26 @@ public class SignInPage extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user = mmvm.findEmployeeByUsername(username.getText().toString());
-                validateCredentials(username.getText().toString(), password.getText().toString());
+                if (orgs.size() == 0) {
+                    Toast.makeText(SignInPage.this, "Please set up a business first", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    user = mmvm.findEmployeeByUsername(username.getText().toString());
+                    validateCredentials(username.getText().toString(), password.getText().toString());
+                }
             }
         });
 
         forgotPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent newUser = new Intent(SignInPage.this, ForgotPassword.class);
-                startActivity(newUser);
+                if (orgs.size() == 0) {
+                    Toast.makeText(SignInPage.this, "Please set up a business first", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent newUser = new Intent(SignInPage.this, ForgotPassword.class);
+                    startActivity(newUser);
+                }
             }
         });
 
@@ -134,7 +144,7 @@ public class SignInPage extends AppCompatActivity {
                         startActivity(intent);
                     }
                 } else {
-                    Toast.makeText(SignInPage.this, "invalid", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignInPage.this, "The username or password is incorrect.", Toast.LENGTH_SHORT).show();
                 }
 //            if (managerType) {
 //                if (username.equals(user.getEmployeeUsername()) && password.equals(user.getEmployeePassword())) {
