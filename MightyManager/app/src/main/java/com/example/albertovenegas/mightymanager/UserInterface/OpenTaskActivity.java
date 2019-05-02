@@ -374,6 +374,9 @@ public class OpenTaskActivity extends AppCompatActivity implements TimePickerDia
         this.menu = menu;
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.edit_task_menu, menu);
+        if (!requestingEmployee.isAdmin()) {
+            menu.getItem(0).setVisible(false);
+        }
         return true;
     }
 
@@ -386,6 +389,9 @@ public class OpenTaskActivity extends AppCompatActivity implements TimePickerDia
 //            case R.id.save_edits:
 //                saveTask();
 //                return true;
+            case R.id.delete_entity:
+                deleteTask();
+                return true;
             case android.R.id.home:
                 cancelScreen();
                 return true;
@@ -395,10 +401,19 @@ public class OpenTaskActivity extends AppCompatActivity implements TimePickerDia
         }
     }
 
+    private void deleteTask() {
+        DeleteTaskDialog deleteTaskDialog = new DeleteTaskDialog();
+        Bundle bundle = new Bundle();
+        bundle.putInt("user", eId);
+        bundle.putInt("taskId", task.getTaskId());
+        deleteTaskDialog.setArguments(bundle);
+        deleteTaskDialog.show(getSupportFragmentManager(), "DeleteTaskDialog");
+    }
+
     private void editSaveTask() {
        if (!editable) {
            //change the edit icon to save
-           menu.getItem(0).setIcon(R.drawable.ic_save_white);
+           menu.getItem(1).setIcon(R.drawable.ic_save_white);
            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
            //enable edit text fields
            otTitle.setEnabled(true);

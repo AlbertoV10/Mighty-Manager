@@ -109,6 +109,9 @@ public class CustomerDetails extends AppCompatActivity {
         this.menu = menu;
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.edit_task_menu, menu);
+        if (!employee.isAdmin()) {
+            menu.getItem(0).setVisible(false);
+        }
         return true;
     }
 
@@ -121,6 +124,9 @@ public class CustomerDetails extends AppCompatActivity {
 //            case R.id.save_edits:
 //                saveTask();
 //                return true;
+            case R.id.delete_entity:
+                deleteCustomer();
+                return true;
             case android.R.id.home:
                 cancelScreen();
                 return true;
@@ -133,7 +139,7 @@ public class CustomerDetails extends AppCompatActivity {
     private void editSaveCustomer() {
         if (!editable) {
             //change edit icon to save
-            menu.getItem(0).setIcon(R.drawable.ic_save_white);
+            menu.getItem(1).setIcon(R.drawable.ic_save_white);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
 
             //enable the edit text fields
@@ -168,6 +174,15 @@ public class CustomerDetails extends AppCompatActivity {
 
     private void cancelScreen() {
         closeActivity(RESULT_CANCELED);
+    }
+
+    private void deleteCustomer() {
+       DeleteCustomerDialog deleteCustomerDialog = new DeleteCustomerDialog();
+       Bundle bundle = new Bundle();
+       bundle.putString("cName", currentName);
+       bundle.putInt("cId", currentCustomer.getCustomerID());
+       deleteCustomerDialog.setArguments(bundle);
+       deleteCustomerDialog.show(getSupportFragmentManager(), "DeleteCustomerDialog");
     }
 
     private void closeActivity(int resultCode) {

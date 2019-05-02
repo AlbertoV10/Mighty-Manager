@@ -30,7 +30,8 @@
             android:textStyle="bold"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@id/main_list_alert_icon"
+            android:maxLength="20"
             />
 
         <TextView
@@ -42,8 +43,8 @@
             android:fontFamily="serif-monospace"
             android:textStyle="bold"
             android:layout_below="@id/main_list_title_txt"
-            android:layout_toRightOf="@id/main_list_due_date"
-            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/main_list_alert_icon"
+            android:layout_marginBottom="10dp"
             />
 
 
@@ -51,11 +52,25 @@
             android:id="@+id/main_list_due_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Due: 12/12/2019"
+            android:text="Date: 12/12/2019"
             android:textSize="12sp"
-            android:layout_below="@+id/main_list_title_txt"
-            android:layout_marginLeft="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
             />
+
+        <TextView
+            android:id="@+id/main_list_app_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time: 00:00 mm"
+            android:textSize="12sp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/main_list_due_date"
+            android:layout_marginRight="10dp"/>
 
         <!--<android.support.v7.widget.AppCompatImageView-->
             <!--android:id="@+id/main_list_edit_icon"-->

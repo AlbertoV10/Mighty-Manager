@@ -118,11 +118,11 @@ public class CustomerList extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CUSTOMER_DESCRIPTION_TASK) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(this, "Customer Edited", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Customer Edited", Toast.LENGTH_SHORT).show();
             }
             else
             {
-                Toast.makeText(this, "Customer Unchanged", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Customer Unchanged", Toast.LENGTH_SHORT).show();
 
             }
         }

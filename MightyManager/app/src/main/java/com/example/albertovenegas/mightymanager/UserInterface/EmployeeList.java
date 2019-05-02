@@ -130,11 +130,11 @@ public class EmployeeList extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EMPLOYEE_DESCRIPTION_TASK) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(this, "Employee Edited", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Employee Edited", Toast.LENGTH_SHORT).show();
             }
             else
             {
-                Toast.makeText(this, "Employee Unchanged", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Employee Unchanged", Toast.LENGTH_SHORT).show();
 
             }
         }

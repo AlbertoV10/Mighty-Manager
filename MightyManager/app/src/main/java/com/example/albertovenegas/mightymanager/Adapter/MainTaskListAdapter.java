@@ -49,6 +49,7 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
         taskListHolder.taskTitle.setText(currentTask.getTaskTitle());
         int status = currentTask.getTaskStatus();
         String date = currentTask.getTaskDateDue();
+        String time = currentTask.getTaskAppTime();
         long daysLeft = isTaskDueSoon(date);
         if (daysLeft < 7 && daysLeft >= 0 && status != 3) {
             taskListHolder.alertIcon.setVisibility(View.VISIBLE);
@@ -70,6 +71,7 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
         }
         taskListHolder.assignedEmployee.setText(name);
         taskListHolder.appDate.setText("Date: " + date);
+        taskListHolder.appTime.setText("Time: " + time);
         //set the background color of the list items
         int color;
         switch (status) {
@@ -154,6 +156,7 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
         private TextView taskTitle;
         private TextView assignedEmployee;
         private TextView appDate;
+        private TextView appTime;
         private View container;
         private View border;
         private ImageView alertIcon;
@@ -165,6 +168,7 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
             container = itemView.findViewById(R.id.main_list_root_view);
             border = itemView.findViewById(R.id.main_list_card);
             appDate = itemView.findViewById(R.id.main_list_due_date);
+            appTime = itemView.findViewById(R.id.main_list_app_time);
             alertIcon = itemView.findViewById(R.id.main_list_alert_icon);
 
             container.setOnClickListener(new View.OnClickListener() {
@@ -188,7 +192,7 @@ public class MainTaskListAdapter extends RecyclerView.Adapter<MainTaskListAdapte
     }
 
     private String findEmployeeNameWithId(int id) {
-        String name = "employee never found";
+        String name = "Not Found";
         for(int i = 0; i < employees.size(); i++) {
             System.out.println("Searching for id: " + id);
             if (employees.get(i).getEmployeeID() == id)

@@ -186,8 +186,9 @@ public class EmployeeDetails extends AppCompatActivity {
         this.menu = menu;
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.edit_task_menu, menu);
+        menu.getItem(0).setVisible(false); //for now employees not deleted
         if (!requestingEmployee.isAdmin()) {
-            menu.getItem(0).setVisible(false);
+            menu.getItem(1).setVisible(false);
         }
         return true;
     }
@@ -213,7 +214,7 @@ public class EmployeeDetails extends AppCompatActivity {
     private void editSaveEmployee() {
         if (!editable) {
             //change edit icon to save
-            menu.getItem(0).setIcon(R.drawable.ic_save_white);
+            menu.getItem(1).setIcon(R.drawable.ic_save_white);
             //enable the edit text fields
             eFirstName.setEnabled(true);
             eLastName.setEnabled(true);
