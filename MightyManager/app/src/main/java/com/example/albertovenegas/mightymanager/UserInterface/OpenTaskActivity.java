@@ -53,6 +53,9 @@ public class OpenTaskActivity extends AppCompatActivity implements TimePickerDia
     public static final int REQUEST_CALL = 1;
     public static final int REQUEST_MAP = 2;
 
+    public static final String NEW_CUSTOMER_NAME_DURING_EDIT = "open.task.new.customer";
+    public static final String EDIT_TASK_ID = "open.task.id";
+
     private MightyManagerViewModel mmvm;
     private EditText otTitle;
     private EditText otAddress;
@@ -95,6 +98,8 @@ public class OpenTaskActivity extends AppCompatActivity implements TimePickerDia
     private int eId;
     private Employee requestingEmployee;
     ColorStateList originalTextColor;
+
+    boolean newCustomer = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -490,6 +495,10 @@ public class OpenTaskActivity extends AppCompatActivity implements TimePickerDia
             setResult(RESULT_CANCELED, intent);
         }
         else  {
+            if (newCustomer) {
+                intent.putExtra(NEW_CUSTOMER_NAME_DURING_EDIT, otCustomerName.getText().toString());
+                intent.putExtra(EDIT_TASK_ID, task.getTaskId());
+            }
             setResult(RESULT_OK, intent);
         }
         finish();
@@ -551,8 +560,10 @@ public class OpenTaskActivity extends AppCompatActivity implements TimePickerDia
                 //new customer
                 cust = new Customer(name, phone, email);
                 mmvm.insert(cust);
-                cust = mmvm.findCustomerByName(name);
-                id = cust.getCustomerID();
+                //cust = mmvm.findCustomerByName(name);
+                //id = cust.getCustomerID();
+                id = -888;
+                newCustomer = true;
             }
         }
         return id;

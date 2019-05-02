@@ -50,6 +50,7 @@ public class CompletedTasks extends AppCompatActivity {
     private int employeeId; //change this to use employee id since no duplication possible
     Employee currentUser;
     private Spinner filterSpinner;
+    private TextView filterText;
     private List<Task> taskList = new ArrayList<>();
 
     private Menu menu;
@@ -69,10 +70,14 @@ public class CompletedTasks extends AppCompatActivity {
         currentUser = mightyManagerViewModel.findEmployeeById(employeeId);
 
         //intialize task filter
+        filterText = findViewById(R.id.completed_tasks_filter_desc);
         filterSpinner = findViewById(R.id.completed_tasks_filter_spinner);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, filterChoices);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         filterSpinner.setAdapter(spinnerAdapter);
+        filterSpinner.setEnabled(false);
+        filterSpinner.setVisibility(View.INVISIBLE);
+        filterText.setVisibility(View.INVISIBLE);
 
         //set up recycler view
         RecyclerView recyclerView = findViewById(R.id.completed_tasks_list);

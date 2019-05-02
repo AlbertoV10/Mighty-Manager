@@ -42,7 +42,7 @@ public class MainAppScreen extends AppCompatActivity {
     public static final String OPEN_TASK_EXTRA_KEY = "main.app.screen.task.id";
     public static final String OPEN_TASK_INCOMING_ACTIVY = "MainAppScreen";
     public static final String MY_PROFILE_USER_ID = "main.app.screen.user.id";
-    private String[] filterChoices = {"All", "New", "In Progress", "Closed", "Sort by Appointment Date"};
+    private String[] filterChoices = {"All", "New", "In Progress", "Sort by Appointment Date"};
 
     private MightyManagerViewModel mightyManagerViewModel;
     private FloatingActionButton fab;
@@ -238,15 +238,23 @@ public class MainAppScreen extends AppCompatActivity {
         }
         else if (requestCode == EDIT_TASK_REQUEST) {
             if (resultCode == RESULT_OK) {
-                //data was changedF
+                //data was changed
+                if (data.hasExtra(OpenTaskActivity.NEW_CUSTOMER_NAME_DURING_EDIT)) {
+                    String name = data.getStringExtra(OpenTaskActivity.NEW_CUSTOMER_NAME_DURING_EDIT);
+                    int taskId = data.getIntExtra(OpenTaskActivity.EDIT_TASK_ID, -888);
+                    Task task = mightyManagerViewModel.findTaskById(taskId);
+                    Customer customer = mightyManagerViewModel.findCustomerByName(name);
+                    task.setCustomerID(customer.getCustomerID());
+                    mightyManagerViewModel.update(task);
+                }
                 adapter.notifyDataSetChanged();
                 filterSpinner.setSelection(0);
-                Toast.makeText(this, "data was changed in edit mode", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "data was changed in edit mode", Toast.LENGTH_SHORT).show();
             }
             else
             {
                 //data unchanged
-                Toast.makeText(this, "data was NOT changed in edit mode", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "data was NOT changed in edit mode", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -375,7 +383,7 @@ public class MainAppScreen extends AppCompatActivity {
         if (type == 0) {
             return taskList;
         }
-        else if (type >= 1 && type <= 3){
+        else if (type >= 1 && type <= 2){
             for (int i = 0; i < taskList.size(); i++) {
                 // filter new tasks
                 if (taskList.get(i).getTaskStatus() == type) {
@@ -395,7 +403,7 @@ public class MainAppScreen extends AppCompatActivity {
         //ArrayList<Date> dates = new ArrayList<>();
 
 
-        if (type == 4) {
+        if (type == 3) {
             //sort by most soon due
             dateFilteredTasks.addAll(taskList);
             quickSortdates(dateFilteredTasks, 0, dateFilteredTasks.size()-1);
