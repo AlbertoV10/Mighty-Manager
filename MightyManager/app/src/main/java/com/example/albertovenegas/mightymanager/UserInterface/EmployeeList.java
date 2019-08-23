@@ -64,7 +64,7 @@ public class EmployeeList extends AppCompatActivity {
             }
             public void onTotalTasksClicked(Employee employee) {
                 int employeeId = employee.getEmployeeID();
-                Toast.makeText(EmployeeList.this, "See tasks for employee: " + employee.getEmployeeUsername(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(EmployeeList.this, "See tasks for employee: " + employee.getEmployeeUsername(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(EmployeeList.this, EmployeeTasks.class);
                 intent.putExtra(EMPLOYEE_DESCRIPTION_EXTRA_KEY, employeeId);
                 intent.putExtra(REQUESTING_EMPLOYEE_EXTRA_KEY, currentEmployeeId);

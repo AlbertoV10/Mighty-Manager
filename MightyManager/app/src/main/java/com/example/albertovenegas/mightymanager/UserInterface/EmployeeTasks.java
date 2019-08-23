@@ -70,7 +70,7 @@ public class EmployeeTasks extends AppCompatActivity {
         requestingUser = mightyManagerViewModel.findEmployeeById(requesterId);
         mainTitle = findViewById(R.id.employee_tasks_title);
         mainTitle.setText("Assignments for " + currentUser.getEmployeeName());
-        Toast.makeText(this, requestingUser.getEmployeeUsername() + "requesting to see "+ currentUser.getEmployeeUsername() , Toast.LENGTH_SHORT).show();
+        //oast.makeText(this, requestingUser.getEmployeeUsername() + "requesting to see "+ currentUser.getEmployeeUsername() , Toast.LENGTH_SHORT).show();
 
         //intialize task filter
         filterSpinner = findViewById(R.id.employee_tasks_filter_spinner);
@@ -139,6 +139,7 @@ public class EmployeeTasks extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.edit_task_menu, menu);
         menu.getItem(0).setVisible(false);
+        menu.getItem(1).setVisible(false);
         return true;
     }
 
